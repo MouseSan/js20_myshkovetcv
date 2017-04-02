@@ -1,21 +1,49 @@
 package ru.tsystems.js20.myshkovetcv.model;
 
-import javax.persistence.*;
+import org.hibernate.validator.constraints.NotEmpty;
+import ru.tsystems.js20.myshkovetcv.model.enums.ParameterType;
 
-public class Parameter {
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "parameter")
+public class Parameter implements Serializable {
+
+    private static final long serialVersionUID = 516516777771566L;
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @NotEmpty
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column
-    private Long goods_id;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private ParameterType type;
 
-    @Column
-    private String value;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parameter")
+    private List<ParameterValue> parameterValueList = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "parameterList")
+    private List<Category> categoryList = new ArrayList<>();
+
+    public Parameter(String name, ParameterType type, List<ParameterValue> parameterValueList, List<Category> categoryList) {
+        this.name = name;
+        this.type = type;
+        this.parameterValueList = parameterValueList;
+        this.categoryList = categoryList;
+    }
+
+    public Parameter(String name, ParameterType type) {
+        this.name = name;
+        this.type = type;
+    }
 
     public Parameter() {
     }
@@ -36,20 +64,28 @@ public class Parameter {
         this.name = name;
     }
 
-    public Long getGoods_id() {
-        return goods_id;
+    public ParameterType getType() {
+        return type;
     }
 
-    public void setGoods_id(Long goods_id) {
-        this.goods_id = goods_id;
+    public void setType(ParameterType type) {
+        this.type = type;
     }
 
-    public String getValue() {
-        return value;
+    public List<ParameterValue> getParameterValueList() {
+        return parameterValueList;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setParameterValueList(List<ParameterValue> parameterValueList) {
+        this.parameterValueList = parameterValueList;
+    }
+
+    public List<Category> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
     }
 
     @Override
@@ -59,20 +95,23 @@ public class Parameter {
 
         Parameter parameter = (Parameter) o;
 
-        if (!getId().equals(parameter.getId())) return false;
+        if (getId() != null ? !getId().equals(parameter.getId()) : parameter.getId() != null)
+            return false;
         if (getName() != null ? !getName().equals(parameter.getName()) : parameter.getName() != null)
             return false;
-        if (getGoods_id() != null ? !getGoods_id().equals(parameter.getGoods_id()) : parameter.getGoods_id() != null)
+        if (getType() != parameter.getType()) return false;
+        if (getParameterValueList() != null ? !getParameterValueList().equals(parameter.getParameterValueList()) : parameter.getParameterValueList() != null)
             return false;
-        return getValue() != null ? getValue().equals(parameter.getValue()) : parameter.getValue() == null;
+        return getCategoryList() != null ? getCategoryList().equals(parameter.getCategoryList()) : parameter.getCategoryList() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getId().hashCode();
+        int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getGoods_id() != null ? getGoods_id().hashCode() : 0);
-        result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
+        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+        result = 31 * result + (getParameterValueList() != null ? getParameterValueList().hashCode() : 0);
+        result = 31 * result + (getCategoryList() != null ? getCategoryList().hashCode() : 0);
         return result;
     }
 
@@ -81,7 +120,7 @@ public class Parameter {
         return "Parameter{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", value='" + value + '\'' +
+                ", type=" + type +
                 '}';
     }
 }
