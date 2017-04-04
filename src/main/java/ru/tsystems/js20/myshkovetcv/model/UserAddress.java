@@ -44,16 +44,16 @@ public class UserAddress implements Serializable {
     private User user;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "userAddress")
-    private List<Order> orderList = new ArrayList<>();
+    private List<Orders> ordersList = new ArrayList<>();
 
-    public UserAddress(String country, String city, Integer zipCode, String street, String apartmentNumber, User user, List<Order> orderList) {
+    public UserAddress(String country, String city, Integer zipCode, String street, String apartmentNumber, User user, List<Orders> ordersList) {
         this.country = country;
         this.city = city;
         this.zipCode = zipCode;
         this.street = street;
         this.apartmentNumber = apartmentNumber;
         this.user = user;
-        this.orderList = orderList;
+        this.ordersList = ordersList;
     }
 
     public UserAddress(String country, String city, Integer zipCode, String street, String apartmentNumber, User user) {
@@ -124,12 +124,12 @@ public class UserAddress implements Serializable {
         this.user = user;
     }
 
-    public List<Order> getOrderList() {
-        return orderList;
+    public List<Orders> getOrdersList() {
+        return ordersList;
     }
 
-    public void setOrderList(List<Order> orderList) {
-        this.orderList = orderList;
+    public void setOrdersList(List<Orders> ordersList) {
+        this.ordersList = ordersList;
     }
 
     @Override
@@ -152,7 +152,7 @@ public class UserAddress implements Serializable {
             return false;
         if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null)
             return false;
-        return getOrderList() != null ? getOrderList().equals(that.getOrderList()) : that.getOrderList() == null;
+        return getOrdersList() != null ? getOrdersList().equals(that.getOrdersList()) : that.getOrdersList() == null;
     }
 
     @Override
@@ -164,7 +164,7 @@ public class UserAddress implements Serializable {
         result = 31 * result + (getStreet() != null ? getStreet().hashCode() : 0);
         result = 31 * result + (getApartmentNumber() != null ? getApartmentNumber().hashCode() : 0);
         result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
-        result = 31 * result + (getOrderList() != null ? getOrderList().hashCode() : 0);
+        result = 31 * result + (getOrdersList() != null ? getOrdersList().hashCode() : 0);
         return result;
     }
 

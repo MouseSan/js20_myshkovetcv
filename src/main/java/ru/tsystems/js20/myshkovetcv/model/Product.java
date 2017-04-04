@@ -39,7 +39,7 @@ public class Product implements Serializable {
     private List<ParameterValue> parameterValueList = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "productList")
-    private List<Order> orderList = new ArrayList<>();
+    private List<Orders> ordersList = new ArrayList<>();
 
     @NotNull
     @Column(name = "weight", nullable = false)
@@ -53,12 +53,12 @@ public class Product implements Serializable {
     @Column(name = "stock", nullable = false)
     private Double stock;
 
-    public Product(String name, Double price, Category category, List<ParameterValue> parameterValueList, List<Order> orderList, Double weight, Double volume, Double stock) {
+    public Product(String name, Double price, Category category, List<ParameterValue> parameterValueList, List<Orders> ordersList, Double weight, Double volume, Double stock) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.parameterValueList = parameterValueList;
-        this.orderList = orderList;
+        this.ordersList = ordersList;
         this.weight = weight;
         this.volume = volume;
         this.stock = stock;
@@ -140,12 +140,12 @@ public class Product implements Serializable {
         this.parameterValueList = parameterValueList;
     }
 
-    public List<Order> getOrderList() {
-        return orderList;
+    public List<Orders> getOrdersList() {
+        return ordersList;
     }
 
-    public void setOrderList(List<Order> orderList) {
-        this.orderList = orderList;
+    public void setOrdersList(List<Orders> ordersList) {
+        this.ordersList = ordersList;
     }
 
     @Override
@@ -165,7 +165,7 @@ public class Product implements Serializable {
             return false;
         if (getParameterValueList() != null ? !getParameterValueList().equals(product.getParameterValueList()) : product.getParameterValueList() != null)
             return false;
-        if (getOrderList() != null ? !getOrderList().equals(product.getOrderList()) : product.getOrderList() != null)
+        if (getOrdersList() != null ? !getOrdersList().equals(product.getOrdersList()) : product.getOrdersList() != null)
             return false;
         if (getWeight() != null ? !getWeight().equals(product.getWeight()) : product.getWeight() != null)
             return false;
@@ -181,7 +181,7 @@ public class Product implements Serializable {
         result = 31 * result + (getPrice() != null ? getPrice().hashCode() : 0);
         result = 31 * result + (getCategory() != null ? getCategory().hashCode() : 0);
         result = 31 * result + (getParameterValueList() != null ? getParameterValueList().hashCode() : 0);
-        result = 31 * result + (getOrderList() != null ? getOrderList().hashCode() : 0);
+        result = 31 * result + (getOrdersList() != null ? getOrdersList().hashCode() : 0);
         result = 31 * result + (getWeight() != null ? getWeight().hashCode() : 0);
         result = 31 * result + (getVolume() != null ? getVolume().hashCode() : 0);
         result = 31 * result + (getStock() != null ? getStock().hashCode() : 0);

@@ -15,7 +15,7 @@ public class AppController {
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String showHomePage(ModelMap model) {
         model.addAttribute("title", "Home page");
-        return "homepage";
+        return "mainhomepage";
     }
 
 }

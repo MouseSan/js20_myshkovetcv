@@ -48,9 +48,9 @@ public class User implements Serializable {
     private List<UserAddress> userAddressList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    private List<Order> orderList = new ArrayList<>();
+    private List<Orders> ordersList = new ArrayList<>();
 
-    public User(String firstName, String lastName, Date dateOfBirth, String emailAddress, String loginName, String password, List<UserAddress> userAddressList, List<Order> orderList) {
+    public User(String firstName, String lastName, Date dateOfBirth, String emailAddress, String loginName, String password, List<UserAddress> userAddressList, List<Orders> ordersList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -58,7 +58,7 @@ public class User implements Serializable {
         this.loginName = loginName;
         this.password = password;
         this.userAddressList = userAddressList;
-        this.orderList = orderList;
+        this.ordersList = ordersList;
     }
 
     public User(String firstName, Date dateOfBirth, String emailAddress, String loginName, String password) {
@@ -140,12 +140,12 @@ public class User implements Serializable {
         this.userAddressList = userAddressList;
     }
 
-    public List<Order> getOrderList() {
-        return orderList;
+    public List<Orders> getOrdersList() {
+        return ordersList;
     }
 
-    public void setOrderList(List<Order> orderList) {
-        this.orderList = orderList;
+    public void setOrdersList(List<Orders> ordersList) {
+        this.ordersList = ordersList;
     }
 
     @Override
@@ -170,7 +170,7 @@ public class User implements Serializable {
             return false;
         if (getUserAddressList() != null ? !getUserAddressList().equals(user.getUserAddressList()) : user.getUserAddressList() != null)
             return false;
-        return getOrderList() != null ? getOrderList().equals(user.getOrderList()) : user.getOrderList() == null;
+        return getOrdersList() != null ? getOrdersList().equals(user.getOrdersList()) : user.getOrdersList() == null;
     }
 
     @Override
@@ -183,7 +183,7 @@ public class User implements Serializable {
         result = 31 * result + (getLoginName() != null ? getLoginName().hashCode() : 0);
         result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         result = 31 * result + (getUserAddressList() != null ? getUserAddressList().hashCode() : 0);
-        result = 31 * result + (getOrderList() != null ? getOrderList().hashCode() : 0);
+        result = 31 * result + (getOrdersList() != null ? getOrdersList().hashCode() : 0);
         return result;
     }
 
