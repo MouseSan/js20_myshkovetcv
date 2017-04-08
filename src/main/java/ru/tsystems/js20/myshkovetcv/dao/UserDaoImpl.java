@@ -15,11 +15,11 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
     }
 
     @Override
-    public User findByLoginName(String loginName) {
+    public User findByEmail(String emailAddress) {
         try {
             User user = (User) getEntityManager()
-                    .createQuery("SELECT u FROM User u WHERE u.loginName LIKE :loginName")
-                    .setParameter("loginName", loginName)
+                    .createQuery("SELECT u FROM User u WHERE u.emailAddress LIKE :emailAddress")
+                    .setParameter("emailAddress", emailAddress)
                     .getSingleResult();
 
             return user;

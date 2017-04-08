@@ -1,6 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.js20.myshkovetcv.dao.UserDao;
@@ -15,6 +16,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public User findById(Long id) {
         return userDao.findById(id);
@@ -26,12 +30,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByLoginName(String name) {
-        return userDao.findByLoginName(name);
+    public User findByEmail(String emailAddress) {
+        return userDao.findByEmail(emailAddress);
     }
 
     @Override
     public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 

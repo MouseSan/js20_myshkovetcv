@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.js20.myshkovetcv.dao.CategoryDao;
 import ru.tsystems.js20.myshkovetcv.dao.ProductDao;
 import ru.tsystems.js20.myshkovetcv.model.Product;
+import ru.tsystems.js20.myshkovetcv.sessionScope.SessionScope;
 
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    private SessionScope sessionScope;
 
     @Override
     public Product findById(Long id) {
@@ -46,5 +50,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAllProducts() {
         return productDao.findAllProducts();
+    }
+
+    public void addProductToSeesionScope() {
+        sessionScope.setProductList(findAllProducts());
     }
 }

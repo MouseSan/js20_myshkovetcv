@@ -11,7 +11,7 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-import ru.tsystems.js20.myshkovetcv.converter.CategoryIdToCategoryClassConverter;
+import ru.tsystems.js20.myshkovetcv.converter.*;
 
 @Configuration
 @Import(JpaConfiguration.class)
@@ -20,7 +20,19 @@ import ru.tsystems.js20.myshkovetcv.converter.CategoryIdToCategoryClassConverter
 public class AppConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
-    CategoryIdToCategoryClassConverter categoryIdToCategoryClassConverter;
+    private CategoryIdToCategoryClassConverter categoryIdToCategoryClassConverter;
+
+    @Autowired
+    private ParameterIdToParameterClassConverter parameterIdToParameterClassConverter;
+
+    @Autowired
+    private UserIdToUserClassConverter userIdToUserClassConverter;
+
+    @Autowired
+    private UserAddressIdToUserAddressClassConverter userAddressIdToUserAddressClassConverter;
+
+    @Autowired
+    private UserProfileIdToUserProfileClassConverter userProfileIdToUserProfileClassConverter;
 
     /**
      * Configure ViewResolvers to deliver preferred views.
@@ -51,6 +63,10 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(categoryIdToCategoryClassConverter);
+        registry.addConverter(parameterIdToParameterClassConverter);
+        registry.addConverter(userIdToUserClassConverter);
+        registry.addConverter(userAddressIdToUserAddressClassConverter);
+        registry.addConverter(userProfileIdToUserProfileClassConverter);
     }
 
     /**

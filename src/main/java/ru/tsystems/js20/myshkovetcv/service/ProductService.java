@@ -16,4 +16,6 @@ public interface ProductService {
 
     List<Product> findAllProducts();
 
+    void addProductToSeesionScope();
+
 }

@@ -5,9 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "user")
@@ -30,19 +28,21 @@ public class User implements Serializable {
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Column(name = "dateOfBirth")
-    private Date dateOfBirth; //TODO change type
+    private Date dateOfBirth;
 
     @NotEmpty
     @Column(name = "emailAddress")
     private String emailAddress;
 
     @NotEmpty
-    @Column(name = "loginName", unique = true)
-    private String loginName;
-
-    @NotEmpty
     @Column(name = "password")
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_userProfile",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_profile_id")})
+    private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<UserAddress> userAddressList = new ArrayList<>();
@@ -50,22 +50,22 @@ public class User implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<Orders> ordersList = new ArrayList<>();
 
-    public User(String firstName, String lastName, Date dateOfBirth, String emailAddress, String loginName, String password, List<UserAddress> userAddressList, List<Orders> ordersList) {
+    public User(String firstName, String lastName, Date dateOfBirth, String emailAddress, String loginName, String password, Set<UserProfile> userProfiles, List<UserAddress> userAddressList, List<Orders> ordersList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
-        this.loginName = loginName;
         this.password = password;
+        this.userProfiles = userProfiles;
         this.userAddressList = userAddressList;
         this.ordersList = ordersList;
     }
 
-    public User(String firstName, Date dateOfBirth, String emailAddress, String loginName, String password) {
+    public User(String firstName, String lastName, Date dateOfBirth, String emailAddress, String loginName, String password) {
         this.firstName = firstName;
+        this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
-        this.loginName = loginName;
         this.password = password;
     }
 
@@ -116,14 +116,6 @@ public class User implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -148,6 +140,18 @@ public class User implements Serializable {
         this.ordersList = ordersList;
     }
 
+    public Set<UserProfile> getUserProfiles() {
+        return userProfiles;
+    }
+
+    public void setUserProfiles(Set<UserProfile> userProfiles) {
+        this.userProfiles = userProfiles;
+    }
+
+    public void addUserProfile(UserProfile userProfile) {
+        this.userProfiles.add(userProfile);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -164,9 +168,9 @@ public class User implements Serializable {
             return false;
         if (getEmailAddress() != null ? !getEmailAddress().equals(user.getEmailAddress()) : user.getEmailAddress() != null)
             return false;
-        if (getLoginName() != null ? !getLoginName().equals(user.getLoginName()) : user.getLoginName() != null)
-            return false;
         if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
+            return false;
+        if (getUserProfiles() != null ? !getUserProfiles().equals(user.getUserProfiles()) : user.getUserProfiles() != null)
             return false;
         if (getUserAddressList() != null ? !getUserAddressList().equals(user.getUserAddressList()) : user.getUserAddressList() != null)
             return false;
@@ -180,8 +184,8 @@ public class User implements Serializable {
         result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
         result = 31 * result + (getDateOfBirth() != null ? getDateOfBirth().hashCode() : 0);
         result = 31 * result + (getEmailAddress() != null ? getEmailAddress().hashCode() : 0);
-        result = 31 * result + (getLoginName() != null ? getLoginName().hashCode() : 0);
         result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        result = 31 * result + (getUserProfiles() != null ? getUserProfiles().hashCode() : 0);
         result = 31 * result + (getUserAddressList() != null ? getUserAddressList().hashCode() : 0);
         result = 31 * result + (getOrdersList() != null ? getOrdersList().hashCode() : 0);
         return result;
@@ -195,7 +199,10 @@ public class User implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", emailAddress='" + emailAddress + '\'' +
-                ", loginName='" + loginName + '\'' +
+                ", password='" + password + '\'' +
+                ", userProfiles=" + userProfiles +
+                ", userAddressList=" + userAddressList +
+                ", ordersList=" + ordersList +
                 '}';
     }
 }
