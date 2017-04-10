@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,13 +19,20 @@
 <body>
 
 <c:import url="common/MainNavigation.jsp">
+
     <c:param name="categoryList" value="${categoryList}"/>
+    <c:param name="quantityInCart" value="${quantityInCart}"/>
 </c:import>
 
-<div class="jumbotron">
-    <div class="container">
-        <h1>Welcome to E-shop project!</h1>
+<div class="container theme-showcase" role="main">
+
+    <div class="row">
+        <div class="col-md-12">
+
+        </div>
     </div>
+
+
 </div>
 
 <c:import url="common/scripts.jsp"/>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,14 +12,18 @@
     <title>${title}</title>
 
     <!-- Bootstrap -->
-    <link href="<c:url value='/static/bootstrap/dist/css/bootstrap.min.css' />"
-          rel="stylesheet"></link>
+    <link href="<c:url value='/static/bootstrap/dist/css/bootstrap.min.css' />" rel="stylesheet"/>
+
 
 </head>
 
 <body>
 
-<c:import url="common/MainNavigation.jsp"/>
+<c:import url="common/MainNavigation.jsp">
+
+    <c:param name="categoryList" value="${categoryList}"/>
+    <c:param name="quantityInCart" value="${quantityInCart}"/>
+</c:import>
 
 <div class="container theme-showcase" role="main">
 
@@ -33,7 +38,6 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Price</th>
-                        <th>Category</th>
                         <th width="100">Weight</th>
                         <th width="100">Volume</th>
                         <th width="100">Stock</th>
@@ -41,22 +45,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${ProductList}" var="product" varStatus="productListCount">
+                    <c:forEach items="${productList}" var="product" varStatus="productListCount">
                         <tr>
                             <td>${product.id}</td>
                             <td>${product.name}</td>
                             <td>${product.price}</td>
-                            <td>${product.category.name}</td>
                             <td>${product.weight}</td>
                             <td>${product.volume}</td>
                             <td>${product.stock}</td>
-                            <td><a href="<c:url value='/edit-product-${product.id}' />"
-                                   class="btn btn-success custom-width">edit</a></td>
                             <td>
-                                <button class="btn btn-danger addToCard"
+                                <button class="btn btn-danger addToCart"
                                         type="button"
                                         name="Button"
-                                        value="${productListCount.index}"
+                                        value="${product.id}"
                                         id="btn-${productListCount.index}">
                                     <span class="glyphicon glyphicon-plus"></span>
                                 </button>
@@ -71,7 +72,10 @@
     </div>
 </div>
 
+
 <c:import url="common/scripts.jsp"/>
+
+<script src="<c:url value='/static/productList.js' />"></script>
 
 </body>
 </html>

@@ -48,7 +48,7 @@ public class AdminCategoryController {
         return "redirect:/admin/categories";
     }
 
-    @RequestMapping(value = {"/categories/edit-{id}"}, method = RequestMethod.GET)
+    @RequestMapping(value = "/categories/edit-{id}", method = RequestMethod.GET)
     public String editCategory(@PathVariable Long id, ModelMap model) {
         Category category = categoryService.findById(id);
 
@@ -59,7 +59,7 @@ public class AdminCategoryController {
         return "AdminCategoryPage";
     }
 
-    @RequestMapping(value = {"/categories/edit-{id}"}, method = RequestMethod.POST)
+    @RequestMapping(value = "/categories/edit-{id}", method = RequestMethod.POST)
     public String updateCategory(Category category, BindingResult result, ModelMap model, @PathVariable Long id) {
         categoryService.updateCategory(category);
         return "redirect:/admin/categories";

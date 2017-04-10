@@ -1,6 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.dao;
 
 import org.springframework.stereotype.Repository;
+import ru.tsystems.js20.myshkovetcv.model.Category;
 import ru.tsystems.js20.myshkovetcv.model.Product;
 
 import javax.persistence.NoResultException;
@@ -42,6 +43,16 @@ public class ProductDaoImpl extends AbstractDao<Long, Product> implements Produc
         List<Product> productList = getEntityManager()
                 .createQuery("SELECT p FROM Product p ORDER BY p.name ASC")
                 .getResultList();
+        return productList;
+    }
+
+    @Override
+    public List<Product> getProductsByCategory(Category category) {
+        List<Product> productList = getEntityManager()
+                .createQuery("SELECT p FROM Product p WHERE p.category = :category")
+                .setParameter("category", category)
+                .getResultList();
+
         return productList;
     }
 }

@@ -14,28 +14,34 @@ var removeClickHandler = function (selector, handler) {
     selector.off("click", handler);
 };
 
-var addToCart_Handler = function () {
+var removeFromCart_Handler = function () {
     var buttonValue = this.value;
-    addToCart(buttonValue);
+    removeFromCart(buttonValue);
 };
 
 $(function () {
-    assignClickHandler($(".addToCart"), addToCart_Handler);
+    assignClickHandler($(".removeFromCart"), removeFromCart_Handler);
 });
 
-function addToCart(productId) {
+function removeFromCart(productId) {
     $.ajax({
         method: "GET",
-        url: "/addToCart",
+        url: "/removeFromCart",
         data: {
             productId: parseInt(productId)
         },
         success: function (result) {
             var urlStr = window.location.pathname + ' #header';
             $('#header').load(urlStr, function () {
-                removeClickHandler($(".addToCart"), addToCart_Handler);
-                assignClickHandler($(".addToCart"), addToCart_Handler);
+                removeClickHandler($(".removeFromCart"), removeFromCart_Handler);
+                assignClickHandler($(".removeFromCart"), removeFromCart_Handler);
             });
+            var urlStr = window.location.pathname + ' #cartTable';
+            $('#cartTable').load(urlStr, function () {
+                removeClickHandler($(".removeFromCart"), removeFromCart_Handler);
+                assignClickHandler($(".removeFromCart"), removeFromCart_Handler);
+            });
+
             // alert(window.location.toString())
         },
         error: function (a) {

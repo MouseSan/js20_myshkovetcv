@@ -157,34 +157,13 @@ public class Product implements Serializable {
 
         if (getId() != null ? !getId().equals(product.getId()) : product.getId() != null)
             return false;
-        if (getName() != null ? !getName().equals(product.getName()) : product.getName() != null)
-            return false;
-        if (getPrice() != null ? !getPrice().equals(product.getPrice()) : product.getPrice() != null)
-            return false;
-        if (getCategory() != null ? !getCategory().equals(product.getCategory()) : product.getCategory() != null)
-            return false;
-        if (getParameterValueList() != null ? !getParameterValueList().equals(product.getParameterValueList()) : product.getParameterValueList() != null)
-            return false;
-        if (getOrdersList() != null ? !getOrdersList().equals(product.getOrdersList()) : product.getOrdersList() != null)
-            return false;
-        if (getWeight() != null ? !getWeight().equals(product.getWeight()) : product.getWeight() != null)
-            return false;
-        if (getVolume() != null ? !getVolume().equals(product.getVolume()) : product.getVolume() != null)
-            return false;
-        return getStock() != null ? getStock().equals(product.getStock()) : product.getStock() == null;
+        return getName() != null ? getName().equals(product.getName()) : product.getName() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getPrice() != null ? getPrice().hashCode() : 0);
-        result = 31 * result + (getCategory() != null ? getCategory().hashCode() : 0);
-        result = 31 * result + (getParameterValueList() != null ? getParameterValueList().hashCode() : 0);
-        result = 31 * result + (getOrdersList() != null ? getOrdersList().hashCode() : 0);
-        result = 31 * result + (getWeight() != null ? getWeight().hashCode() : 0);
-        result = 31 * result + (getVolume() != null ? getVolume().hashCode() : 0);
-        result = 31 * result + (getStock() != null ? getStock().hashCode() : 0);
         return result;
     }
 

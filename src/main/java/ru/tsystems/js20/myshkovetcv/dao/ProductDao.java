@@ -1,5 +1,6 @@
 package ru.tsystems.js20.myshkovetcv.dao;
 
+import ru.tsystems.js20.myshkovetcv.model.Category;
 import ru.tsystems.js20.myshkovetcv.model.Product;
 
 import java.util.List;
@@ -15,5 +16,7 @@ public interface ProductDao {
     void updateProduct(Product product);
 
     List<Product> findAllProducts();
+
+    List<Product> getProductsByCategory(Category category);
 
 }
