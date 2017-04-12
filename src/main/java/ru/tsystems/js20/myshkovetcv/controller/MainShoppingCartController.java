@@ -14,7 +14,7 @@ import ru.tsystems.js20.myshkovetcv.sessionScope.ShoppingCart;
 
 @Controller
 @RequestMapping("/")
-public class ShoppingCartController {
+public class MainShoppingCartController {
 
     @Autowired
     private CategoryService categoryService;
@@ -41,6 +41,7 @@ public class ShoppingCartController {
 
         model.addAttribute("productMap", shoppingCart.getProductMap());
         model.addAttribute("quantityInCart", shoppingCart.getProductQuantityInCart());
+        model.addAttribute("totalPrice", shoppingCart.getProductTotalPrice());
         model.addAttribute("categoryList", categoryService.findAllCategories());
         model.addAttribute("title", "Shopping cart");
         return "MainShoppingCartPage";

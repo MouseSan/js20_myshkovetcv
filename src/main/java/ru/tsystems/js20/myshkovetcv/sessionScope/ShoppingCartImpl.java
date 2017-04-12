@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
 public class ShoppingCartImpl implements ShoppingCart {
 
     private Map<Product, Integer> productMap = new HashMap<>();
@@ -48,6 +48,15 @@ public class ShoppingCartImpl implements ShoppingCart {
                 productMap.remove(product);
             }
         }
+    }
+
+    @Override
+    public Double getProductTotalPrice() {
+        double totalPrice = 0.0;
+        for (Map.Entry<Product, Integer> entry : productMap.entrySet()) {
+            totalPrice += (double) entry.getValue() * entry.getKey().getPrice();
+        }
+        return totalPrice;
     }
 
 }

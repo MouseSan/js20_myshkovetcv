@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.js20.myshkovetcv.dao.UserAddressDao;
 import ru.tsystems.js20.myshkovetcv.dao.UserDao;
+import ru.tsystems.js20.myshkovetcv.model.User;
 import ru.tsystems.js20.myshkovetcv.model.UserAddress;
 
 import java.util.List;
@@ -46,5 +47,16 @@ public class UserAddressServiceImpl implements UserAddressService {
     @Override
     public List<UserAddress> findAllUserAddresses() {
         return userAddressDao.findAllUserAddresses();
+    }
+
+    @Override
+    public void deleteUserAddress(UserAddress userAddress) {
+        userAddress.setUser(userDao.findById(userAddress.getUser().getId()));
+        userAddressDao.deleteUserAddress(userAddress);
+    }
+
+    @Override
+    public List<UserAddress> findUserAddresses(User user) {
+        return userAddressDao.findUserAddresses(user);
     }
 }

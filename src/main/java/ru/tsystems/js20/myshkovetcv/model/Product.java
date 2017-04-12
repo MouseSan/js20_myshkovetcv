@@ -31,12 +31,12 @@ public class Product implements Serializable {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToMany
-    @JoinTable(name = "product_parameterValue",
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "parameterValue_id", referencedColumnName = "id")
-    )
-    private List<ParameterValue> parameterValueList = new ArrayList<>();
+//    @ManyToMany
+//    @JoinTable(name = "product_parameterValue",
+//            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "parameterValue_id", referencedColumnName = "id")
+//    )
+//    private List<ParameterValue> parameterValueList = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "productList")
     private List<Orders> ordersList = new ArrayList<>();
@@ -53,11 +53,10 @@ public class Product implements Serializable {
     @Column(name = "stock", nullable = false)
     private Double stock;
 
-    public Product(String name, Double price, Category category, List<ParameterValue> parameterValueList, List<Orders> ordersList, Double weight, Double volume, Double stock) {
+    public Product(String name, Double price, Category category, List<Orders> ordersList, Double weight, Double volume, Double stock) {
         this.name = name;
         this.price = price;
         this.category = category;
-        this.parameterValueList = parameterValueList;
         this.ordersList = ordersList;
         this.weight = weight;
         this.volume = volume;
@@ -132,13 +131,13 @@ public class Product implements Serializable {
         this.stock = stock;
     }
 
-    public List<ParameterValue> getParameterValueList() {
-        return parameterValueList;
-    }
-
-    public void setParameterValueList(List<ParameterValue> parameterValueList) {
-        this.parameterValueList = parameterValueList;
-    }
+//    public List<ParameterValue> getParameterValueList() {
+//        return parameterValueList;
+//    }
+//
+//    public void setParameterValueList(List<ParameterValue> parameterValueList) {
+//        this.parameterValueList = parameterValueList;
+//    }
 
     public List<Orders> getOrdersList() {
         return ordersList;
@@ -157,13 +156,25 @@ public class Product implements Serializable {
 
         if (getId() != null ? !getId().equals(product.getId()) : product.getId() != null)
             return false;
-        return getName() != null ? getName().equals(product.getName()) : product.getName() == null;
+        if (getName() != null ? !getName().equals(product.getName()) : product.getName() != null)
+            return false;
+        if (getPrice() != null ? !getPrice().equals(product.getPrice()) : product.getPrice() != null)
+            return false;
+        if (getWeight() != null ? !getWeight().equals(product.getWeight()) : product.getWeight() != null)
+            return false;
+        if (getVolume() != null ? !getVolume().equals(product.getVolume()) : product.getVolume() != null)
+            return false;
+        return getStock() != null ? getStock().equals(product.getStock()) : product.getStock() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getPrice() != null ? getPrice().hashCode() : 0);
+        result = 31 * result + (getWeight() != null ? getWeight().hashCode() : 0);
+        result = 31 * result + (getVolume() != null ? getVolume().hashCode() : 0);
+        result = 31 * result + (getStock() != null ? getStock().hashCode() : 0);
         return result;
     }
 
@@ -173,7 +184,7 @@ public class Product implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
-                ", category='" + category + '\'' +
+                ", category=" + category +
                 ", weight=" + weight +
                 ", volume=" + volume +
                 ", stock=" + stock +

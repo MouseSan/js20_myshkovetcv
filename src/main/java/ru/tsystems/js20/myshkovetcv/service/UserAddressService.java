@@ -1,5 +1,6 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
+import ru.tsystems.js20.myshkovetcv.model.User;
 import ru.tsystems.js20.myshkovetcv.model.UserAddress;
 
 import java.util.List;
@@ -16,4 +17,7 @@ public interface UserAddressService {
 
     List<UserAddress> findAllUserAddresses();
 
+    void deleteUserAddress(UserAddress userAddress);
+
+    List<UserAddress> findUserAddresses(User currentUser);
 }

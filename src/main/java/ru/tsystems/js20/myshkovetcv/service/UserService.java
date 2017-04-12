@@ -16,6 +16,8 @@ public interface UserService {
 
     void updateUser(User user);
 
+    void updatePassword(User user, String password);
+
     List<User> findAllUsers();
 
 }

@@ -30,14 +30,14 @@ public class Parameter implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "parameter")
     private List<ParameterValue> parameterValueList = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "parameterList")
-    private List<Category> categoryList = new ArrayList<>();
+//    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "parameterList")
+//    private List<Category> categoryList = new ArrayList<>();
 
-    public Parameter(String name, ParameterType type, List<ParameterValue> parameterValueList, List<Category> categoryList) {
+
+    public Parameter(String name, ParameterType type, List<ParameterValue> parameterValueList) {
         this.name = name;
         this.type = type;
         this.parameterValueList = parameterValueList;
-        this.categoryList = categoryList;
     }
 
     public Parameter(String name, ParameterType type) {
@@ -80,13 +80,14 @@ public class Parameter implements Serializable {
         this.parameterValueList = parameterValueList;
     }
 
-    public List<Category> getCategoryList() {
-        return categoryList;
-    }
+//    public List<Category> getCategoryList() {
+//        return categoryList;
+//    }
+//
+//    public void setCategoryList(List<Category> categoryList) {
+//        this.categoryList = categoryList;
+//    }
 
-    public void setCategoryList(List<Category> categoryList) {
-        this.categoryList = categoryList;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -100,9 +101,7 @@ public class Parameter implements Serializable {
         if (getName() != null ? !getName().equals(parameter.getName()) : parameter.getName() != null)
             return false;
         if (getType() != parameter.getType()) return false;
-        if (getParameterValueList() != null ? !getParameterValueList().equals(parameter.getParameterValueList()) : parameter.getParameterValueList() != null)
-            return false;
-        return getCategoryList() != null ? getCategoryList().equals(parameter.getCategoryList()) : parameter.getCategoryList() == null;
+        return getParameterValueList() != null ? getParameterValueList().equals(parameter.getParameterValueList()) : parameter.getParameterValueList() == null;
     }
 
     @Override
@@ -111,7 +110,6 @@ public class Parameter implements Serializable {
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getType() != null ? getType().hashCode() : 0);
         result = 31 * result + (getParameterValueList() != null ? getParameterValueList().hashCode() : 0);
-        result = 31 * result + (getCategoryList() != null ? getCategoryList().hashCode() : 0);
         return result;
     }
 

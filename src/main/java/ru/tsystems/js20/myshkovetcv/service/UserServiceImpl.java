@@ -49,6 +49,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updatePassword(User user, String password) {
+        User userToBeMerged = userDao.findById(user.getId());
+        if (userToBeMerged != null) {
+            user.setPassword(passwordEncoder.encode(password));
+            userDao.updateUser(user);
+        }
+    }
+
+    @Override
     public List<User> findAllUsers() {
         return userDao.findAllUsers();
     }

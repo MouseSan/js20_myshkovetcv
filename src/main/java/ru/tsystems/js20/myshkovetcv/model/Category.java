@@ -24,17 +24,17 @@ public class Category {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "category")
     private List<Product> productList = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "category_parameter",
-            joinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "parameter_id", referencedColumnName = "id")
-    )
-    private List<Parameter> parameterList = new ArrayList<>();
+//    @ManyToMany
+//    @JoinTable(name = "category_parameter",
+//            joinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "parameter_id", referencedColumnName = "id")
+//    )
+//    private List<Parameter> parameterList = new ArrayList<>();
 
-    public Category(String name, List<Product> productList, List<Parameter> parameterList) {
+
+    public Category(String name, List<Product> productList) {
         this.name = name;
         this.productList = productList;
-        this.parameterList = parameterList;
     }
 
     public Category(String name) {
@@ -72,13 +72,14 @@ public class Category {
         this.productList.add(product);
     }
 
-    public List<Parameter> getParameterList() {
-        return parameterList;
-    }
+//    public List<Parameter> getParameterList() {
+//        return parameterList;
+//    }
+//
+//    public void setParameterList(List<Parameter> parameterList) {
+//        this.parameterList = parameterList;
+//    }
 
-    public void setParameterList(List<Parameter> parameterList) {
-        this.parameterList = parameterList;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -91,9 +92,7 @@ public class Category {
             return false;
         if (getName() != null ? !getName().equals(category.getName()) : category.getName() != null)
             return false;
-        if (getProductList() != null ? !getProductList().equals(category.getProductList()) : category.getProductList() != null)
-            return false;
-        return getParameterList() != null ? getParameterList().equals(category.getParameterList()) : category.getParameterList() == null;
+        return getProductList() != null ? getProductList().equals(category.getProductList()) : category.getProductList() == null;
     }
 
     @Override
@@ -101,7 +100,6 @@ public class Category {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getProductList() != null ? getProductList().hashCode() : 0);
-        result = 31 * result + (getParameterList() != null ? getParameterList().hashCode() : 0);
         return result;
     }
 

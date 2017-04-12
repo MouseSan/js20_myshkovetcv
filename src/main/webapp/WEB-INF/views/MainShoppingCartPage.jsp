@@ -36,11 +36,11 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Price</th>
                         <th width="100">Weight</th>
                         <th width="100">Volume</th>
-                        <th width="100">Quantity</th>
-                        <th width="100"></th>
+                        <th width="150">Price</th>
+                        <th width="150">Quantity</th>
+                        <th width="150"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -48,9 +48,9 @@
                         <tr>
                             <td>${product.key.id}</td>
                             <td>${product.key.name}</td>
-                            <td>${product.key.price}</td>
                             <td>${product.key.weight}</td>
                             <td>${product.key.volume}</td>
+                            <td>${product.key.price}</td>
                             <td>${product.value}</td>
                             <td>
                                 <button class="btn btn-danger removeFromCart"
@@ -64,6 +64,15 @@
 
                         </tr>
                     </c:forEach>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><b>Total</b></td>
+                        <td><b>${quantityInCart}</b></td>
+                        <td><b>${totalPrice}</b></td>
+                        <td></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -72,7 +81,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <a href="<c:url value='/checkout' />" class="btn btn-primary">Checkout</a>
+            <a href="<c:url value='/orders/create' />" class="btn btn-primary">Checkout</a>
         </div>
     </div>
 

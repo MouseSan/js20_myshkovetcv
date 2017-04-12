@@ -13,4 +13,6 @@ public interface ShoppingCart {
     Map<Product, Integer> getProductMap();
 
     void removeProductFromCart(Product product);
+
+    Double getProductTotalPrice();
 }

@@ -52,8 +52,6 @@ public class AdminCategoryController {
     public String editCategory(@PathVariable Long id, ModelMap model) {
         Category category = categoryService.findById(id);
 
-        List<Parameter> parameterList = category.getParameterList();
-        model.addAttribute("parameterList", parameterList);
         model.addAttribute("category", category);
         model.addAttribute("title", "Edit category");
         return "AdminCategoryPage";

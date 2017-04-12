@@ -5,8 +5,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "user_address")
@@ -42,19 +40,6 @@ public class UserAddress implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "userAddress")
-    private List<Orders> ordersList = new ArrayList<>();
-
-    public UserAddress(String country, String city, Integer zipCode, String street, String apartmentNumber, User user, List<Orders> ordersList) {
-        this.country = country;
-        this.city = city;
-        this.zipCode = zipCode;
-        this.street = street;
-        this.apartmentNumber = apartmentNumber;
-        this.user = user;
-        this.ordersList = ordersList;
-    }
 
     public UserAddress(String country, String city, Integer zipCode, String street, String apartmentNumber, User user) {
         this.country = country;
@@ -124,14 +109,6 @@ public class UserAddress implements Serializable {
         this.user = user;
     }
 
-    public List<Orders> getOrdersList() {
-        return ordersList;
-    }
-
-    public void setOrdersList(List<Orders> ordersList) {
-        this.ordersList = ordersList;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -150,9 +127,7 @@ public class UserAddress implements Serializable {
             return false;
         if (getApartmentNumber() != null ? !getApartmentNumber().equals(that.getApartmentNumber()) : that.getApartmentNumber() != null)
             return false;
-        if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null)
-            return false;
-        return getOrdersList() != null ? getOrdersList().equals(that.getOrdersList()) : that.getOrdersList() == null;
+        return getUser() != null ? getUser().equals(that.getUser()) : that.getUser() == null;
     }
 
     @Override
@@ -164,7 +139,6 @@ public class UserAddress implements Serializable {
         result = 31 * result + (getStreet() != null ? getStreet().hashCode() : 0);
         result = 31 * result + (getApartmentNumber() != null ? getApartmentNumber().hashCode() : 0);
         result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
-        result = 31 * result + (getOrdersList() != null ? getOrdersList().hashCode() : 0);
         return result;
     }
 
@@ -177,7 +151,6 @@ public class UserAddress implements Serializable {
                 ", zipCode=" + zipCode +
                 ", street='" + street + '\'' +
                 ", apartmentNumber='" + apartmentNumber + '\'' +
-                ", user=" + user +
                 '}';
     }
 }

@@ -37,8 +37,8 @@
 
                 <c:choose>
                     <c:when test="${isLoggedIn}">
-                        <li><a href="<c:url value='/orders' />">Orders</a></li>
-                        <li><a href="<c:url value='/settings' />">Settings</a></li>
+                        <li><a href="<c:url value='/orders/all' />">Orders</a></li>
+                        <li><a href="<c:url value='/userSettings/' />">Settings</a></li>
                     </c:when>
                     <c:otherwise>
                     </c:otherwise>

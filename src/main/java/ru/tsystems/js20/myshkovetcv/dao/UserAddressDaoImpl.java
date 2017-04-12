@@ -1,6 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.dao;
 
 import org.springframework.stereotype.Repository;
+import ru.tsystems.js20.myshkovetcv.model.User;
 import ru.tsystems.js20.myshkovetcv.model.UserAddress;
 
 import javax.persistence.NoResultException;
@@ -45,4 +46,18 @@ public class UserAddressDaoImpl extends AbstractDao<Long, UserAddress> implement
                 .getResultList();
         return userAddressList;
     }
+
+    public void deleteUserAddress(UserAddress userAddress) {
+        delete(userAddress);
+    }
+
+    @Override
+    public List<UserAddress> findUserAddresses(User user) {
+        List<UserAddress> userAddressList = getEntityManager()
+                .createQuery("SELECT u FROM UserAddress u WHERE u.user = :user")
+                .setParameter("user", user)
+                .getResultList();
+        return userAddressList;
+    }
+
 }

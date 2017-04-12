@@ -1,5 +1,6 @@
 package ru.tsystems.js20.myshkovetcv.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import ru.tsystems.js20.myshkovetcv.model.enums.DeliveryMethod;
 import ru.tsystems.js20.myshkovetcv.model.enums.OrdersState;
 import ru.tsystems.js20.myshkovetcv.model.enums.PaymentMethod;
@@ -7,8 +8,7 @@ import ru.tsystems.js20.myshkovetcv.model.enums.PaymentState;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "orders")
@@ -25,9 +25,9 @@ public class Orders implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "userAddress_id")
-    private UserAddress userAddress;
+    @NotEmpty
+    @Column(name = "deliveryAddress")
+    private String deliveryAddress;
 
     @ManyToMany
     @JoinTable(name = "orders_product",
@@ -53,23 +53,40 @@ public class Orders implements Serializable {
     @Enumerated(EnumType.STRING)
     private OrdersState ordersState;
 
-    public Orders(User user, UserAddress userAddress, List<Product> productList, PaymentMethod paymentMethod, DeliveryMethod deliveryMethod, PaymentState paymentState, OrdersState ordersState) {
+    @Column(name = "totalQuantity")
+    private Integer totalQuantity;
+
+    @Column(name = "totalPrice")
+    private Double totalPrice;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "dateOfOrder")
+    private Date dateOfOrder;
+    private Map<Product, Integer> productMap;
+
+    public Orders(User user, String deliveryAddress, List<Product> productList, PaymentMethod paymentMethod, DeliveryMethod deliveryMethod, PaymentState paymentState, OrdersState ordersState, Integer totalQuantity, Double totalPrice, Date dateOfOrder) {
         this.user = user;
-        this.userAddress = userAddress;
+        this.deliveryAddress = deliveryAddress;
         this.productList = productList;
         this.paymentMethod = paymentMethod;
         this.deliveryMethod = deliveryMethod;
         this.paymentState = paymentState;
         this.ordersState = ordersState;
+        this.totalQuantity = totalQuantity;
+        this.totalPrice = totalPrice;
+        this.dateOfOrder = dateOfOrder;
     }
 
-    public Orders(User user, UserAddress userAddress, PaymentMethod paymentMethod, DeliveryMethod deliveryMethod, PaymentState paymentState, OrdersState ordersState) {
+    public Orders(User user, String deliveryAddress, PaymentMethod paymentMethod, DeliveryMethod deliveryMethod, PaymentState paymentState, OrdersState ordersState, Integer totalQuantity, Double totalPrice, Date dateOfOrder) {
         this.user = user;
-        this.userAddress = userAddress;
+        this.deliveryAddress = deliveryAddress;
         this.paymentMethod = paymentMethod;
         this.deliveryMethod = deliveryMethod;
         this.paymentState = paymentState;
         this.ordersState = ordersState;
+        this.totalQuantity = totalQuantity;
+        this.totalPrice = totalPrice;
+        this.dateOfOrder = dateOfOrder;
     }
 
     public Orders() {
@@ -91,20 +108,16 @@ public class Orders implements Serializable {
         this.user = user;
     }
 
-    public UserAddress getUserAddress() {
-        return userAddress;
-    }
-
-    public void setUserAddress(UserAddress userAddress) {
-        this.userAddress = userAddress;
-    }
-
     public List<Product> getProductList() {
         return productList;
     }
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
+    }
+
+    public void addProductToList(Product product) {
+        this.productList.add(product);
     }
 
     public PaymentMethod getPaymentMethod() {
@@ -139,6 +152,38 @@ public class Orders implements Serializable {
         this.ordersState = ordersState;
     }
 
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public Integer getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(Integer totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
+
+    public Date getDateOfOrder() {
+        return dateOfOrder;
+    }
+
+    public void setDateOfOrder(Date dateOfOrder) {
+        this.dateOfOrder = dateOfOrder;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -150,26 +195,20 @@ public class Orders implements Serializable {
             return false;
         if (getUser() != null ? !getUser().equals(orders.getUser()) : orders.getUser() != null)
             return false;
-        if (getUserAddress() != null ? !getUserAddress().equals(orders.getUserAddress()) : orders.getUserAddress() != null)
+        if (getDeliveryAddress() != null ? !getDeliveryAddress().equals(orders.getDeliveryAddress()) : orders.getDeliveryAddress() != null)
             return false;
-        if (getProductList() != null ? !getProductList().equals(orders.getProductList()) : orders.getProductList() != null)
+        if (getTotalQuantity() != null ? !getTotalQuantity().equals(orders.getTotalQuantity()) : orders.getTotalQuantity() != null)
             return false;
-        if (getPaymentMethod() != orders.getPaymentMethod()) return false;
-        if (getDeliveryMethod() != orders.getDeliveryMethod()) return false;
-        if (getPaymentState() != orders.getPaymentState()) return false;
-        return getOrdersState() == orders.getOrdersState();
+        return getTotalPrice() != null ? getTotalPrice().equals(orders.getTotalPrice()) : orders.getTotalPrice() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
-        result = 31 * result + (getUserAddress() != null ? getUserAddress().hashCode() : 0);
-        result = 31 * result + (getProductList() != null ? getProductList().hashCode() : 0);
-        result = 31 * result + (getPaymentMethod() != null ? getPaymentMethod().hashCode() : 0);
-        result = 31 * result + (getDeliveryMethod() != null ? getDeliveryMethod().hashCode() : 0);
-        result = 31 * result + (getPaymentState() != null ? getPaymentState().hashCode() : 0);
-        result = 31 * result + (getOrdersState() != null ? getOrdersState().hashCode() : 0);
+        result = 31 * result + (getDeliveryAddress() != null ? getDeliveryAddress().hashCode() : 0);
+        result = 31 * result + (getTotalQuantity() != null ? getTotalQuantity().hashCode() : 0);
+        result = 31 * result + (getTotalPrice() != null ? getTotalPrice().hashCode() : 0);
         return result;
     }
 
@@ -178,8 +217,26 @@ public class Orders implements Serializable {
         return "Orders{" +
                 "id=" + id +
                 ", user=" + user +
-                ", userAddress=" + userAddress +
-                ", productList=" + productList +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", paymentMethod=" + paymentMethod +
+                ", deliveryMethod=" + deliveryMethod +
+                ", paymentState=" + paymentState +
+                ", ordersState=" + ordersState +
+                ", totalQuantity=" + totalQuantity +
+                ", totalPrice=" + totalPrice +
                 '}';
+    }
+
+    public Map<Product, Integer> getProductMap() {
+        Map<Product, Integer> productMap = new HashMap<>();
+        for (Product product : productList) {
+            if (productMap.containsKey(product)) {
+                Integer productQuantity = productMap.get(product);
+                productMap.put(product, ++productQuantity);
+            } else {
+                productMap.put(product, 1);
+            }
+        }
+        return productMap;
     }
 }
