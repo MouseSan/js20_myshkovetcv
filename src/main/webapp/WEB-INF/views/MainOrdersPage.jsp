@@ -25,6 +25,17 @@
 
 <div class="container theme-showcase" role="main">
 
+
+    <div class="row" id="errMsg">
+        <div class="col-md-12">
+            <c:if test="${param.enoughquantity != null}">
+                <div class="alert alert-danger">
+                    <p>Not enough quantity in stock to repeat order.</p>
+                </div>
+            </c:if>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
 
@@ -94,8 +105,8 @@
                     <th>Name</th>
                     <th width="100">Weight</th>
                     <th width="100">Volume</th>
-                    <th width="150">Price</th>
                     <th width="150">Quantity</th>
+                    <th width="150">Price</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -105,8 +116,8 @@
                         <td>${product.key.name}</td>
                         <td>${product.key.weight}</td>
                         <td>${product.key.volume}</td>
-                        <td>${product.key.price}</td>
                         <td>${product.value}</td>
+                        <td>${product.key.price}</td>
                     </tr>
                 </c:forEach>
                 <tr>
@@ -114,8 +125,8 @@
                     <td></td>
                     <td></td>
                     <td><b>Total</b></td>
-                    <td><b>${quantityInCart}</b></td>
-                    <td><b>${totalPrice}</b></td>
+                    <td><b>${order.totalQuantity}</b></td>
+                    <td><b>${order.totalPrice}</b></td>
                 </tr>
                 </tbody>
             </table>
@@ -124,7 +135,8 @@
 
     <div class="row">
         <div class="col-md-12">
-            <a href="<c:url value='/admin/copy-${order.id}' />" class="btn btn-primary">Copy</a>
+            <a href="<c:url value='/orders/all' />" class="btn btn-primary">Back</a>
+            <%--<a href="<c:url value='/orders/repeat-${order.id}' />" class="btn btn-primary">Repeat</a>--%>
         </div>
     </div>
 </div>

@@ -8,7 +8,9 @@ import ru.tsystems.js20.myshkovetcv.model.enums.PaymentState;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -62,7 +64,6 @@ public class Orders implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dateOfOrder")
     private Date dateOfOrder;
-    private Map<Product, Integer> productMap;
 
     public Orders(User user, String deliveryAddress, List<Product> productList, PaymentMethod paymentMethod, DeliveryMethod deliveryMethod, PaymentState paymentState, OrdersState ordersState, Integer totalQuantity, Double totalPrice, Date dateOfOrder) {
         this.user = user;
@@ -225,18 +226,5 @@ public class Orders implements Serializable {
                 ", totalQuantity=" + totalQuantity +
                 ", totalPrice=" + totalPrice +
                 '}';
-    }
-
-    public Map<Product, Integer> getProductMap() {
-        Map<Product, Integer> productMap = new HashMap<>();
-        for (Product product : productList) {
-            if (productMap.containsKey(product)) {
-                Integer productQuantity = productMap.get(product);
-                productMap.put(product, ++productQuantity);
-            } else {
-                productMap.put(product, 1);
-            }
-        }
-        return productMap;
     }
 }

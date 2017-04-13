@@ -1,9 +1,12 @@
 package ru.tsystems.js20.myshkovetcv.sessionScope;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.js20.myshkovetcv.model.Product;
+import ru.tsystems.js20.myshkovetcv.service.ProductService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +14,9 @@ import java.util.Map;
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
 public class ShoppingCartImpl implements ShoppingCart {
+
+    @Autowired
+    private ProductService productService;
 
     private Map<Product, Integer> productMap = new HashMap<>();
 
@@ -40,6 +46,7 @@ public class ShoppingCartImpl implements ShoppingCart {
 
     @Override
     public void removeProductFromCart(Product product) {
+        updateProductsInCart();
         if (productMap.containsKey(product)) {
             Integer quantityInCart = productMap.get(product);
             if (quantityInCart > 1) {
@@ -56,7 +63,36 @@ public class ShoppingCartImpl implements ShoppingCart {
         for (Map.Entry<Product, Integer> entry : productMap.entrySet()) {
             totalPrice += (double) entry.getValue() * entry.getKey().getPrice();
         }
-        return totalPrice;
+        return (double) Math.round(totalPrice * 100.0) / 100.0;
+    }
+
+    @Override
+    @Transactional
+    public boolean checkAvailability() {
+        boolean allProductsAvailable = true;
+        for (Map.Entry<Product, Integer> entry : productMap.entrySet()) {
+            Product product = productService.findById(entry.getKey().getId());
+            if (product.getStock() < entry.getValue()) {
+                allProductsAvailable = false;
+            }
+        }
+        updateProductsInCart();
+        return allProductsAvailable;
+    }
+
+    public void updateProductsInCart() {
+        Map<Product, Integer> tempMap = new HashMap<>();
+        for (Map.Entry<Product, Integer> entry : productMap.entrySet()) {
+            Product product = productService.findById(entry.getKey().getId());
+            tempMap.put(product, entry.getValue());
+        }
+        productMap.clear();
+        productMap = tempMap;
+    }
+
+    @Override
+    public void removeAllProductFromCart() {
+        productMap.clear();
     }
 
 }

@@ -60,7 +60,7 @@ public class AdminOrdersController {
 
     @RequestMapping(value = {"/orders/createnew"}, method = RequestMethod.POST)
     public String saveOrder(Orders orders, BindingResult result, ModelMap model) {
-        ordersService.saveOrders(orders);
+        ordersService.saveOrdersReduceStock(orders);
         return "redirect:/admin/orders";
     }
 

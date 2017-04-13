@@ -168,13 +168,7 @@ public class User implements Serializable {
             return false;
         if (getEmailAddress() != null ? !getEmailAddress().equals(user.getEmailAddress()) : user.getEmailAddress() != null)
             return false;
-        if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
-            return false;
-        if (getUserProfiles() != null ? !getUserProfiles().equals(user.getUserProfiles()) : user.getUserProfiles() != null)
-            return false;
-        if (getUserAddressList() != null ? !getUserAddressList().equals(user.getUserAddressList()) : user.getUserAddressList() != null)
-            return false;
-        return getOrdersList() != null ? getOrdersList().equals(user.getOrdersList()) : user.getOrdersList() == null;
+        return getPassword() != null ? getPassword().equals(user.getPassword()) : user.getPassword() == null;
     }
 
     @Override
@@ -185,9 +179,6 @@ public class User implements Serializable {
         result = 31 * result + (getDateOfBirth() != null ? getDateOfBirth().hashCode() : 0);
         result = 31 * result + (getEmailAddress() != null ? getEmailAddress().hashCode() : 0);
         result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
-        result = 31 * result + (getUserProfiles() != null ? getUserProfiles().hashCode() : 0);
-        result = 31 * result + (getUserAddressList() != null ? getUserAddressList().hashCode() : 0);
-        result = 31 * result + (getOrdersList() != null ? getOrdersList().hashCode() : 0);
         return result;
     }
 

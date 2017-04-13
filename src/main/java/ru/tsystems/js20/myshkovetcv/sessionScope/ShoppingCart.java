@@ -15,4 +15,10 @@ public interface ShoppingCart {
     void removeProductFromCart(Product product);
 
     Double getProductTotalPrice();
+
+    boolean checkAvailability();
+
+    void removeAllProductFromCart();
+
+    void updateProductsInCart();
 }

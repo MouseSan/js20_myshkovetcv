@@ -38,23 +38,15 @@ public class MainShoppingCartController {
 
     @RequestMapping(value = {"/cart"}, method = RequestMethod.GET)
     public String showHomePage(ModelMap model) {
-
+        if(!shoppingCart.checkAvailability()) {
+            model.addAttribute("enoughquantity", false);
+        }
         model.addAttribute("productMap", shoppingCart.getProductMap());
         model.addAttribute("quantityInCart", shoppingCart.getProductQuantityInCart());
         model.addAttribute("totalPrice", shoppingCart.getProductTotalPrice());
         model.addAttribute("categoryList", categoryService.findAllCategories());
         model.addAttribute("title", "Shopping cart");
         return "MainShoppingCartPage";
-    }
-
-    @RequestMapping(value = {"/checkout"}, method = RequestMethod.GET)
-    public String showCheckoutPage(ModelMap model) {
-
-        model.addAttribute("productMap", shoppingCart.getProductMap());
-        model.addAttribute("quantityInCart", shoppingCart.getProductQuantityInCart());
-        model.addAttribute("categoryList", categoryService.findAllCategories());
-        model.addAttribute("title", "Checkout");
-        return "MainCheckoutPage";
     }
 
 }

@@ -41,6 +41,11 @@ public class MainOrdersController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String getCreateOrderPage(ModelMap model) {
+
+        if(!shoppingCart.checkAvailability()) {
+            return "redirect:/cart?enoughquantity";
+        }
+
         User currentUser = userService.findByEmail(getPrincipal());
         Orders order = new Orders();
         order.setPaymentMethod(PaymentMethod.Cash);
@@ -62,7 +67,12 @@ public class MainOrdersController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createOrder(Orders orders, BindingResult result, ModelMap model) {
-        ordersService.saveOrders(orders);
+
+        if(!shoppingCart.checkAvailability()) {
+            return "redirect:/cart?enoughquantity";
+        }
+
+        ordersService.saveOrdersReduceStock(orders);
         return "redirect:/orders/all";
     }
 
@@ -121,11 +131,50 @@ public class MainOrdersController {
         }
 
         model.addAttribute("order", orders);
-        model.addAttribute("ordersProductList", orders.getProductMap());
+        model.addAttribute("ordersProductList", ordersService.getProductMap(orders));
         model.addAttribute("quantityInCart", shoppingCart.getProductQuantityInCart());
         model.addAttribute("categoryList", categoryService.findAllCategories());
         model.addAttribute("title", "Order #" + id);
         return "MainOrdersPage";
+    }
+
+    @RequestMapping(value = "/repeat-{id}", method = RequestMethod.GET)
+    public String copyOrderById(@PathVariable Long id, ModelMap model) {
+        Orders orders = ordersService.findById(id);
+        User ordersUser = orders.getUser();
+        User loggedInUser = userService.findByEmail(getPrincipal());
+        if (!loggedInUser.equals(ordersUser)) {
+            return "Page403AccessDenied";
+        }
+
+        if(!ordersService.checkAvailableToRepeat(orders)) {
+            return "redirect:/orders/{id}?enoughquantity";
+        }
+
+        Orders copiedOrder = ordersService.copyOrder(id);
+
+        model.addAttribute("order", copiedOrder);
+        model.addAttribute("user", loggedInUser);
+        model.addAttribute("productMap", ordersService.getProductMap(copiedOrder));
+        model.addAttribute("userAddressList", userAddressService.findUserAddresses(loggedInUser));
+        model.addAttribute("paymentMethodList", PaymentMethod.values());
+        model.addAttribute("deliveryMethodList", DeliveryMethod.values());
+        model.addAttribute("quantityInCart", copiedOrder.getTotalQuantity());
+        model.addAttribute("totalPrice", copiedOrder.getTotalPrice());
+        model.addAttribute("categoryList", categoryService.findAllCategories());
+        model.addAttribute("title", "Checkout");
+        return "MainOrdersCreate";
+    }
+
+    @RequestMapping(value = "/repeat-{id}", method = RequestMethod.POST)
+    public String createCopiedOrder(@PathVariable Long id, Orders orders, BindingResult result, ModelMap model) {
+
+        if(!ordersService.checkAvailableToRepeat(orders)) {
+            return "redirect:/orders/{" + id + "}?enoughquantity";
+        }
+
+        ordersService.saveCopiedOrdersReduceStock(orders);
+        return "redirect:/orders/all";
     }
 
 }

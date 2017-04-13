@@ -26,6 +26,23 @@
 
 <div class="container theme-showcase" role="main">
 
+    <div class="row" id="errMsg">
+        <div class="col-md-12">
+            <c:choose>
+                <c:when test="${param.enoughquantity != null}">
+                    <div class="alert alert-danger" role="alert">
+                        <p>Not enough quantity in stock. Subtract items.</p>
+                    </div>
+                </c:when>
+                <c:when test="${enoughquantity != null}">
+                    <div class="alert alert-danger" role="alert">
+                        <p>Not enough quantity in stock. Subtract items.</p>
+                    </div>
+                </c:when>
+            </c:choose>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default" id="cartTable">
@@ -38,8 +55,9 @@
                         <th>Name</th>
                         <th width="100">Weight</th>
                         <th width="100">Volume</th>
+                        <th width="150">Stock</th>
+                        <th width="150">Selected quantity</th>
                         <th width="150">Price</th>
-                        <th width="150">Quantity</th>
                         <th width="150"></th>
                     </tr>
                     </thead>
@@ -50,8 +68,9 @@
                             <td>${product.key.name}</td>
                             <td>${product.key.weight}</td>
                             <td>${product.key.volume}</td>
-                            <td>${product.key.price}</td>
+                            <td>${product.key.stock}</td>
                             <td>${product.value}</td>
+                            <td>${product.key.price}</td>
                             <td>
                                 <button class="btn btn-danger removeFromCart"
                                         type="button"
@@ -65,6 +84,7 @@
                         </tr>
                     </c:forEach>
                     <tr>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>

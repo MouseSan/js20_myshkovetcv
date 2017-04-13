@@ -80,7 +80,7 @@
                     <th>Street</th>
                     <th>Apt. number</th>
                     <th width="100"></th>
-                    <th width="100"></th>
+                    <%--<th width="100"></th>--%>
                 </tr>
                 </thead>
                 <tbody>
@@ -94,16 +94,16 @@
                         <td>
                             <a href="<c:url value='/userSettings/editUserAddress-${address.id}' />" class="btn btn-success custom-width">edit</a>
                         </td>
-                        <td>
-                            <button class="btn btn-danger removeAddress"
-                                    type="button"
-                                    name="Button"
-                                    value="${address.id}"
-                                    id="btn-${address.id}">
-                                <span class="glyphicon glyphicon-minus"></span>
-                            </button>
-                            <%--<a href="<c:url value='/userSettings/deleteUserAddress-${address.id}' />" class="btn btn-danger custom-width">delete</a>--%>
-                        </td>
+                        <%--<td>--%>
+                            <%--<button class="btn btn-danger removeAddress"--%>
+                                    <%--type="button"--%>
+                                    <%--name="Button"--%>
+                                    <%--value="${address.id}"--%>
+                                    <%--id="btn-${address.id}">--%>
+                                <%--<span class="glyphicon glyphicon-minus"></span>--%>
+                            <%--</button>--%>
+                            <%--&lt;%&ndash;<a href="<c:url value='/userSettings/deleteUserAddress-${address.id}' />" class="btn btn-danger custom-width">delete</a>&ndash;%&gt;--%>
+                        <%--</td>--%>
                     </tr>
                 </c:forEach>
                 </tbody>

@@ -31,6 +31,7 @@ function removeFromCart(productId) {
             productId: parseInt(productId)
         },
         success: function (result) {
+
             var urlStr = window.location.pathname + ' #header';
             $('#header').load(urlStr, function () {
                 removeClickHandler($(".removeFromCart"), removeFromCart_Handler);
@@ -41,7 +42,11 @@ function removeFromCart(productId) {
                 removeClickHandler($(".removeFromCart"), removeFromCart_Handler);
                 assignClickHandler($(".removeFromCart"), removeFromCart_Handler);
             });
-
+            var urlStr = window.location.pathname + ' #errMsg';
+            $('#errMsg').load(urlStr, function () {
+                removeClickHandler($(".removeFromCart"), removeFromCart_Handler);
+                assignClickHandler($(".removeFromCart"), removeFromCart_Handler);
+            });
             // alert(window.location.toString())
         },
         error: function (a) {

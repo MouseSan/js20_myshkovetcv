@@ -24,7 +24,7 @@
 
 <div class="jumbotron">
     <div class="container">
-        <h1>Welcome to E-shop project!</h1>
+        <h1>Welcome to Shoe shop!</h1>
     </div>
 </div>
 

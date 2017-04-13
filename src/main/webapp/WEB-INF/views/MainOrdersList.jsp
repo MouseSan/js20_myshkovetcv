@@ -72,10 +72,10 @@
                                 <a href="<c:url value='/orders/${orders.id}' />"
                                    class="btn btn-success custom-width">View</a>
                             </td>
-                            <td>
-                                <a href="<c:url value='/admin/copy-${orders.id}' />"
-                                   class="btn btn-success custom-width">Copy</a>
-                            </td>
+                            <%--<td>--%>
+                                <%--<a href="<c:url value='/orders/repeat-${orders.id}' />"--%>
+                                   <%--class="btn btn-success custom-width">Repeat</a>--%>
+                            <%--</td>--%>
                         </tr>
                     </c:forEach>
                     </tbody>
