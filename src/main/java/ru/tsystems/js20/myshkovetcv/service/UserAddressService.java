@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
+import org.springframework.ui.ModelMap;
+import ru.tsystems.js20.myshkovetcv.dto.UserAddressDto;
 import ru.tsystems.js20.myshkovetcv.model.User;
 import ru.tsystems.js20.myshkovetcv.model.UserAddress;
 
@@ -11,13 +13,21 @@ public interface UserAddressService {
 
     UserAddress findByZipCode(Integer zipCode);
 
-    void saveUserAddress(UserAddress userAddress);
+    void saveUserAddress(UserAddressDto userAddressDto);
 
-    void updateUserAddress(UserAddress userAddress);
+    boolean updateUserAddress(UserAddressDto userAddressDto);
 
     List<UserAddress> findAllUserAddresses();
 
-    void deleteUserAddress(UserAddress userAddress);
+    void deleteUserAddress(Long id);
 
-    List<UserAddress> findUserAddresses(User currentUser);
+    List<UserAddressDto> findUserAddressDto(User currentUser);
+
+    List<UserAddressDto> findAllAddressesCurrentUser();
+
+    ModelMap getUserAddressModel();
+
+    ModelMap getUserAddressModelById(Long id);
+
+    boolean currentUserHaveAccess(Long id);
 }

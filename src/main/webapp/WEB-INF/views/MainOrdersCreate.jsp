@@ -159,7 +159,7 @@
 
 <c:import url="common/scripts.jsp"/>
 
-<script src="<c:url value='/static/createOrder.js' />"></script>
+<script src="<c:url value='/static/js/createOrder.js' />"></script>
 
 </body>
 </html>

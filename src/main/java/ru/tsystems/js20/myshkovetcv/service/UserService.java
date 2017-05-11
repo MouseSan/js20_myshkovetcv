@@ -1,5 +1,8 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
+import org.springframework.ui.ModelMap;
+import ru.tsystems.js20.myshkovetcv.dto.UserDto;
+import ru.tsystems.js20.myshkovetcv.dto.enums.UserDtoValidationType;
 import ru.tsystems.js20.myshkovetcv.model.User;
 
 import java.util.List;
@@ -10,14 +13,33 @@ public interface UserService {
 
     User findByFirstName(String name);
 
-    User findByEmail(String emailAddress);
+    User getUserByEmail(String emailAddress);
 
-    void saveUser(User user);
+    User getUserByUserName(String userName);
 
-    void updateUser(User user);
+    UserDto getUserDtoByEmail(String emailAddress);
 
-    void updatePassword(User user, String password);
+    void saveUser(UserDto userDto);
+
+    boolean updateUser(UserDto userDto);
+
+    boolean updatePassword(UserDto userDto);
 
     List<User> findAllUsers();
 
+    boolean emailAddressNotUnique(String email);
+
+    boolean userNameNotUnique(String userName);
+
+    String getPrincipal();
+
+    UserDto getCurrentUserDto();
+
+    User getCurrentUser();
+
+    ModelMap getUserSettingsWithAddressesModel();
+
+    ModelMap getUserSettingsModel(UserDtoValidationType validationType);
+
+    boolean hasRole(String role);
 }

@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.js20.myshkovetcv.model.User;
-import ru.tsystems.js20.myshkovetcv.model.UserProfile;
+import ru.tsystems.js20.myshkovetcv.model.enums.UserRoles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.findByEmail(username);
+        User user = userService.getUserByUserName(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("Username not found");
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmailAddress(), user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
                 true, true, true, true, getGrantedAuthorities(user));
     }
 
@@ -35,12 +35,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private List<GrantedAuthority> getGrantedAuthorities(User user) {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-        for (UserProfile userProfile : user.getUserProfiles()) {
-            System.out.println("UserProfile : " + userProfile);
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + userProfile.getType()));
+        for (UserRoles userRole : user.getUserRoles()) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.toString()));
         }
-        System.out.print("authorities :" + authorities);
         return authorities;
     }
-
 }

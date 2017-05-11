@@ -2,6 +2,7 @@ package ru.tsystems.js20.myshkovetcv.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+import ru.tsystems.js20.myshkovetcv.model.enums.UserRoles;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,7 +27,7 @@ public class User implements Serializable {
     private String lastName;
 
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
     @Column(name = "dateOfBirth")
     private Date dateOfBirth;
 
@@ -35,45 +36,47 @@ public class User implements Serializable {
     private String emailAddress;
 
     @NotEmpty
+    @Column(name = "userName", unique = true, nullable = false)
+    private String userName;
+
+    @NotEmpty
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_userProfile",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_profile_id")})
-    private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Set<UserRoles> userRoles = new HashSet<UserRoles>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<UserAddress> userAddressList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<Orders> ordersList = new ArrayList<>();
 
-    public User(String firstName, String lastName, Date dateOfBirth, String emailAddress, String loginName, String password, Set<UserProfile> userProfiles, List<UserAddress> userAddressList, List<Orders> ordersList) {
+    public User() {
+    }
+
+    public User(String firstName, String lastName, Date dateOfBirth, String emailAddress, String userName, String password, Set<UserRoles> userRoles, List<UserAddress> userAddressList, List<Orders> ordersList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
+        this.userName = userName;
         this.password = password;
-        this.userProfiles = userProfiles;
+        this.userRoles = userRoles;
         this.userAddressList = userAddressList;
         this.ordersList = ordersList;
     }
 
-    public User(String firstName, String lastName, Date dateOfBirth, String emailAddress, String loginName, String password) {
+    public User(String firstName, String lastName, Date dateOfBirth, String emailAddress, String userName, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
+        this.userName = userName;
         this.password = password;
-    }
-
-    public User() {
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 
     public Long getId() {
@@ -116,12 +119,32 @@ public class User implements Serializable {
         this.emailAddress = emailAddress;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<UserRoles> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRoles> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public void addUserRole(UserRoles userRole) {
+        this.userRoles.add(userRole);
     }
 
     public List<UserAddress> getUserAddressList() {
@@ -140,18 +163,6 @@ public class User implements Serializable {
         this.ordersList = ordersList;
     }
 
-    public Set<UserProfile> getUserProfiles() {
-        return userProfiles;
-    }
-
-    public void setUserProfiles(Set<UserProfile> userProfiles) {
-        this.userProfiles = userProfiles;
-    }
-
-    public void addUserProfile(UserProfile userProfile) {
-        this.userProfiles.add(userProfile);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -168,6 +179,8 @@ public class User implements Serializable {
             return false;
         if (getEmailAddress() != null ? !getEmailAddress().equals(user.getEmailAddress()) : user.getEmailAddress() != null)
             return false;
+        if (getUserName() != null ? !getUserName().equals(user.getUserName()) : user.getUserName() != null)
+            return false;
         return getPassword() != null ? getPassword().equals(user.getPassword()) : user.getPassword() == null;
     }
 
@@ -178,6 +191,7 @@ public class User implements Serializable {
         result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
         result = 31 * result + (getDateOfBirth() != null ? getDateOfBirth().hashCode() : 0);
         result = 31 * result + (getEmailAddress() != null ? getEmailAddress().hashCode() : 0);
+        result = 31 * result + (getUserName() != null ? getUserName().hashCode() : 0);
         result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         return result;
     }
@@ -190,6 +204,8 @@ public class User implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", emailAddress='" + emailAddress + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

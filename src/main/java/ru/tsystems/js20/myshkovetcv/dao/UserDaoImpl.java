@@ -29,6 +29,20 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
     }
 
     @Override
+    public User findByUserName(String userName) {
+        try {
+            User user = (User) getEntityManager()
+                    .createQuery("SELECT u FROM User u WHERE u.userName LIKE :userName")
+                    .setParameter("userName", userName)
+                    .getSingleResult();
+
+            return user;
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+
+    @Override
     public User findByFirstName(String firstName) {
         try {
             User user = (User) getEntityManager()

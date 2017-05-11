@@ -3,12 +3,13 @@ package ru.tsystems.js20.myshkovetcv.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "category")
-public class Category {
+public class Category implements Serializable {
 
     private static final long serialVersionUID = 1651651232446L;
 
@@ -23,14 +24,6 @@ public class Category {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "category")
     private List<Product> productList = new ArrayList<>();
-
-//    @ManyToMany
-//    @JoinTable(name = "category_parameter",
-//            joinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "parameter_id", referencedColumnName = "id")
-//    )
-//    private List<Parameter> parameterList = new ArrayList<>();
-
 
     public Category(String name, List<Product> productList) {
         this.name = name;
@@ -71,15 +64,6 @@ public class Category {
     public void addProductToList(Product product) {
         this.productList.add(product);
     }
-
-//    public List<Parameter> getParameterList() {
-//        return parameterList;
-//    }
-//
-//    public void setParameterList(List<Parameter> parameterList) {
-//        this.parameterList = parameterList;
-//    }
-
 
     @Override
     public boolean equals(Object o) {

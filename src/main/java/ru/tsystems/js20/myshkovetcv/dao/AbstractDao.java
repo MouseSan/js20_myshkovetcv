@@ -1,15 +1,21 @@
 package ru.tsystems.js20.myshkovetcv.dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 public abstract class AbstractDao<PK extends Serializable, T> {
 
     private final Class<T> persistentClass;
+
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
     public AbstractDao() {
@@ -36,4 +42,17 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         entityManager.remove(entity);
     }
 
+    public List<T> find(CriteriaQuery<T> criteriaQuery) {
+        TypedQuery<T> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
+    }
+
+    public T findOne(CriteriaQuery<T> criteriaQuery) throws NoResultException {
+        TypedQuery<T> query = entityManager.createQuery(criteriaQuery);
+        return query.getSingleResult();
+    }
+
+    public CriteriaBuilder getCriteriaBuilder() {
+        return this.entityManager.getCriteriaBuilder();
+    }
 }

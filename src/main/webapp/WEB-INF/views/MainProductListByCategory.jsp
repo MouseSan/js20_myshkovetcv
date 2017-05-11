@@ -75,7 +75,7 @@
 
 <c:import url="common/scripts.jsp"/>
 
-<script src="<c:url value='/static/productList.js' />"></script>
+<script src="<c:url value='/static/js/productList.js' />"></script>
 
 </body>
 </html>

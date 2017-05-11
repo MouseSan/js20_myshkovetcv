@@ -1,6 +1,10 @@
 package ru.tsystems.js20.myshkovetcv.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import ru.tsystems.js20.myshkovetcv.model.enums.ClockFaceType;
+import ru.tsystems.js20.myshkovetcv.model.enums.ClockGlassType;
+import ru.tsystems.js20.myshkovetcv.model.enums.GenderType;
+import ru.tsystems.js20.myshkovetcv.model.enums.WaterResistantType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,7 +24,7 @@ public class Product implements Serializable {
     private Long id;
 
     @NotEmpty
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @NotNull
@@ -30,13 +34,6 @@ public class Product implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-
-//    @ManyToMany
-//    @JoinTable(name = "product_parameterValue",
-//            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "parameterValue_id", referencedColumnName = "id")
-//    )
-//    private List<ParameterValue> parameterValueList = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "productList")
     private List<Orders> ordersList = new ArrayList<>();
@@ -53,7 +50,36 @@ public class Product implements Serializable {
     @Column(name = "stock", nullable = false)
     private Double stock;
 
-    public Product(String name, Double price, Category category, List<Orders> ordersList, Double weight, Double volume, Double stock) {
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @JoinColumn(name = "brand_id", nullable = false)
+    private Brand brand;
+
+    @Column(name = "backlight", nullable = false)
+    private boolean backlight;
+
+    @Column(name = "clockFace")
+    @Enumerated(EnumType.STRING)
+    private ClockFaceType clockFace;
+
+    @Column(name = "glass")
+    @Enumerated(EnumType.STRING)
+    private ClockGlassType glass;
+
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
+    private GenderType gender;
+
+    @Column(name = "waterResistant")
+    @Enumerated(EnumType.STRING)
+    private WaterResistantType waterResistant;
+
+    @Column(name = "description")
+    private String description;
+
+    public Product() {
+    }
+
+    public Product(String name, Double price, Category category, List<Orders> ordersList, Double weight, Double volume, Double stock, Brand brand, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant, String description) {
         this.name = name;
         this.price = price;
         this.category = category;
@@ -61,18 +87,13 @@ public class Product implements Serializable {
         this.weight = weight;
         this.volume = volume;
         this.stock = stock;
-    }
-
-    public Product(String name, Double price, Category category, Double weight, Double volume, Double stock) {
-        this.name = name;
-        this.price = price;
-        this.category = category;
-        this.weight = weight;
-        this.volume = volume;
-        this.stock = stock;
-    }
-
-    public Product() {
+        this.brand = brand;
+        this.backlight = backlight;
+        this.clockFace = clockFace;
+        this.glass = glass;
+        this.gender = gender;
+        this.waterResistant = waterResistant;
+        this.description = description;
     }
 
     public Long getId() {
@@ -107,6 +128,14 @@ public class Product implements Serializable {
         this.category = category;
     }
 
+    public List<Orders> getOrdersList() {
+        return ordersList;
+    }
+
+    public void setOrdersList(List<Orders> ordersList) {
+        this.ordersList = ordersList;
+    }
+
     public Double getWeight() {
         return weight;
     }
@@ -131,20 +160,60 @@ public class Product implements Serializable {
         this.stock = stock;
     }
 
-//    public List<ParameterValue> getParameterValueList() {
-//        return parameterValueList;
-//    }
-//
-//    public void setParameterValueList(List<ParameterValue> parameterValueList) {
-//        this.parameterValueList = parameterValueList;
-//    }
-
-    public List<Orders> getOrdersList() {
-        return ordersList;
+    public Brand getBrand() {
+        return brand;
     }
 
-    public void setOrdersList(List<Orders> ordersList) {
-        this.ordersList = ordersList;
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public boolean isBacklight() {
+        return backlight;
+    }
+
+    public void setBacklight(boolean backlight) {
+        this.backlight = backlight;
+    }
+
+    public ClockFaceType getClockFace() {
+        return clockFace;
+    }
+
+    public void setClockFace(ClockFaceType clockFace) {
+        this.clockFace = clockFace;
+    }
+
+    public ClockGlassType getGlass() {
+        return glass;
+    }
+
+    public void setGlass(ClockGlassType glass) {
+        this.glass = glass;
+    }
+
+    public GenderType getGender() {
+        return gender;
+    }
+
+    public void setGender(GenderType gender) {
+        this.gender = gender;
+    }
+
+    public WaterResistantType getWaterResistant() {
+        return waterResistant;
+    }
+
+    public void setWaterResistant(WaterResistantType waterResistant) {
+        this.waterResistant = waterResistant;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -154,17 +223,28 @@ public class Product implements Serializable {
 
         Product product = (Product) o;
 
+        if (isBacklight() != product.isBacklight()) return false;
         if (getId() != null ? !getId().equals(product.getId()) : product.getId() != null)
             return false;
         if (getName() != null ? !getName().equals(product.getName()) : product.getName() != null)
             return false;
         if (getPrice() != null ? !getPrice().equals(product.getPrice()) : product.getPrice() != null)
             return false;
+        if (getCategory() != null ? !getCategory().equals(product.getCategory()) : product.getCategory() != null)
+            return false;
         if (getWeight() != null ? !getWeight().equals(product.getWeight()) : product.getWeight() != null)
             return false;
         if (getVolume() != null ? !getVolume().equals(product.getVolume()) : product.getVolume() != null)
             return false;
-        return getStock() != null ? getStock().equals(product.getStock()) : product.getStock() == null;
+        if (getStock() != null ? !getStock().equals(product.getStock()) : product.getStock() != null)
+            return false;
+        if (getBrand() != null ? !getBrand().equals(product.getBrand()) : product.getBrand() != null)
+            return false;
+        if (getClockFace() != product.getClockFace()) return false;
+        if (getGlass() != product.getGlass()) return false;
+        if (getGender() != product.getGender()) return false;
+        if (getWaterResistant() != product.getWaterResistant()) return false;
+        return getDescription() != null ? getDescription().equals(product.getDescription()) : product.getDescription() == null;
     }
 
     @Override
@@ -172,9 +252,17 @@ public class Product implements Serializable {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getPrice() != null ? getPrice().hashCode() : 0);
+        result = 31 * result + (getCategory() != null ? getCategory().hashCode() : 0);
         result = 31 * result + (getWeight() != null ? getWeight().hashCode() : 0);
         result = 31 * result + (getVolume() != null ? getVolume().hashCode() : 0);
         result = 31 * result + (getStock() != null ? getStock().hashCode() : 0);
+        result = 31 * result + (getBrand() != null ? getBrand().hashCode() : 0);
+        result = 31 * result + (isBacklight() ? 1 : 0);
+        result = 31 * result + (getClockFace() != null ? getClockFace().hashCode() : 0);
+        result = 31 * result + (getGlass() != null ? getGlass().hashCode() : 0);
+        result = 31 * result + (getGender() != null ? getGender().hashCode() : 0);
+        result = 31 * result + (getWaterResistant() != null ? getWaterResistant().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return result;
     }
 
@@ -188,6 +276,13 @@ public class Product implements Serializable {
                 ", weight=" + weight +
                 ", volume=" + volume +
                 ", stock=" + stock +
+                ", brand=" + brand +
+                ", backlight=" + backlight +
+                ", clockFace=" + clockFace +
+                ", glass=" + glass +
+                ", gender=" + gender +
+                ", waterResistant=" + waterResistant +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

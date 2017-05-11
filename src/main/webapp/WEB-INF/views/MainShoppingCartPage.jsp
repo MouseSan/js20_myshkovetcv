@@ -110,7 +110,7 @@
 
 <c:import url="common/scripts.jsp"/>
 
-<script src="<c:url value='/static/cart.js' />"></script>
+<script src="<c:url value='/static/js/cart.js' />"></script>
 
 </body>
 </html>

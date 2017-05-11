@@ -11,7 +11,8 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-import ru.tsystems.js20.myshkovetcv.converter.*;
+import ru.tsystems.js20.myshkovetcv.converter.BrandConverter;
+import ru.tsystems.js20.myshkovetcv.converter.CategoryConverter;
 
 @Configuration
 @Import(JpaConfiguration.class)
@@ -20,19 +21,9 @@ import ru.tsystems.js20.myshkovetcv.converter.*;
 public class AppConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
-    private CategoryIdToCategoryClassConverter categoryIdToCategoryClassConverter;
-
+    private BrandConverter brandConverter;
     @Autowired
-    private ParameterIdToParameterClassConverter parameterIdToParameterClassConverter;
-
-    @Autowired
-    private UserIdToUserClassConverter userIdToUserClassConverter;
-
-    @Autowired
-    private UserAddressIdToUserAddressClassConverter userAddressIdToUserAddressClassConverter;
-
-    @Autowired
-    private UserProfileIdToUserProfileClassConverter userProfileIdToUserProfileClassConverter;
+    private CategoryConverter categoryConverter;
 
     /**
      * Configure ViewResolvers to deliver preferred views.
@@ -59,14 +50,10 @@ public class AppConfig extends WebMvcConfigurerAdapter {
      * Configure Converter to be used.
      * In our example, we need a converter to convert string values[Roles] to UserProfiles in newUser.jsp
      */
-
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(categoryIdToCategoryClassConverter);
-        registry.addConverter(parameterIdToParameterClassConverter);
-        registry.addConverter(userIdToUserClassConverter);
-        registry.addConverter(userAddressIdToUserAddressClassConverter);
-        registry.addConverter(userProfileIdToUserProfileClassConverter);
+        registry.addConverter(brandConverter);
+        registry.addConverter(categoryConverter);
     }
 
     /**
