@@ -23,7 +23,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">CATEGORIES  <i class="fa fa-angle-down"></i></a>
                     <ul class="dropdown-menu" role="menu">
                         <c:forEach items="${categoryList}" var="category">
-                            <li><a href="<c:url value='/category/${category.name}' />">${category.name}</a></li>
+                            <li><a href="<c:url value='/category/${category.id}' />">${category.name}</a></li>
                         </c:forEach>
                     </ul>
                 </li>
@@ -40,7 +40,10 @@
                     </li>
                 </sec:authorize>
                 <li class="shopping-cart">
-                    <a href="<c:url value='/cart' />" >CART  <i class="fa fa-shopping-cart"></i><span class="cart-count">${quantityInCart}</span></a>
+                    <a href="<c:url value='/cart' />" id="cart">CART
+                        <i class="fa fa-shopping-cart"></i>
+                        <span class="cart-count">${quantityInCart}</span>
+                    </a>
                 </li>
                 <c:choose>
                     <c:when test="${isLoggedIn}">

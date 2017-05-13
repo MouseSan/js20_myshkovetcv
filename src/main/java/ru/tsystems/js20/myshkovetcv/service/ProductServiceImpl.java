@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import ru.tsystems.js20.myshkovetcv.dao.ProductDao;
-import ru.tsystems.js20.myshkovetcv.dto.BrandDto;
-import ru.tsystems.js20.myshkovetcv.dto.CategoryDto;
 import ru.tsystems.js20.myshkovetcv.dto.FilterDto;
 import ru.tsystems.js20.myshkovetcv.dto.ProductDto;
 import ru.tsystems.js20.myshkovetcv.model.Brand;
@@ -141,31 +139,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ModelMap getProductModelByCategory(String categoryName) {
-        ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
-//        modelMap.addAttribute("productList", getAllProductsDtoByCategory(categoryName));
-        modelMap.addAttribute("brandList", brandService.getAllBrandDto());
-        modelMap.addAttribute("clockFaceList", ClockFaceType.values());
-        modelMap.addAttribute("glassList", ClockGlassType.values());
-        modelMap.addAttribute("genderList", GenderType.values());
-        modelMap.addAttribute("waterResistantList", WaterResistantType.values());
-        return modelMap;
-    }
-
-    @Override
     public List<ProductDto> getAllProductsDto() {
         List<Product> productList = productDao.findAllProducts();
-        List<ProductDto> productDtoList = new ArrayList<>();
-        for (Product product : productList) {
-            productDtoList.add(new ProductDto(product));
-        }
-        return productDtoList;
-    }
-
-    @Override
-    public List<ProductDto> getAllProductsDtoByCategory(CategoryDto categoryDto) {
-        List<Product> productList = findProductsByCategory(categoryService.findById(categoryDto.getId()));
         List<ProductDto> productDtoList = new ArrayList<>();
         for (Product product : productList) {
             productDtoList.add(new ProductDto(product));
@@ -196,17 +171,77 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ModelMap getProductModelByCategoryWithFilter(CategoryDto category, BrandDto brandDto, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant) {
+    public ModelMap getProductModelByCategoryWithFilter(Long categoryId, String sorting, String brandId, String clockFace, String glass, String gender, String waterResistant, String backlight) {
+        FilterDto filterDto = new FilterDto();
+
+        if (sorting == null) {
+            filterDto.setSorting("lowPrice");
+        } else if (sorting.equals("lowPrice")) {
+            filterDto.setSorting("lowPrice");
+        } else if (sorting.equals("highPrice")) {
+            filterDto.setSorting("highPrice");
+        } else if (sorting.equals("nameAsc")) {
+            filterDto.setSorting("nameAsc");
+        } else if (sorting.equals("nameDesc")) {
+            filterDto.setSorting("nameDesc");
+        } else {
+            filterDto.setSorting("lowPrice");
+        }
+
+        if (brandId == null || brandId.equals("any")) {
+            filterDto.setBrandDto(null);
+        } else {
+            filterDto.setBrandDto(brandService.findDtoById(Long.parseLong(brandId)));
+        }
+        if (clockFace == null || clockFace.equals("any")) {
+            filterDto.setClockFace(null);
+        } else {
+            filterDto.setClockFace(ClockFaceType.valueOf(clockFace));
+        }
+        if (glass == null || glass.equals("any")) {
+            filterDto.setGlass(null);
+        } else {
+            filterDto.setGlass(ClockGlassType.valueOf(glass));
+        }
+        if (gender == null || gender.equals("any")) {
+            filterDto.setGender(null);
+        } else {
+            filterDto.setGender(GenderType.valueOf(gender));
+        }
+        if (waterResistant == null || waterResistant.equals("any")) {
+            filterDto.setWaterResistant(null);
+        } else {
+            filterDto.setWaterResistant(WaterResistantType.valueOf(waterResistant));
+        }
+        if (backlight == null) {
+            filterDto.setBacklight("any");
+        } else if (backlight.equals("true")) {
+            filterDto.setBacklight("true");
+        } else if (backlight.equals("false")) {
+            filterDto.setBacklight("false");
+        } else {
+            filterDto.setBacklight("any");
+        }
+        filterDto.setCategoryDto(categoryService.findDtoById(categoryId));
+
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
-        modelMap.addAttribute("productList", getAllProductsDtoByCategory(category));
+        modelMap.addAttribute("filterDto", filterDto);
+        modelMap.addAttribute("productList", getProductsDtoByFilter(filterDto));
         modelMap.addAttribute("brandList", brandService.getAllBrandDto());
         modelMap.addAttribute("clockFaceList", ClockFaceType.values());
         modelMap.addAttribute("glassList", ClockGlassType.values());
         modelMap.addAttribute("genderList", GenderType.values());
         modelMap.addAttribute("waterResistantList", WaterResistantType.values());
-        modelMap.addAttribute("filterDto", new FilterDto(brandDto, backlight, clockFace, glass, gender, waterResistant));
         return modelMap;
     }
 
+    private List<ProductDto> getProductsDtoByFilter(FilterDto filterDto) {
+        List<Product> productList = productDao.findByFilter(filterDto);
+        List<ProductDto> productDtoList = new ArrayList<>();
+        for (Product product : productList) {
+            productDtoList.add(new ProductDto(product));
+        }
+        return productDtoList;
+    }
 }

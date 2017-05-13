@@ -5,7 +5,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tsystems.js20.myshkovetcv.model.Product;
+import org.springframework.ui.ModelMap;
+import ru.tsystems.js20.myshkovetcv.dto.ProductDto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,16 +17,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Autowired
     private ProductService productService;
-
-    private Map<Product, Integer> productMap = new HashMap<>();
+    @Autowired
+    private CategoryService categoryService;
+    private Map<ProductDto, Integer> productMap = new HashMap<>();
 
     @Override
-    public void addProductToMap(Product product) {
-        if (productMap.containsKey(product)) {
-            Integer productQuantity = productMap.get(product);
-            productMap.put(product, ++productQuantity);
+    public void addProductToMap(Long productId) {
+        ProductDto productDto = new ProductDto(productService.findById(productId));
+        if (productMap.containsKey(productDto)) {
+            Integer productQuantity = productMap.get(productDto);
+            productMap.put(productDto, ++productQuantity);
         } else {
-            productMap.put(product, 1);
+            productMap.put(productDto, 1);
         }
     }
 
@@ -39,19 +42,29 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public Map<Product, Integer> getProductMap() {
+    public Map<ProductDto, Integer> getProductMap() {
         return productMap;
     }
 
     @Override
-    public void removeProductFromCart(Product product) {
+    public void removeProductFromCart(Long productId) {
         updateProductsInCart();
-        if (productMap.containsKey(product)) {
-            Integer quantityInCart = productMap.get(product);
+        ProductDto productDto = new ProductDto(productService.findById(productId));
+        if (productMap.containsKey(productDto)) {
+            productMap.remove(productDto);
+        }
+    }
+
+    @Override
+    public void removeOneProductFromCart(Long productId) {
+        updateProductsInCart();
+        ProductDto productDto = new ProductDto(productService.findById(productId));
+        if (productMap.containsKey(productDto)) {
+            Integer quantityInCart = productMap.get(productDto);
             if (quantityInCart > 1) {
-                productMap.put(product, --quantityInCart);
+                productMap.put(productDto, --quantityInCart);
             } else if (quantityInCart == 1) {
-                productMap.remove(product);
+                productMap.remove(productDto);
             }
         }
     }
@@ -59,7 +72,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public Double getProductTotalPrice() {
         double totalPrice = 0.0;
-        for (Map.Entry<Product, Integer> entry : productMap.entrySet()) {
+        for (Map.Entry<ProductDto, Integer> entry : productMap.entrySet()) {
             totalPrice += (double) entry.getValue() * entry.getKey().getPrice();
         }
         return (double) Math.round(totalPrice * 100.0) / 100.0;
@@ -69,9 +82,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public boolean checkAvailability() {
         boolean allProductsAvailable = true;
-        for (Map.Entry<Product, Integer> entry : productMap.entrySet()) {
-            Product product = productService.findById(entry.getKey().getId());
-            if (product.getStock() < entry.getValue()) {
+        for (Map.Entry<ProductDto, Integer> entry : productMap.entrySet()) {
+            ProductDto productDto = new ProductDto(productService.findById(entry.getKey().getId()));
+            if (productDto.getStock() < entry.getValue()) {
                 allProductsAvailable = false;
             }
         }
@@ -80,13 +93,28 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     public void updateProductsInCart() {
-        Map<Product, Integer> tempMap = new HashMap<>();
-        for (Map.Entry<Product, Integer> entry : productMap.entrySet()) {
-            Product product = productService.findById(entry.getKey().getId());
-            tempMap.put(product, entry.getValue());
+        Map<ProductDto, Integer> tempMap = new HashMap<>();
+        for (Map.Entry<ProductDto, Integer> entry : productMap.entrySet()) {
+            ProductDto productDto = new ProductDto(productService.findById(entry.getKey().getId()));
+            tempMap.put(productDto, entry.getValue());
         }
         productMap.clear();
         productMap = tempMap;
+    }
+
+    @Override
+    public ModelMap getShoppingCartModel() {
+        ModelMap model = new ModelMap();
+        if(checkAvailability()) {
+            model.addAttribute("notEnoughQuantity", false);
+        } else {
+            model.addAttribute("notEnoughQuantity", true);
+        }
+        model.addAttribute("quantityInCart", getProductQuantityInCart());
+        model.addAttribute("totalPrice", getProductTotalPrice());
+        model.addAttribute("productMap", getProductMap());
+        model.addAttribute("categoryList", categoryService.getAllCategoriesDto());
+        return model;
     }
 
     @Override

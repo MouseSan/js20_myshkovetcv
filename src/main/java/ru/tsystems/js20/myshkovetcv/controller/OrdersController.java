@@ -20,43 +20,38 @@ public class OrdersController {
 
     @Autowired
     private CategoryService categoryService;
-
     @Autowired
     private ShoppingCartService shoppingCartService;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private OrdersService ordersService;
-
     @Autowired
     private UserAddressService userAddressService;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String getCreateOrderPage(ModelMap model) {
 
-        if(!shoppingCartService.checkAvailability()) {
-            return "redirect:/cart?enoughquantity";
-        }
+//        if(!shoppingCartService.checkAvailability()) {
+//            return "redirect:/cart?enoughquantity";
+//        }
 
-        User currentUser = userService.getCurrentUser();
-        Orders order = new Orders();
-        order.setPaymentMethod(PaymentMethod.Cash);
-        order.setDeliveryMethod(DeliveryMethod.Pickup);
-
-        model.addAttribute("order", order);
-        model.addAttribute("user", currentUser);
-        model.addAttribute("productMap", shoppingCartService.getProductMap());
-        model.addAttribute("userAddressList", userAddressService.findUserAddressDto(currentUser));
-        model.addAttribute("paymentMethodList", PaymentMethod.values());
-        model.addAttribute("deliveryMethodList", DeliveryMethod.values());
+//        User currentUser = userService.getCurrentUser();
+//        Orders order = new Orders();
+//        order.setPaymentMethod(PaymentMethod.Cash);
+//        order.setDeliveryMethod(DeliveryMethod.Pickup);
+//
+//        model.addAttribute("order", order);
+//        model.addAttribute("user", currentUser);
+//        model.addAttribute("productMap", shoppingCartService.getProductMap());
+//        model.addAttribute("userAddressList", userAddressService.findUserAddressDto(currentUser));
+//        model.addAttribute("paymentMethodList", PaymentMethod.values());
+//        model.addAttribute("deliveryMethodList", DeliveryMethod.values());
 
         model.addAttribute("quantityInCart", shoppingCartService.getProductQuantityInCart());
-        model.addAttribute("totalPrice", shoppingCartService.getProductTotalPrice());
+//        model.addAttribute("totalPrice", shoppingCartService.getProductTotalPrice());
         model.addAttribute("categoryList", categoryService.getAllCategoriesDto());
-        model.addAttribute("title", "Checkout");
-        return "MainOrdersCreate";
+        return "ordersCreate";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)

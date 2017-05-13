@@ -1,5 +1,6 @@
 package ru.tsystems.js20.myshkovetcv.dao;
 
+import ru.tsystems.js20.myshkovetcv.dto.FilterDto;
 import ru.tsystems.js20.myshkovetcv.model.Brand;
 import ru.tsystems.js20.myshkovetcv.model.Category;
 import ru.tsystems.js20.myshkovetcv.model.Product;
@@ -28,4 +29,6 @@ public interface ProductDao {
                              Brand brand, boolean backlight, ClockFaceType clockFace,
                              ClockGlassType glass, GenderType gender,
                              WaterResistantType waterResistant);
+
+    List<Product> findByFilter(FilterDto filterDto);
 }

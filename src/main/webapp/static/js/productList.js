@@ -31,8 +31,8 @@ function addToCart(productId) {
             productId: parseInt(productId)
         },
         success: function (result) {
-            var urlStr = window.location.pathname + ' #header';
-            $('#header').load(urlStr, function () {
+            var urlStr = window.location.pathname + ' #cart';
+            $('#cart').load(urlStr, function () {
                 removeClickHandler($(".addToCart"), addToCart_Handler);
                 assignClickHandler($(".addToCart"), addToCart_Handler);
             });

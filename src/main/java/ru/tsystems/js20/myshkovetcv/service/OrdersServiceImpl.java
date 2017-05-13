@@ -40,35 +40,35 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public void saveOrdersReduceStock(Orders orders) {
-        if (orders.getPaymentMethod().equals(PaymentMethod.Card)) {
-            orders.setPaymentState(PaymentState.Paid);
-        } else {
-            orders.setPaymentState(PaymentState.Pending);
-        }
-        if (orders.getDeliveryMethod().equals(DeliveryMethod.Pickup)) {
-            orders.setDeliveryAddress("Self pickup");
-        }
-
-        Map<Product, Integer> productMap = shoppingCartService.getProductMap();
-        for (Map.Entry<Product, Integer> entry : productMap.entrySet()) {
-            int quantityOfProduct = 0;
-            Product product = entry.getKey();
-            for (int i = 0; i < entry.getValue(); i++) {
-                quantityOfProduct++;
-                orders.addProductToList(productService.findById(product.getId()));
-            }
-            product.setStock(product.getStock() - quantityOfProduct);
-//            productService.updateProduct(product);
-        }
-        User user = userService.getCurrentUser();
-        orders.setUser(user);
-        orders.setOrdersState(OrdersState.WaitingForShipment);
-        orders.setTotalPrice(shoppingCartService.getProductTotalPrice());
-        orders.setTotalQuantity(shoppingCartService.getProductQuantityInCart());
-        orders.setUser(userDao.findById(orders.getUser().getId()));
-        orders.setDateOfOrder(new Date());
-
-        shoppingCartService.removeAllProductFromCart();
+//        if (orders.getPaymentMethod().equals(PaymentMethod.Card)) {
+//            orders.setPaymentState(PaymentState.Paid);
+//        } else {
+//            orders.setPaymentState(PaymentState.Pending);
+//        }
+//        if (orders.getDeliveryMethod().equals(DeliveryMethod.Pickup)) {
+//            orders.setDeliveryAddress("Self pickup");
+//        }
+//
+//        Map<Product, Integer> productMap = shoppingCartService.getProductMap();
+//        for (Map.Entry<Product, Integer> entry : productMap.entrySet()) {
+//            int quantityOfProduct = 0;
+//            Product product = entry.getKey();
+//            for (int i = 0; i < entry.getValue(); i++) {
+//                quantityOfProduct++;
+//                orders.addProductToList(productService.findById(product.getId()));
+//            }
+//            product.setStock(product.getStock() - quantityOfProduct);
+////            productService.updateProduct(product);
+//        }
+//        User user = userService.getCurrentUser();
+//        orders.setUser(user);
+//        orders.setOrdersState(OrdersState.WaitingForShipment);
+//        orders.setTotalPrice(shoppingCartService.getProductTotalPrice());
+//        orders.setTotalQuantity(shoppingCartService.getProductQuantityInCart());
+//        orders.setUser(userDao.findById(orders.getUser().getId()));
+//        orders.setDateOfOrder(new Date());
+//
+//        shoppingCartService.removeAllProductFromCart();
 
         ordersDao.save(orders);
     }

@@ -1,18 +1,21 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
-import ru.tsystems.js20.myshkovetcv.model.Product;
+import org.springframework.ui.ModelMap;
+import ru.tsystems.js20.myshkovetcv.dto.ProductDto;
 
 import java.util.Map;
 
 public interface ShoppingCartService {
 
-    void addProductToMap(Product product);
+    void addProductToMap(Long productId);
 
     Integer getProductQuantityInCart();
 
-    Map<Product, Integer> getProductMap();
+    Map<ProductDto, Integer> getProductMap();
 
-    void removeProductFromCart(Product product);
+    void removeProductFromCart(Long productId);
+
+    void removeOneProductFromCart(Long productId);
 
     Double getProductTotalPrice();
 
@@ -21,4 +24,6 @@ public interface ShoppingCartService {
     void removeAllProductFromCart();
 
     void updateProductsInCart();
+
+    ModelMap getShoppingCartModel();
 }

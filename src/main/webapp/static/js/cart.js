@@ -14,6 +14,11 @@ var removeClickHandler = function (selector, handler) {
     selector.off("click", handler);
 };
 
+var removeOneFromCart_Handler = function () {
+    var buttonValue = this.value;
+    removeOneFromCart(buttonValue);
+};
+
 var removeFromCart_Handler = function () {
     var buttonValue = this.value;
     removeFromCart(buttonValue);
@@ -21,6 +26,7 @@ var removeFromCart_Handler = function () {
 
 $(function () {
     assignClickHandler($(".removeFromCart"), removeFromCart_Handler);
+    assignClickHandler($(".removeOneFromCart"), removeOneFromCart_Handler);
 });
 
 function removeFromCart(productId) {
@@ -31,20 +37,34 @@ function removeFromCart(productId) {
             productId: parseInt(productId)
         },
         success: function (result) {
+            var urlStr = window.location.pathname + ' #wrap';
+            $('#wrap').load(urlStr, function () {
+                removeClickHandler($(".removeOneFromCart"), removeOneFromCart_Handler);
+                removeClickHandler($(".removeFromCart"), removeFromCart_Handler);
+                assignClickHandler($(".removeOneFromCart"), removeOneFromCart_Handler);
+                assignClickHandler($(".removeFromCart"), removeFromCart_Handler);
+            });
+            // alert(window.location.toString())
+        },
+        error: function (a) {
+            alert(a);
+        }
+    })
+}
 
-            var urlStr = window.location.pathname + ' #header';
-            $('#header').load(urlStr, function () {
+function removeOneFromCart(productId) {
+    $.ajax({
+        method: "GET",
+        url: "/removeOneFromCart",
+        data: {
+            productId: parseInt(productId)
+        },
+        success: function (result) {
+            var urlStr = window.location.pathname + ' #wrap';
+            $('#wrap').load(urlStr, function () {
+                removeClickHandler($(".removeOneFromCart"), removeOneFromCart_Handler);
                 removeClickHandler($(".removeFromCart"), removeFromCart_Handler);
-                assignClickHandler($(".removeFromCart"), removeFromCart_Handler);
-            });
-            var urlStr = window.location.pathname + ' #cartTable';
-            $('#cartTable').load(urlStr, function () {
-                removeClickHandler($(".removeFromCart"), removeFromCart_Handler);
-                assignClickHandler($(".removeFromCart"), removeFromCart_Handler);
-            });
-            var urlStr = window.location.pathname + ' #errMsg';
-            $('#errMsg').load(urlStr, function () {
-                removeClickHandler($(".removeFromCart"), removeFromCart_Handler);
+                assignClickHandler($(".removeOneFromCart"), removeOneFromCart_Handler);
                 assignClickHandler($(".removeFromCart"), removeFromCart_Handler);
             });
             // alert(window.location.toString())

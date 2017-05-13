@@ -8,11 +8,17 @@ import ru.tsystems.js20.myshkovetcv.model.enums.WaterResistantType;
 
 public class FilterDto {
 
+    @JsonProperty("sorting")
+    private String sorting;
+
+    @JsonProperty("categoryDto")
+    private CategoryDto categoryDto;
+
     @JsonProperty("brandDto")
     private BrandDto brandDto;
 
     @JsonProperty("backlight")
-    private boolean backlight;
+    private String backlight;
 
     @JsonProperty("clockFace")
     private ClockFaceType clockFace;
@@ -26,7 +32,9 @@ public class FilterDto {
     @JsonProperty("waterResistant")
     private WaterResistantType waterResistant;
 
-    public FilterDto(BrandDto brandDto, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant) {
+    public FilterDto(String sorting, CategoryDto categoryDto, BrandDto brandDto, String backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant) {
+        this.sorting = sorting;
+        this.categoryDto = categoryDto;
         this.brandDto = brandDto;
         this.backlight = backlight;
         this.clockFace = clockFace;
@@ -36,6 +44,22 @@ public class FilterDto {
     }
 
     public FilterDto() {
+    }
+
+    public String getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(String sorting) {
+        this.sorting = sorting;
+    }
+
+    public CategoryDto getCategoryDto() {
+        return categoryDto;
+    }
+
+    public void setCategoryDto(CategoryDto categoryDto) {
+        this.categoryDto = categoryDto;
     }
 
     public ClockGlassType getGlass() {
@@ -54,11 +78,11 @@ public class FilterDto {
         this.brandDto = brandDto;
     }
 
-    public boolean isBacklight() {
+    public String getBacklight() {
         return backlight;
     }
 
-    public void setBacklight(boolean backlight) {
+    public void setBacklight(String backlight) {
         this.backlight = backlight;
     }
 
