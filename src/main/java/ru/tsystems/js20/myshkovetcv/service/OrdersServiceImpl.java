@@ -3,8 +3,10 @@ package ru.tsystems.js20.myshkovetcv.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import ru.tsystems.js20.myshkovetcv.dao.OrdersDao;
 import ru.tsystems.js20.myshkovetcv.dao.UserDao;
+import ru.tsystems.js20.myshkovetcv.dto.OrdersDto;
 import ru.tsystems.js20.myshkovetcv.model.Orders;
 import ru.tsystems.js20.myshkovetcv.model.Product;
 import ru.tsystems.js20.myshkovetcv.model.User;
@@ -32,6 +34,10 @@ public class OrdersServiceImpl implements OrdersService {
     private ProductService productService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserAddressService userAddressService;
+    @Autowired
+    private NavBarService navBarService;
 
     @Override
     public Orders findById(Long id) {
@@ -194,5 +200,15 @@ public class OrdersServiceImpl implements OrdersService {
         orders.setDateOfOrder(new Date());
 
         ordersDao.save(orders);
+    }
+
+    @Override
+    public ModelMap getOrdersModel() {
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAttribute("ordersDto", new OrdersDto());
+        modelMap.addAttribute("addressList", userAddressService.findAllAddressesCurrentUser());
+
+        return modelMap;
     }
 }

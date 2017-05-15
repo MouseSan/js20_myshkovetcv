@@ -220,38 +220,28 @@ $(document).ready(function() {
 	}
 
 	// payment methods
-	if($('#form-payment').length > 0) {
-		$('#form-payment').on('change', function() {
-			paymentMethodSelected();
+	if($('#checkout-form').length > 0) {
+		$('#checkout-form').on('change', function() {
+			deliveryMethodSelected();
+			addressSelected();
 		});
 	}
 
-	function paymentMethodSelected() {
-		if($('#radio-credit-card').is(':checked')) {
-			// enable validation
-			$('#inputCardName').attr('required', true);
-			$('#inputCardNumber').attr('required', true);
-			$('#inputExpiryMonth').attr('required', true);
-			$('#inputExpiryYear').attr('required', true);
-			$('#inputSecurityCode').attr('required', true);
+    function addressSelected() {
+        if($('#new-address-radio').is(':checked')) {
+            $('.new-address-box').slideDown();
+        } else {
+            $('.new-address-box').slideUp();
+        }
+    }
 
-			// disable validation
-			$('#inputPaypalEmail').attr('required', false);
-
-			$('.credit-card-box').slideDown();
-			$('.paypal-input').slideUp();
+	function deliveryMethodSelected() {
+		if($('#radio-express').is(':checked')) {
+			$('.express-delivery-box').slideDown();
+			$('.self-pickup-box').slideUp();
 		} else {
-			$('#inputCardName').attr('required', false);
-			$('#inputCardNumber').attr('required', false);
-			$('#inputExpiryMonth').attr('required', false);
-			$('#inputExpiryYear').attr('required', false);
-			$('#inputSecurityCode').attr('required', false);
-
-			// disable validation
-			$('#inputPaypalEmail').attr('required', true);
-
-			$('.credit-card-box').slideUp();
-			$('.paypal-input').slideDown();
+			$('.express-delivery-box').slideUp();
+			$('.self-pickup-box').slideDown();
 		}
 	}
 	

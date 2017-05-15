@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ru.tsystems.js20.myshkovetcv.dto.OrdersDto;
 import ru.tsystems.js20.myshkovetcv.model.Orders;
 import ru.tsystems.js20.myshkovetcv.model.User;
 import ru.tsystems.js20.myshkovetcv.model.enums.DeliveryMethod;
@@ -32,36 +33,27 @@ public class OrdersController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String getCreateOrderPage(ModelMap model) {
 
+        model.addAllAttributes(ordersService.getOrdersModel());
 //        if(!shoppingCartService.checkAvailability()) {
 //            return "redirect:/cart?enoughquantity";
 //        }
 
-//        User currentUser = userService.getCurrentUser();
-//        Orders order = new Orders();
-//        order.setPaymentMethod(PaymentMethod.Cash);
-//        order.setDeliveryMethod(DeliveryMethod.Pickup);
-//
-//        model.addAttribute("order", order);
 //        model.addAttribute("user", currentUser);
 //        model.addAttribute("productMap", shoppingCartService.getProductMap());
 //        model.addAttribute("userAddressList", userAddressService.findUserAddressDto(currentUser));
 //        model.addAttribute("paymentMethodList", PaymentMethod.values());
 //        model.addAttribute("deliveryMethodList", DeliveryMethod.values());
-
-        model.addAttribute("quantityInCart", shoppingCartService.getProductQuantityInCart());
 //        model.addAttribute("totalPrice", shoppingCartService.getProductTotalPrice());
-        model.addAttribute("categoryList", categoryService.getAllCategoriesDto());
         return "ordersCreate";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createOrder(Orders orders, BindingResult result, ModelMap model) {
-
+    public String createOrder(OrdersDto ordersDto, BindingResult result, ModelMap model) {
         if(!shoppingCartService.checkAvailability()) {
             return "redirect:/cart?enoughquantity";
         }
 
-        ordersService.saveOrdersReduceStock(orders);
+//        ordersService.saveOrdersReduceStock(orders);
         return "redirect:/orders/all";
     }
 

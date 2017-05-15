@@ -1,5 +1,6 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
+import org.springframework.ui.ModelMap;
 import ru.tsystems.js20.myshkovetcv.model.Orders;
 import ru.tsystems.js20.myshkovetcv.model.Product;
 import ru.tsystems.js20.myshkovetcv.model.User;
@@ -29,4 +30,6 @@ public interface OrdersService {
     boolean checkAvailableToRepeat(Orders orders);
 
     void saveCopiedOrdersReduceStock(Orders orders);
+
+    ModelMap getOrdersModel();
 }
