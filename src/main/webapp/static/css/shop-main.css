@@ -2943,6 +2943,21 @@ a.pp_previous i {
   margin-right: 5px;
 }
 
+/* payment options: credit card and PayPal */
+.delivery-option {
+  margin-bottom: 15px;
+}
+.delivery-option input[type="radio"] + span > i {
+  bottom: 3px;
+}
+.delivery-option span {
+  font-size: 18px;
+  font-weight: normal;
+}
+.delivery-option span i {
+  margin-right: 5px;
+}
+
 .payment-method {
   margin-bottom: 30px;
 }
@@ -2960,6 +2975,27 @@ a.pp_previous i {
 }
 
 .payment-method h3,
+.payment-summary h3 {
+  margin-bottom: 20px;
+}
+
+.delivery-method {
+  margin-bottom: 30px;
+}
+.delivery-method .header-message {
+  padding: 6px 30px;
+  background-color: #EEE;
+  margin-bottom: 0;
+  border: 1px solid #4e8d0f;
+  border-bottom: none;
+  background-color: #5BA412;
+  color: #fff;
+}
+.delivery-method .header-message i {
+  margin-right: 5px;
+}
+
+.delivery-method h3,
 .payment-summary h3 {
   margin-bottom: 20px;
 }
@@ -3166,6 +3202,6 @@ input[type=number].input-number_noSpinners::-webkit-outer-spin-button {
 .express-delivery-addresses {
   margin-left: 27px;
 }
-.option-paypal {
+.option-self-pickup {
   margin-top: 12px;
 }

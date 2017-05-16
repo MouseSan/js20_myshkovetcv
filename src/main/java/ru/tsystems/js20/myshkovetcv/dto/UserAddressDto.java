@@ -35,6 +35,14 @@ public class UserAddressDto {
         this.apartmentNumber = userAddress.getApartmentNumber();
     }
 
+    public UserAddressDto(OrdersDto ordersDto) {
+        this.country = ordersDto.getNewAddressCountry();
+        this.city = ordersDto.getNewAddressCity();
+        this.zipCode = Integer.parseInt(ordersDto.getNewAddressZipCode());
+        this.street = ordersDto.getNewAddressStreet();
+        this.apartmentNumber = ordersDto.getNewAddressApartmentNumber();
+    }
+
     public Long getId() {
         return id;
     }

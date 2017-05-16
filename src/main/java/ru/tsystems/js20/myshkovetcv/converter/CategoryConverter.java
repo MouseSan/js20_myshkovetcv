@@ -16,10 +16,6 @@ public class CategoryConverter implements Converter<Object, CategoryDto> {
     public CategoryDto convert(Object o) {
         if (o instanceof CategoryDto) {
             return (CategoryDto) o;
-        } else if (o instanceof String) {
-            String categoryName = (String) o;
-            CategoryDto categoryDto = categoryService.findDtoByName(categoryName);
-            return categoryDto;
         } else {
             Long id = Long.parseLong((String) o);
             CategoryDto categoryDto = categoryService.findDtoById(id);

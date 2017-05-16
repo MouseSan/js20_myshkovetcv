@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import ru.tsystems.js20.myshkovetcv.dto.ProductDto;
+import ru.tsystems.js20.myshkovetcv.model.Orders;
+import ru.tsystems.js20.myshkovetcv.model.SoldProductInfo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,10 +20,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Autowired
     private ProductService productService;
     @Autowired
+    private OrdersService ordersService;
+    @Autowired
     private CategoryService categoryService;
     private Map<ProductDto, Integer> productMap = new HashMap<>();
 
     @Override
+    @Transactional
     public void addProductToMap(Long productId) {
         ProductDto productDto = new ProductDto(productService.findById(productId));
         if (productMap.containsKey(productDto)) {
@@ -33,6 +38,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public Integer getProductQuantityInCart() {
         Integer quantityInCart = 0;
         for (int value : productMap.values()) {
@@ -42,11 +48,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public Map<ProductDto, Integer> getProductMap() {
         return productMap;
     }
 
     @Override
+    @Transactional
     public void removeProductFromCart(Long productId) {
         updateProductsInCart();
         ProductDto productDto = new ProductDto(productService.findById(productId));
@@ -56,6 +64,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public void removeOneProductFromCart(Long productId) {
         updateProductsInCart();
         ProductDto productDto = new ProductDto(productService.findById(productId));
@@ -70,6 +79,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public Double getProductTotalPrice() {
         double totalPrice = 0.0;
         for (Map.Entry<ProductDto, Integer> entry : productMap.entrySet()) {
@@ -80,7 +90,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     @Transactional
-    public boolean checkAvailability() {
+    public boolean allProductsAvailable() {
         boolean allProductsAvailable = true;
         for (Map.Entry<ProductDto, Integer> entry : productMap.entrySet()) {
             ProductDto productDto = new ProductDto(productService.findById(entry.getKey().getId()));
@@ -92,6 +102,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return allProductsAvailable;
     }
 
+    @Override
+    @Transactional
     public void updateProductsInCart() {
         Map<ProductDto, Integer> tempMap = new HashMap<>();
         for (Map.Entry<ProductDto, Integer> entry : productMap.entrySet()) {
@@ -103,9 +115,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public ModelMap getShoppingCartModel() {
         ModelMap model = new ModelMap();
-        if(checkAvailability()) {
+        if(allProductsAvailable()) {
             model.addAttribute("notEnoughQuantity", false);
         } else {
             model.addAttribute("notEnoughQuantity", true);
@@ -118,8 +131,25 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    public void copyProductsFromOrder(Long orderId) {
+        Orders orders = ordersService.findById(orderId);
+        for (SoldProductInfo soldProductInfo : orders.getSoldProductInfoList()){
+            Long productId = soldProductInfo.getProduct().getId();
+            Integer soldQuantity = soldProductInfo.getSoldQuantity();
+
+            ProductDto productDto = new ProductDto(productService.findById(productId));
+            if (productMap.containsKey(productDto)) {
+                Integer productQuantity = productMap.get(productDto) + soldQuantity;
+                productMap.put(productDto, productQuantity);
+            } else {
+                productMap.put(productDto, soldQuantity);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
     public void removeAllProductFromCart() {
         productMap.clear();
     }
-
 }

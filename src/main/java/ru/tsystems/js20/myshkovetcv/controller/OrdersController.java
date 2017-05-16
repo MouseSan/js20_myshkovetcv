@@ -8,154 +8,84 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.tsystems.js20.myshkovetcv.dto.OrdersDto;
-import ru.tsystems.js20.myshkovetcv.model.Orders;
-import ru.tsystems.js20.myshkovetcv.model.User;
-import ru.tsystems.js20.myshkovetcv.model.enums.DeliveryMethod;
 import ru.tsystems.js20.myshkovetcv.model.enums.OrdersState;
-import ru.tsystems.js20.myshkovetcv.model.enums.PaymentMethod;
-import ru.tsystems.js20.myshkovetcv.service.*;
+import ru.tsystems.js20.myshkovetcv.service.OrdersService;
+import ru.tsystems.js20.myshkovetcv.service.ShoppingCartService;
 
 @Controller
 @RequestMapping("/orders")
 public class OrdersController {
 
     @Autowired
-    private CategoryService categoryService;
-    @Autowired
     private ShoppingCartService shoppingCartService;
     @Autowired
-    private UserService userService;
-    @Autowired
     private OrdersService ordersService;
-    @Autowired
-    private UserAddressService userAddressService;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String getCreateOrderPage(ModelMap model) {
-
+        if(!shoppingCartService.allProductsAvailable()) {
+            return "redirect:/cart?notEnoughQuantity=true";
+        }
         model.addAllAttributes(ordersService.getOrdersModel());
-//        if(!shoppingCartService.checkAvailability()) {
-//            return "redirect:/cart?enoughquantity";
-//        }
-
-//        model.addAttribute("user", currentUser);
-//        model.addAttribute("productMap", shoppingCartService.getProductMap());
-//        model.addAttribute("userAddressList", userAddressService.findUserAddressDto(currentUser));
-//        model.addAttribute("paymentMethodList", PaymentMethod.values());
-//        model.addAttribute("deliveryMethodList", DeliveryMethod.values());
-//        model.addAttribute("totalPrice", shoppingCartService.getProductTotalPrice());
         return "ordersCreate";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createOrder(OrdersDto ordersDto, BindingResult result, ModelMap model) {
-        if(!shoppingCartService.checkAvailability()) {
-            return "redirect:/cart?enoughquantity";
+        if(!shoppingCartService.allProductsAvailable()) {
+            return "redirect:/cart?notEnoughQuantity=true";
         }
-
-//        ordersService.saveOrdersReduceStock(orders);
+        ordersService.saveOrdersReduceStock(ordersDto);
         return "redirect:/orders/all";
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String getAllOrders(ModelMap model) {
-        User user = userService.getCurrentUser();
-        model.addAttribute("ordersList", ordersService.findAllOrdersByUser(user));
-        model.addAttribute("quantityInCart", shoppingCartService.getProductQuantityInCart());
-        model.addAttribute("categoryList", categoryService.getAllCategoriesDto());
-        model.addAttribute("title", "All orders");
-        return "MainOrdersList";
+        model.addAllAttributes(ordersService.getOrdersListModel());
+        return "ordersList";
     }
 
     @RequestMapping(value = "/pending", method = RequestMethod.GET)
     public String getPendingOrders(ModelMap model) {
-        model = fillModelWithListOfOrdersByState(model, OrdersState.Pending);
-        return "MainOrdersList";
+        model.addAllAttributes(ordersService.getOrdersListModel(OrdersState.Pending));
+        return "ordersList";
     }
 
     @RequestMapping(value = "/waitingforshipment", method = RequestMethod.GET)
     public String getWaitingForShipmentOrders(ModelMap model) {
-        model = fillModelWithListOfOrdersByState(model, OrdersState.WaitingForShipment);
-        return "MainOrdersList";
+        model.addAllAttributes(ordersService.getOrdersListModel(OrdersState.WaitingForShipment));
+        return "ordersList";
     }
 
     @RequestMapping(value = "/shipped", method = RequestMethod.GET)
     public String getShippedOrders(ModelMap model) {
-        model = fillModelWithListOfOrdersByState(model, OrdersState.Shipped);
-        return "MainOrdersList";
+        model.addAllAttributes(ordersService.getOrdersListModel(OrdersState.Shipped));
+        return "ordersList";
     }
 
     @RequestMapping(value = "/completed", method = RequestMethod.GET)
     public String getCompletedOrders(ModelMap model) {
-        model = fillModelWithListOfOrdersByState(model, OrdersState.Completed);
-        return "MainOrdersList";
-    }
-
-    private ModelMap fillModelWithListOfOrdersByState(ModelMap model, OrdersState state) {
-        User user = userService.getCurrentUser();
-        model.addAttribute("ordersList", ordersService.findAllOrdersByUserAndState(user, state));
-        model.addAttribute("ordersState", state);
-        model.addAttribute("quantityInCart", shoppingCartService.getProductQuantityInCart());
-        model.addAttribute("categoryList", categoryService.getAllCategoriesDto());
-        model.addAttribute("title", "Orders list");
-        return model;
+        model.addAllAttributes(ordersService.getOrdersListModel(OrdersState.Completed));
+        return "ordersList";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String getOrderPageById(@PathVariable Long id, ModelMap model) {
-        Orders orders = ordersService.findById(id);
-        User ordersUser = orders.getUser();
-        User loggedInUser = userService.getCurrentUser();
-
-        if (!loggedInUser.equals(ordersUser)) {
-            return "Page403AccessDenied";
+        if (ordersService.currentUserHaveAccess(id)) {
+            model.addAllAttributes(ordersService.getOrdersModelById(id));
+            return "ordersPage";
+        } else {
+            return "page403AccessDenied";
         }
-
-        model.addAttribute("order", orders);
-        model.addAttribute("ordersProductList", ordersService.getProductMap(orders));
-        model.addAttribute("quantityInCart", shoppingCartService.getProductQuantityInCart());
-        model.addAttribute("categoryList", categoryService.getAllCategoriesDto());
-        model.addAttribute("title", "Order #" + id);
-        return "MainOrdersPage";
     }
 
     @RequestMapping(value = "/repeat-{id}", method = RequestMethod.GET)
     public String copyOrderById(@PathVariable Long id, ModelMap model) {
-        Orders orders = ordersService.findById(id);
-        User ordersUser = orders.getUser();
-        User loggedInUser = userService.getCurrentUser();
-        if (!loggedInUser.equals(ordersUser)) {
-            return "Page403AccessDenied";
+        if (ordersService.currentUserHaveAccess(id)) {
+            shoppingCartService.copyProductsFromOrder(id);
+            return "redirect:/orders/create";
+        } else {
+            return "page403AccessDenied";
         }
-
-        if(!ordersService.checkAvailableToRepeat(orders)) {
-            return "redirect:/orders/{id}?enoughquantity";
-        }
-
-        Orders copiedOrder = ordersService.copyOrder(id);
-
-        model.addAttribute("order", copiedOrder);
-        model.addAttribute("user", loggedInUser);
-        model.addAttribute("productMap", ordersService.getProductMap(copiedOrder));
-        model.addAttribute("userAddressList", userAddressService.findUserAddressDto(loggedInUser));
-        model.addAttribute("paymentMethodList", PaymentMethod.values());
-        model.addAttribute("deliveryMethodList", DeliveryMethod.values());
-        model.addAttribute("quantityInCart", copiedOrder.getTotalQuantity());
-        model.addAttribute("totalPrice", copiedOrder.getTotalPrice());
-        model.addAttribute("categoryList", categoryService.getAllCategoriesDto());
-        model.addAttribute("title", "Checkout");
-        return "MainOrdersCreate";
     }
-
-    @RequestMapping(value = "/repeat-{id}", method = RequestMethod.POST)
-    public String createCopiedOrder(@PathVariable Long id, Orders orders, BindingResult result, ModelMap model) {
-
-        if(!ordersService.checkAvailableToRepeat(orders)) {
-            return "redirect:/orders/{" + id + "}?enoughquantity";
-        }
-
-        ordersService.saveCopiedOrdersReduceStock(orders);
-        return "redirect:/orders/all";
-    }
-
 }

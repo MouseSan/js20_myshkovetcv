@@ -19,11 +19,13 @@ public interface ShoppingCartService {
 
     Double getProductTotalPrice();
 
-    boolean checkAvailability();
+    boolean allProductsAvailable();
 
     void removeAllProductFromCart();
 
     void updateProductsInCart();
 
     ModelMap getShoppingCartModel();
+
+    void copyProductsFromOrder(Long orderId);
 }

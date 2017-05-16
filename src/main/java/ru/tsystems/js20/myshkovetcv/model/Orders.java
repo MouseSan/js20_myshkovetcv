@@ -31,12 +31,8 @@ public class Orders implements Serializable {
     @Column(name = "deliveryAddress")
     private String deliveryAddress;
 
-    @ManyToMany
-    @JoinTable(name = "orders_product",
-            joinColumns = @JoinColumn(name = "orders_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id")
-    )
-    private List<Product> productList = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "orders")
+    private List<SoldProductInfo> soldProductInfoList = new ArrayList<>();
 
     @Column(name = "payment_method")
     @Enumerated(EnumType.STRING)
@@ -45,7 +41,6 @@ public class Orders implements Serializable {
     @Column(name = "delivery_method")
     @Enumerated(EnumType.STRING)
     private DeliveryMethod deliveryMethod;
-
 
     @Column(name = "payment_state")
     @Enumerated(EnumType.STRING)
@@ -65,10 +60,10 @@ public class Orders implements Serializable {
     @Column(name = "dateOfOrder")
     private Date dateOfOrder;
 
-    public Orders(User user, String deliveryAddress, List<Product> productList, PaymentMethod paymentMethod, DeliveryMethod deliveryMethod, PaymentState paymentState, OrdersState ordersState, Integer totalQuantity, Double totalPrice, Date dateOfOrder) {
+    public Orders(User user, String deliveryAddress, List<SoldProductInfo> soldProductInfoList, PaymentMethod paymentMethod, DeliveryMethod deliveryMethod, PaymentState paymentState, OrdersState ordersState, Integer totalQuantity, Double totalPrice, Date dateOfOrder) {
         this.user = user;
         this.deliveryAddress = deliveryAddress;
-        this.productList = productList;
+        this.soldProductInfoList = soldProductInfoList;
         this.paymentMethod = paymentMethod;
         this.deliveryMethod = deliveryMethod;
         this.paymentState = paymentState;
@@ -107,18 +102,6 @@ public class Orders implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public List<Product> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
-    }
-
-    public void addProductToList(Product product) {
-        this.productList.add(product);
     }
 
     public PaymentMethod getPaymentMethod() {
@@ -185,6 +168,14 @@ public class Orders implements Serializable {
         this.dateOfOrder = dateOfOrder;
     }
 
+    public List<SoldProductInfo> getSoldProductInfoList() {
+        return soldProductInfoList;
+    }
+
+    public void setSoldProductInfoList(List<SoldProductInfo> soldProductInfoList) {
+        this.soldProductInfoList = soldProductInfoList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -198,9 +189,15 @@ public class Orders implements Serializable {
             return false;
         if (getDeliveryAddress() != null ? !getDeliveryAddress().equals(orders.getDeliveryAddress()) : orders.getDeliveryAddress() != null)
             return false;
+        if (getPaymentMethod() != orders.getPaymentMethod()) return false;
+        if (getDeliveryMethod() != orders.getDeliveryMethod()) return false;
+        if (getPaymentState() != orders.getPaymentState()) return false;
+        if (getOrdersState() != orders.getOrdersState()) return false;
         if (getTotalQuantity() != null ? !getTotalQuantity().equals(orders.getTotalQuantity()) : orders.getTotalQuantity() != null)
             return false;
-        return getTotalPrice() != null ? getTotalPrice().equals(orders.getTotalPrice()) : orders.getTotalPrice() == null;
+        if (getTotalPrice() != null ? !getTotalPrice().equals(orders.getTotalPrice()) : orders.getTotalPrice() != null)
+            return false;
+        return getDateOfOrder() != null ? getDateOfOrder().equals(orders.getDateOfOrder()) : orders.getDateOfOrder() == null;
     }
 
     @Override
@@ -208,8 +205,13 @@ public class Orders implements Serializable {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
         result = 31 * result + (getDeliveryAddress() != null ? getDeliveryAddress().hashCode() : 0);
+        result = 31 * result + (getPaymentMethod() != null ? getPaymentMethod().hashCode() : 0);
+        result = 31 * result + (getDeliveryMethod() != null ? getDeliveryMethod().hashCode() : 0);
+        result = 31 * result + (getPaymentState() != null ? getPaymentState().hashCode() : 0);
+        result = 31 * result + (getOrdersState() != null ? getOrdersState().hashCode() : 0);
         result = 31 * result + (getTotalQuantity() != null ? getTotalQuantity().hashCode() : 0);
         result = 31 * result + (getTotalPrice() != null ? getTotalPrice().hashCode() : 0);
+        result = 31 * result + (getDateOfOrder() != null ? getDateOfOrder().hashCode() : 0);
         return result;
     }
 
@@ -225,6 +227,7 @@ public class Orders implements Serializable {
                 ", ordersState=" + ordersState +
                 ", totalQuantity=" + totalQuantity +
                 ", totalPrice=" + totalPrice +
+                ", dateOfOrder=" + dateOfOrder +
                 '}';
     }
 }

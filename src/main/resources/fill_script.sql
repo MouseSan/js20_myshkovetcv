@@ -20,3 +20,8 @@ INSERT INTO `shop_db`.`category` (`id`, `name`) VALUES ('5', 'Military');
 
 INSERT INTO `shop_db`.`brand` (`id`, `name`) VALUES ('1', 'Adidas');
 INSERT INTO `shop_db`.`brand` (`id`, `name`) VALUES ('2', 'Casio');
+
+INSERT INTO `shop_db`.`product` (`id`, `backlight`, `clockFace`, `description`, `gender`, `glass`, `name`, `price`, `stock`, `volume`, `waterResistant`, `weight`, `brand_id`, `category_id`) VALUES ('1', TRUE , 'Digital', 'Description', 'Male', 'Organic', 'WR-100', '120', '12', '1', 'WR200', '10', '2', '1');
+INSERT INTO `shop_db`.`product` (`id`, `backlight`, `clockFace`, `description`, `gender`, `glass`, `name`, `price`, `stock`, `volume`, `waterResistant`, `weight`, `brand_id`, `category_id`) VALUES ('2', FALSE , 'Digital', 'Description', 'Male', 'Organic', 'WR-400', '280', '8', '1', 'WR200', '10', '2', '1');
+INSERT INTO `shop_db`.`product` (`id`, `backlight`, `clockFace`, `description`, `gender`, `glass`, `name`, `price`, `stock`, `volume`, `waterResistant`, `weight`, `brand_id`, `category_id`) VALUES ('3', TRUE , 'Digital', 'Description', 'Male', 'Organic', 'WR-500', '400', '6', '1', 'WR200', '10', '2', '1');
+

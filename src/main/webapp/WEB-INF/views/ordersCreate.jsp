@@ -79,9 +79,9 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="payment-method">
+                                        <div class="delivery-method">
                                             <h3>DELIVERY METHOD</h3>
-                                            <label class="fancy-radio payment-option option-credit-card">
+                                            <label class="fancy-radio delivery-option option-express-delivery">
                                                 <input type="radio" name="deliveryMethod" id="radio-express" checked="checked" value="ExpressDelivery">
                                                 <span><i></i> <span><i class="fa fa-truck"></i> Express delivery</span></span>
                                             </label>
@@ -91,14 +91,14 @@
                                                         <div class="billing-address">
                                                             <h3>BILLING ADDRESS</h3>
                                                             <div class="express-delivery-addresses">
-                                                                <label class="fancy-radio payment-option option-credit-card">
+                                                                <label class="fancy-radio delivery-option option-credit-card">
                                                                     <input type="radio" name="deliveryAddress" id="new-address-radio" checked="checked"
                                                                            value="New Address">
                                                                     <span><i></i> <span>NEW ADDRESS</span></span>
                                                                 </label>
                                                                 <c:forEach items="${addressList}" var="address">
-                                                                    <label class="fancy-radio payment-option option-credit-card">
-                                                                        <input type="radio" name="deliveryAddress" id="address2"
+                                                                    <label class="fancy-radio delivery-option option-credit-card">
+                                                                        <input type="radio" name="deliveryAddress" id="address-${address.id}"
                                                                                value="${address.zipCode}, ${address.country}, ${address.city}, ${address.street}, ${address.apartmentNumber}">
                                                                         <span><i></i> <span>${address.zipCode}, ${address.country}, ${address.city}, ${address.street}, ${address.apartmentNumber}</span></span>
                                                                     </label>
@@ -149,9 +149,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <label class="fancy-radio payment-option option-paypal">
+                                            <label class="fancy-radio delivery-option option-self-pickup">
                                                 <input type="radio" name="deliveryMethod" id="radio-self-pickup" value="Pickup">
-                                                <span><i></i> <span><i class="fa fa-paypal"></i> Self pickup</span></span>
+                                                <span><i></i> <span><i class="fa fa-child"></i> Self pickup</span></span>
                                             </label>
                                             <div class="self-pickup-box hide-first">
                                             </div>
@@ -170,72 +170,13 @@
                                             <h3>PAYMENT METHOD</h3>
                                             <label class="fancy-radio payment-option option-credit-card">
                                                 <input type="radio" name="paymentMethod" id="radio-credit-card" checked="checked" value="Card">
-                                                <span><i></i> <span><i class="fa fa-credit-card"></i> Credit Card</span></span>
+                                                <span><i></i> <span><i class="fa fa-credit-card"></i> Card upon receipt</span></span>
                                             </label>
                                             <div class="credit-card-box">
-                                                <p class="header-message"><i class="fa fa-lock"></i> This is a secure 128-bit SSL Encrypted payment. You are safe.</p>
-                                                <%--<div class="credit-card-inputs">--%>
-                                                    <%--<div class="form-group">--%>
-                                                        <%--<label for="inputCardName" class="col-sm-4 control-label">Name on Card</label>--%>
-                                                        <%--<div class="col-sm-8">--%>
-                                                            <%--<input type="text" class="form-control" id="inputCardName" required>--%>
-                                                            <%--<p class="help-block"><em>As it appears on your card</em></p>--%>
-                                                        <%--</div>--%>
-                                                    <%--</div>--%>
-                                                    <%--<div class="form-group">--%>
-                                                        <%--<label for="inputCardNumber" class="col-sm-4 control-label">Card Number</label>--%>
-                                                        <%--<div class="col-sm-8">--%>
-                                                            <%--<input type="text" class="form-control" id="inputCardNumber" data-parsley-type="number" required>--%>
-                                                            <%--<p class="help-block"><em>No dashes or spaces</em></p>--%>
-                                                        <%--</div>--%>
-                                                    <%--</div>--%>
-                                                    <%--<div class="form-group">--%>
-                                                        <%--<label class="col-sm-4 control-label">Expiration Date</label>--%>
-                                                        <%--<div class="col-sm-8">--%>
-                                                            <%--<select name="expiryMonth" id="inputExpiryMonth" class="form-control control-inline" data-parsley-error-message="Please specify month" data-parsley-errors-container="#error-expiry" required>--%>
-                                                                <%--<option value="">Month</option>--%>
-                                                                <%--<option value="01">01</option>--%>
-                                                                <%--<option value="02">02</option>--%>
-                                                                <%--<option value="03">03</option>--%>
-                                                                <%--<option value="04">04</option>--%>
-                                                                <%--<option value="05">05</option>--%>
-                                                                <%--<option value="06">06</option>--%>
-                                                                <%--<option value="07">07</option>--%>
-                                                                <%--<option value="08">08</option>--%>
-                                                                <%--<option value="09">09</option>--%>
-                                                                <%--<option value="10">10</option>--%>
-                                                                <%--<option value="11">11</option>--%>
-                                                                <%--<option value="12">12</option>--%>
-                                                            <%--</select> <span class="date-separator">/</span>--%>
-                                                            <%--<select name="expiryYear" id="inputExpiryYear" class="form-control control-inline" data-parsley-error-message="Please specify year" data-parsley-errors-container="#error-expiry" required>--%>
-                                                                <%--<option value="">Year</option>--%>
-                                                                <%--<option value="2015">2015</option>--%>
-                                                                <%--<option value="2016">2016</option>--%>
-                                                                <%--<option value="2017">2017</option>--%>
-                                                                <%--<option value="2018">2018</option>--%>
-                                                                <%--<option value="2019">2019</option>--%>
-                                                                <%--<option value="2020">2020</option>--%>
-                                                                <%--<option value="2021">2021</option>--%>
-                                                                <%--<option value="2022">2022</option>--%>
-                                                                <%--<option value="2023">2023</option>--%>
-                                                            <%--</select>--%>
-                                                            <%--<span id="error-expiry"></span>--%>
-                                                        <%--</div>--%>
-                                                    <%--</div>--%>
-                                                    <%--<div class="form-group">--%>
-                                                        <%--<label for="inputSecurityCode" class="col-sm-4 control-label">Security Code</label>--%>
-                                                        <%--<div class="col-sm-8">--%>
-                                                            <%--<input type="text" class="form-control input-security-code" id="inputSecurityCode" data-parsley-type="number" data-parsley-errors-container="#error-security-code" required> <img src="<c:url value='/static/img/cards/credit.png' />" class="img-security-code" alt="Security Code">--%>
-                                                            <%--<div class="clearfix"></div>--%>
-                                                            <%--<span id="error-security-code"></span>--%>
-                                                            <%--<p class="help-block"><em>The last 3 digits displayed on the back of your credit card</em></p>--%>
-                                                        <%--</div>--%>
-                                                    <%--</div>--%>
-                                                <%--</div>--%>
                                             </div>
                                             <label class="fancy-radio payment-option option-paypal">
                                                 <input type="radio" name="paymentMethod" id="radio-paypal" value="Cash">
-                                                <span><i></i> <span><i class="fa fa-paypal"></i> Cash</span></span>
+                                                <span><i></i> <span><i class="fa fa-dollar"></i> Cash</span></span>
                                             </label>
                                             <div class="paypal-input hide-first">
                                             </div>
@@ -247,17 +188,9 @@
                                             <p>Below is the summary of your purchase</p>
                                             <table class="table payment-summary-table">
                                                 <tbody>
-                                                <tr>
-                                                    <td>Subtotal</td>
-                                                    <td>$22.25</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Shipping</td>
-                                                    <td>$0</td>
-                                                </tr>
                                                 <tr class="row-total">
                                                     <td>Total</td>
-                                                    <td>$20.00</td>
+                                                    <td>$${totalPrice}</td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -269,12 +202,10 @@
                         </div>
                         <!-- BUTTONS -->
                         <div class="actions">
-                                <%--<a href="<c:url value='/' />" id="btn-continue-shopping" class="btn btn-default">CONTINUE SHOPPING</a>--%>
-                                <%--<a href="<c:url value='/orders/create' />" id="btn-checkout-next" class="btn btn-primary">CHECKOUT</a>--%>
-                            <a href="#" id="btn-continue-shopping" class="btn btn-default">CONTINUE SHOPPING</a>
-                            <button id="btn-checkout-prev" type="button" class="btn btn-default btn-prev hide-first">PREVIOUS</button>
-                            <button id="btn-checkout-next" type="button" class="btn btn-primary btn-next">CHECKOUT</button>
-                            <button id="btn-checkout-next" type="submit" class="btn btn-primary btn-next">SUBMIT</button>
+                            <a id="btn-back-to-cart" class="btn btn-primary btn-prev" href="<c:url value='/cart'/>">PREVIOUS</a>
+                            <button id="btn-checkout-next" type="button" class="btn btn-primary btn-next">NEXT</button>
+                            <button id="btn-checkout-prev" type="button" class="btn btn-primary btn-prev hide-first">PREVIOUS</button>
+                            <button id="btn-checkout-submit" type="submit" class="btn btn-success btn-next hide-first">SUBMIT</button>
                         </div>
                         <!-- END BUTTONS -->
                     </div>

@@ -143,6 +143,9 @@ $(document).ready(function() {
 
 	/* checkout wizard */
 	if($('#checkout-wizard').length > 0) {
+
+	    setUpAddressValidation();
+
 		$('#checkout-wizard')
 		.wizard()
 		.on('changed.fu.wizard', function(e, data) {
@@ -151,24 +154,23 @@ $(document).ready(function() {
 			}
 
 			if(data.step == 1) { // if step at shopping cart
-				$('#btn-continue-shopping').show();
-				$('#btn-checkout-prev').text('PREVIOUS').addClass('hide-first');
-				$('#btn-checkout-next').text('CHECKOUT');
+                window.location.href = "/cart";
 			} else if(data.step == 2) { // if step at shipping
-				$('#btn-continue-shopping').hide();
-				$('#btn-checkout-prev').text('PREVIOUS').removeClass('hide-first');
-				$('#btn-checkout-next').text('NEXT');
+                $('#btn-back-to-cart').removeClass('hide-first');
+                $('#btn-checkout-next').removeClass('hide-first');
+                $('#btn-checkout-prev').addClass('hide-first');
+                $('#btn-checkout-submit').addClass('hide-first');
 			} else if(data.step == 3) { // if at payment
-				$('#btn-continue-shopping').hide();
-				$('#btn-checkout-prev').text('PREVIOUS');
-				$('#btn-checkout-next').text('PAY NOW')
-					.addClass('btn-paynow');
-			}
+                $('#btn-back-to-cart').addClass('hide-first');
+                $('#btn-checkout-next').addClass('hide-first');
+				$('#btn-checkout-prev').removeClass('hide-first');
+                $('#btn-checkout-submit').removeClass('hide-first');
+            }
 		})
 		.on('actionclicked.fu.wizard', function(e, data) {
 			// validation process for 'next' direction only
-			if($('#form'+data.step).length > 0 && data.direction == 'next') {
-				var parsleyForm = $('#form'+data.step).parsley();
+			if($('#checkout-form').length > 0 && data.direction == 'next') {
+				var parsleyForm = $('#checkout-form').parsley();
 				parsleyForm.validate();
 
 				if(!parsleyForm.isValid())
@@ -188,44 +190,29 @@ $(document).ready(function() {
 		});
 	}
 
-	// quantity spinner at shopping cart
-	if($('.qty-spinner').length > 0) {
-		$('.qty-spinner').TouchSpin({
-			min: 1,
-			max: 999,
-		});
-	}
-
-	// billing and shipping
-	if($('.form-billing-shipping').length > 0) {
-		$('.form-billing-shipping').on('change', function() {
-			if($('#sameAsBilling').is(':checked')) {
-				// disable fields validation
-				$('#shp-firstname').attr('required', false);
-				$('#shp-address1').attr('required', false);
-				$('#shp-country').attr('required', false);
-				$('#shp-phone').attr('required', false);
-
-				$('#shipping-inputs').slideUp('medium');
-			} else {
-				// enable fields validation back
-				$('#shp-firstname').attr('required', true);
-				$('#shp-address1').attr('required', true);
-				$('#shp-country').attr('required', true);
-				$('#shp-phone').attr('required', true);
-
-				$('#shipping-inputs').slideDown('medium');
-			}
-		});
-	}
-
-	// payment methods
 	if($('#checkout-form').length > 0) {
 		$('#checkout-form').on('change', function() {
 			deliveryMethodSelected();
 			addressSelected();
+			setUpAddressValidation();
 		});
 	}
+
+    function setUpAddressValidation() {
+        if($('#new-address-radio').is(':checked') && $('#radio-express').is(':checked')) {
+            $('#newAddressCountry').attr('required', true);
+            $('#newAddressCity').attr('required', true);
+            $('#newAddressStreet').attr('required', true);
+            $('#newAddressApartmentNumber').attr('required', true);
+            $('#newAddressZipCode').attr('required', true);
+        } else {
+            $('#newAddressCountry').attr('required', false);
+            $('#newAddressCity').attr('required', false);
+            $('#newAddressStreet').attr('required', false);
+            $('#newAddressApartmentNumber').attr('required', false);
+            $('#newAddressZipCode').attr('required', false);
+        }
+    }
 
     function addressSelected() {
         if($('#new-address-radio').is(':checked')) {
@@ -244,7 +231,7 @@ $(document).ready(function() {
 			$('.self-pickup-box').slideDown();
 		}
 	}
-	
+
 	/* shop by category navigation toggle */
 	$('.shop-by-category .category-toggle').on('click', function(e) {
 		e.preventDefault();

@@ -35,9 +35,6 @@ public class Product implements Serializable {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "productList")
-    private List<Orders> ordersList = new ArrayList<>();
-
     @NotNull
     @Column(name = "weight", nullable = false)
     private Double weight;
@@ -76,14 +73,16 @@ public class Product implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
+    private List<SoldProductInfo> soldProductInfoList = new ArrayList<>();
+
     public Product() {
     }
 
-    public Product(String name, Double price, Category category, List<Orders> ordersList, Double weight, Double volume, Double stock, Brand brand, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant, String description) {
+    public Product(String name, Double price, Category category, Double weight, Double volume, Double stock, Brand brand, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant, String description, List<SoldProductInfo> soldProductInfoList) {
         this.name = name;
         this.price = price;
         this.category = category;
-        this.ordersList = ordersList;
         this.weight = weight;
         this.volume = volume;
         this.stock = stock;
@@ -94,6 +93,7 @@ public class Product implements Serializable {
         this.gender = gender;
         this.waterResistant = waterResistant;
         this.description = description;
+        this.soldProductInfoList = soldProductInfoList;
     }
 
     public Long getId() {
@@ -126,14 +126,6 @@ public class Product implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public List<Orders> getOrdersList() {
-        return ordersList;
-    }
-
-    public void setOrdersList(List<Orders> ordersList) {
-        this.ordersList = ordersList;
     }
 
     public Double getWeight() {
@@ -214,6 +206,14 @@ public class Product implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<SoldProductInfo> getSoldProductInfoList() {
+        return soldProductInfoList;
+    }
+
+    public void setSoldProductInfoList(List<SoldProductInfo> soldProductInfoList) {
+        this.soldProductInfoList = soldProductInfoList;
     }
 
     @Override

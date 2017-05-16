@@ -7182,4 +7182,13 @@ ul.nav-categories > li > a:hover {
 .custom-checkbox input[type="checkbox"] {
   margin: 4px 0 0;
 }
-
+.button-box-center {
+  max-width: 510px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.two-button-box {
+  max-width: 510px;
+  padding: 15px;
+  margin: 0 auto;
+}
