@@ -85,12 +85,24 @@ public class SoldProductInfo implements Serializable {
 
         SoldProductInfo that = (SoldProductInfo) o;
 
-        return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        if (getProduct() != null ? !getProduct().equals(that.getProduct()) : that.getProduct() != null)
+            return false;
+        if (getOrders() != null ? !getOrders().equals(that.getOrders()) : that.getOrders() != null)
+            return false;
+        if (getSoldPrice() != null ? !getSoldPrice().equals(that.getSoldPrice()) : that.getSoldPrice() != null)
+            return false;
+        return getSoldQuantity() != null ? getSoldQuantity().equals(that.getSoldQuantity()) : that.getSoldQuantity() == null;
     }
 
     @Override
     public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getProduct() != null ? getProduct().hashCode() : 0);
+        result = 31 * result + (getOrders() != null ? getOrders().hashCode() : 0);
+        result = 31 * result + (getSoldPrice() != null ? getSoldPrice().hashCode() : 0);
+        result = 31 * result + (getSoldQuantity() != null ? getSoldQuantity().hashCode() : 0);
+        return result;
     }
 
     @Override

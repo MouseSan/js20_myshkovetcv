@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import ru.tsystems.js20.myshkovetcv.dto.ProductDto;
-import ru.tsystems.js20.myshkovetcv.model.Orders;
 import ru.tsystems.js20.myshkovetcv.model.SoldProductInfo;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -23,6 +23,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private OrdersService ordersService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private SoldProductInfoService soldProductInfoService;
     private Map<ProductDto, Integer> productMap = new HashMap<>();
 
     @Override
@@ -132,8 +134,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void copyProductsFromOrder(Long orderId) {
-        Orders orders = ordersService.findById(orderId);
-        for (SoldProductInfo soldProductInfo : orders.getSoldProductInfoList()){
+        List<SoldProductInfo> soldProductInfoList = soldProductInfoService
+                .getListOfSoldProductsByOrderId(ordersService.findById(orderId));
+        for (SoldProductInfo soldProductInfo : soldProductInfoList){
             Long productId = soldProductInfo.getProduct().getId();
             Integer soldQuantity = soldProductInfo.getSoldQuantity();
 

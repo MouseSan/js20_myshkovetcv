@@ -55,11 +55,22 @@
             <div class="button-box-center">
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="<c:url value='/orders/all' />" class="btn btn-primary">All</a>
-                        <a href="<c:url value='/orders/pending' />" class="btn btn-primary">Pending</a>
-                        <a href="<c:url value='/orders/waitingforshipment' />" class="btn btn-primary">Waiting for shipment</a>
-                        <a href="<c:url value='/orders/shipped' />" class="btn btn-primary">Shipped</a>
-                        <a href="<c:url value='/orders/completed' />" class="btn btn-primary">Completed</a>
+                        <c:choose>
+                            <c:when test="${adminPanel != null}">
+                                <a href="<c:url value='/admin/orders/' />" class="btn btn-primary">All</a>
+                                <a href="<c:url value='/admin/orders/pending/' />" class="btn btn-primary">Pending</a>
+                                <a href="<c:url value='/admin/orders/waitingforshipment/' />" class="btn btn-primary">Waiting for shipment</a>
+                                <a href="<c:url value='/admin/orders/shipped/' />" class="btn btn-primary">Shipped</a>
+                                <a href="<c:url value='/admin/orders/completed/' />" class="btn btn-primary">Completed</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="<c:url value='/orders/all' />" class="btn btn-primary">All</a>
+                                <a href="<c:url value='/orders/pending' />" class="btn btn-primary">Pending</a>
+                                <a href="<c:url value='/orders/waitingforshipment' />" class="btn btn-primary">Waiting for shipment</a>
+                                <a href="<c:url value='/orders/shipped' />" class="btn btn-primary">Shipped</a>
+                                <a href="<c:url value='/orders/completed' />" class="btn btn-primary">Completed</a>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>

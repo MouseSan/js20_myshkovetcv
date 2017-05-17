@@ -39,7 +39,7 @@
     <div class="shop-main login">
         <div class="container">
             <div class="error-container">
-                <h1>404</h1>
+                <h1>403</h1>
                 <h2>OOPS! ACCESS DENIED</h2>
                 <hr />
                 <p>You might not have the necessary permissions for a resource.</p>

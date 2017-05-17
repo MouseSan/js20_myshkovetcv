@@ -13,7 +13,7 @@ import ru.tsystems.js20.myshkovetcv.service.OrdersService;
 import ru.tsystems.js20.myshkovetcv.service.ShoppingCartService;
 
 @Controller
-@RequestMapping("/orders")
+@RequestMapping("/")
 public class OrdersController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class OrdersController {
     @Autowired
     private OrdersService ordersService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/create", method = RequestMethod.GET)
     public String getCreateOrderPage(ModelMap model) {
         if(!shoppingCartService.allProductsAvailable()) {
             return "redirect:/cart?notEnoughQuantity=true";
@@ -30,7 +30,7 @@ public class OrdersController {
         return "ordersCreate";
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/orders/create", method = RequestMethod.POST)
     public String createOrder(OrdersDto ordersDto, BindingResult result, ModelMap model) {
         if(!shoppingCartService.allProductsAvailable()) {
             return "redirect:/cart?notEnoughQuantity=true";
@@ -39,37 +39,37 @@ public class OrdersController {
         return "redirect:/orders/all";
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public String getAllOrders(ModelMap model) {
-        model.addAllAttributes(ordersService.getOrdersListModel());
+    @RequestMapping(value = "/orders/all", method = RequestMethod.GET)
+    public String getAllUserOrders(ModelMap model) {
+        model.addAllAttributes(ordersService.getCurrentUserOrdersListModel());
         return "ordersList";
     }
 
-    @RequestMapping(value = "/pending", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/pending", method = RequestMethod.GET)
     public String getPendingOrders(ModelMap model) {
-        model.addAllAttributes(ordersService.getOrdersListModel(OrdersState.Pending));
+        model.addAllAttributes(ordersService.getCurrentUserOrdersListModel(OrdersState.Pending));
         return "ordersList";
     }
 
-    @RequestMapping(value = "/waitingforshipment", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/waitingforshipment", method = RequestMethod.GET)
     public String getWaitingForShipmentOrders(ModelMap model) {
-        model.addAllAttributes(ordersService.getOrdersListModel(OrdersState.WaitingForShipment));
+        model.addAllAttributes(ordersService.getCurrentUserOrdersListModel(OrdersState.WaitingForShipment));
         return "ordersList";
     }
 
-    @RequestMapping(value = "/shipped", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/shipped", method = RequestMethod.GET)
     public String getShippedOrders(ModelMap model) {
-        model.addAllAttributes(ordersService.getOrdersListModel(OrdersState.Shipped));
+        model.addAllAttributes(ordersService.getCurrentUserOrdersListModel(OrdersState.Shipped));
         return "ordersList";
     }
 
-    @RequestMapping(value = "/completed", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/completed", method = RequestMethod.GET)
     public String getCompletedOrders(ModelMap model) {
-        model.addAllAttributes(ordersService.getOrdersListModel(OrdersState.Completed));
+        model.addAllAttributes(ordersService.getCurrentUserOrdersListModel(OrdersState.Completed));
         return "ordersList";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
     public String getOrderPageById(@PathVariable Long id, ModelMap model) {
         if (ordersService.currentUserHaveAccess(id)) {
             model.addAllAttributes(ordersService.getOrdersModelById(id));
@@ -79,7 +79,7 @@ public class OrdersController {
         }
     }
 
-    @RequestMapping(value = "/repeat-{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/repeat-{id}", method = RequestMethod.GET)
     public String copyOrderById(@PathVariable Long id, ModelMap model) {
         if (ordersService.currentUserHaveAccess(id)) {
             shoppingCartService.copyProductsFromOrder(id);
@@ -87,5 +87,35 @@ public class OrdersController {
         } else {
             return "page403AccessDenied";
         }
+    }
+
+    @RequestMapping(value = "/admin/orders/", method = RequestMethod.GET)
+    public String getAllOrders(ModelMap model) {
+        model.addAllAttributes(ordersService.getAllOrdersListModel());
+        return "ordersList";
+    }
+
+    @RequestMapping(value = "/admin/orders/pending/", method = RequestMethod.GET)
+    public String getAllPendingOrders(ModelMap model) {
+        model.addAllAttributes(ordersService.getAllOrdersListModel(OrdersState.Pending));
+        return "ordersList";
+    }
+
+    @RequestMapping(value = "/admin/orders/waitingforshipment/", method = RequestMethod.GET)
+    public String getAllWaitingForShipmentOrders(ModelMap model) {
+        model.addAllAttributes(ordersService.getAllOrdersListModel(OrdersState.WaitingForShipment));
+        return "ordersList";
+    }
+
+    @RequestMapping(value = "/admin/orders/shipped/", method = RequestMethod.GET)
+    public String getAllShippedOrders(ModelMap model) {
+        model.addAllAttributes(ordersService.getAllOrdersListModel(OrdersState.Shipped));
+        return "ordersList";
+    }
+
+    @RequestMapping(value = "/admin/orders/completed/", method = RequestMethod.GET)
+    public String getAllCompletedOrders(ModelMap model) {
+        model.addAllAttributes(ordersService.getAllOrdersListModel(OrdersState.Completed));
+        return "ordersList";
     }
 }

@@ -1,6 +1,9 @@
 package ru.tsystems.js20.myshkovetcv.dao;
 
+import ru.tsystems.js20.myshkovetcv.model.Orders;
 import ru.tsystems.js20.myshkovetcv.model.SoldProductInfo;
+
+import java.util.List;
 
 public interface SoldProductInfoDao {
 
@@ -8,4 +11,5 @@ public interface SoldProductInfoDao {
 
     void updateSoldProductInfo(SoldProductInfo soldProductInfo);
 
+    List<SoldProductInfo> getListByOrderId(Orders orders);
 }

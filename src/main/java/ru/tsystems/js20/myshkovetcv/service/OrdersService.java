@@ -16,7 +16,9 @@ public interface OrdersService {
 
     void updateOrders(Orders orders);
 
-    List<Orders> findAllOrders();
+    List<OrdersDto> findAllOrdersDto();
+
+    List<OrdersDto> findAllOrdersDtoByState(OrdersState ordersState);
 
     List<OrdersDto> findAllOrdersDtoByUserDto(UserDto userDto);
 
@@ -24,11 +26,15 @@ public interface OrdersService {
 
     ModelMap getOrdersModel();
 
-    ModelMap getOrdersListModel();
+    ModelMap getCurrentUserOrdersListModel();
 
-    ModelMap getOrdersListModel(OrdersState ordersState);
+    ModelMap getCurrentUserOrdersListModel(OrdersState ordersState);
 
     ModelMap getOrdersModelById(Long ordersId);
+
+    ModelMap getAllOrdersListModel();
+
+    ModelMap getAllOrdersListModel(OrdersState ordersState);
 
     boolean currentUserHaveAccess(Long orderId);
 }

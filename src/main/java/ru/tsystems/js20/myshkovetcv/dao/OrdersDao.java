@@ -18,5 +18,7 @@ public interface OrdersDao {
 
     List<Orders> findAllOrdersByUser(User user);
 
+    List<Orders> findAllOrdersByState(OrdersState ordersState);
+
     List<Orders> findAllOrdersByUserAndState(User user, OrdersState ordersState);
 }

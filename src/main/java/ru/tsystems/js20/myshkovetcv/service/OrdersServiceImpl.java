@@ -11,6 +11,7 @@ import ru.tsystems.js20.myshkovetcv.model.SoldProductInfo;
 import ru.tsystems.js20.myshkovetcv.model.User;
 import ru.tsystems.js20.myshkovetcv.model.enums.DeliveryMethod;
 import ru.tsystems.js20.myshkovetcv.model.enums.OrdersState;
+import ru.tsystems.js20.myshkovetcv.model.enums.PaymentMethod;
 import ru.tsystems.js20.myshkovetcv.model.enums.PaymentState;
 
 import java.util.ArrayList;
@@ -69,7 +70,6 @@ public class OrdersServiceImpl implements OrdersService {
 
         ordersDao.save(orders);
 
-//        List<SoldProductInfo> soldProductInfos = new ArrayList<>();
         Map<ProductDto, Integer> productMap = shoppingCartService.getProductMap();
         for (Map.Entry<ProductDto, Integer> entry : productMap.entrySet()) {
             ProductDto productDto = entry.getKey();
@@ -79,11 +79,7 @@ public class OrdersServiceImpl implements OrdersService {
             SoldProductInfo soldProductInfo = new SoldProductInfo(productService.findById(productDto.getId()),
                     orders, productDto.getPrice(), entry.getValue());
             soldProductInfoService.saveSoldProductInfo(soldProductInfo);
-//            soldProductInfos.add(soldProductInfo);
         }
-
-//        orders.setSoldProductInfoList(soldProductInfos);
-//        ordersDao.updateOrders(orders);
 
         shoppingCartService.removeAllProductFromCart();
     }
@@ -97,8 +93,23 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public List<Orders> findAllOrders() {
-        return ordersDao.findAllOrders();
+    public List<OrdersDto> findAllOrdersDto() {
+        List<Orders> ordersList = ordersDao.findAllOrders();
+        List<OrdersDto> ordersDtoList = new ArrayList<>();
+        for (Orders orders : ordersList) {
+            ordersDtoList.add(new OrdersDto(orders));
+        }
+        return ordersDtoList;
+    }
+
+    @Override
+    public List<OrdersDto> findAllOrdersDtoByState(OrdersState ordersState) {
+        List<Orders> ordersList = ordersDao.findAllOrdersByState(ordersState);
+        List<OrdersDto> ordersDtoList = new ArrayList<>();
+        for (Orders orders : ordersList) {
+            ordersDtoList.add(new OrdersDto(orders));
+        }
+        return ordersDtoList;
     }
 
     @Override
@@ -132,7 +143,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public ModelMap getOrdersListModel() {
+    public ModelMap getCurrentUserOrdersListModel() {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
         modelMap.addAttribute("ordersList", findAllOrdersDtoByUserDto(userService.getCurrentUserDto()));
@@ -140,7 +151,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public ModelMap getOrdersListModel(OrdersState ordersState) {
+    public ModelMap getCurrentUserOrdersListModel(OrdersState ordersState) {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
         modelMap.addAttribute("ordersList", findAllOrdersDtoByUserDtoAndState(userService.getCurrentUserDto(), ordersState));
@@ -158,7 +169,29 @@ public class OrdersServiceImpl implements OrdersService {
             soldProductInfoDtos.add(new SoldProductInfoDto(soldProductInfo));
         }
         modelMap.addAttribute("productList", soldProductInfoDtos);
+        modelMap.addAttribute("ordersStateList", OrdersState.values());
+        modelMap.addAttribute("paymentStateList", PaymentState.values());
+        modelMap.addAttribute("deliveryMethodList", DeliveryMethod.values());
+        modelMap.addAttribute("paymentMethodList", PaymentMethod.values());
         modelMap.addAttribute("order", new OrdersDto(orders));
+        return modelMap;
+    }
+
+    @Override
+    public ModelMap getAllOrdersListModel() {
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAttribute("ordersList", findAllOrdersDto());
+        modelMap.addAttribute("adminPanel", true);
+        return modelMap;
+    }
+
+    @Override
+    public ModelMap getAllOrdersListModel(OrdersState ordersState) {
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAttribute("ordersList", findAllOrdersDtoByState(ordersState));
+        modelMap.addAttribute("adminPanel", true);
         return modelMap;
     }
 

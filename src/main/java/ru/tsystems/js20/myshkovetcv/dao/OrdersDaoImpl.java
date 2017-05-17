@@ -43,6 +43,15 @@ public class OrdersDaoImpl extends AbstractDao<Long, Orders> implements OrdersDa
     }
 
     @Override
+    public List<Orders> findAllOrdersByState(OrdersState ordersState) {
+        List<Orders> ordersList = getEntityManager()
+                .createQuery("SELECT o FROM Orders o WHERE o.ordersState = :ordersState")
+                .setParameter("ordersState", ordersState)
+                .getResultList();
+        return ordersList;
+    }
+
+    @Override
     public List<Orders> findAllOrdersByUserAndState(User user, OrdersState ordersState) {
         List<Orders> ordersList = getEntityManager()
                 .createQuery("SELECT o FROM Orders o WHERE o.user = :user AND o.ordersState = :ordersState")

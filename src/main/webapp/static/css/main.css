@@ -7192,3 +7192,8 @@ ul.nav-categories > li > a:hover {
   padding: 15px;
   margin: 0 auto;
 }
+.three-button-box {
+  max-width: 710px;
+  padding: 15px;
+  margin: 0 auto;
+}
