@@ -2793,6 +2793,18 @@ a.pp_previous i {
 .shopping-cart-table .item {
   width: 40%;
 }
+.shopping-cart-table .item-image {
+  width: 20%;
+}
+.shopping-cart-table .item-parameters {
+  width: 70%;
+}
+.shopping-cart-table .item-user-name {
+  width: 40%;
+}
+.shopping-cart-table .item-user-email {
+  width: 45%;
+}
 .shopping-cart-table .remove {
   width: 5%;
 }

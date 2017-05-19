@@ -24,6 +24,8 @@ public interface OrdersService {
 
     List<OrdersDto> findAllOrdersDtoByUserDtoAndState(UserDto userDto, OrdersState ordersState);
 
+    List<OrdersDto> getTopBuyers(Integer numberOfTops);
+
     ModelMap getOrdersModel();
 
     ModelMap getCurrentUserOrdersListModel();

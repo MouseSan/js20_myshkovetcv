@@ -1,6 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ru.tsystems.js20.myshkovetcv.model.Product;
 import ru.tsystems.js20.myshkovetcv.model.SoldProductInfo;
 
 public class SoldProductInfoDto {
@@ -37,6 +38,11 @@ public class SoldProductInfoDto {
         this.ordersDto = new OrdersDto(soldProductInfo.getOrders());
         this.soldPrice = soldProductInfo.getSoldPrice();
         this.soldQuantity = soldProductInfo.getSoldQuantity();
+    }
+
+    public SoldProductInfoDto(Product product, Integer soldQuantity) {
+        this.productDto = new ProductDto(product);
+        this.soldQuantity = soldQuantity;
     }
 
     public Long getId() {

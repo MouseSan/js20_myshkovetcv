@@ -88,6 +88,11 @@ public class Orders implements Serializable {
     public Orders() {
     }
 
+    public Orders(User user, Double totalPrice) {
+        this.user = user;
+        this.totalPrice = totalPrice;
+    }
+
     public Long getId() {
         return id;
     }

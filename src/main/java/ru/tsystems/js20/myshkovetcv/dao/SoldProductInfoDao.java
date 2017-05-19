@@ -12,4 +12,6 @@ public interface SoldProductInfoDao {
     void updateSoldProductInfo(SoldProductInfo soldProductInfo);
 
     List<SoldProductInfo> getListByOrderId(Orders orders);
+
+    List<SoldProductInfo> getTopSoldProducts(Integer numberOfTops);
 }

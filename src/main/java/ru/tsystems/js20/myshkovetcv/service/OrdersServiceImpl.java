@@ -133,6 +133,16 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    public List<OrdersDto> getTopBuyers(Integer numberOfTops) {
+        List<Orders> ordersList = ordersDao.getTopBuyers(numberOfTops);
+        List<OrdersDto> ordersDtoList = new ArrayList<>();
+        for (Orders orders : ordersList) {
+            ordersDtoList.add(new OrdersDto(orders.getUser(), orders.getTotalPrice()));
+        }
+        return ordersDtoList;
+    }
+
+    @Override
     public ModelMap getOrdersModel() {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());

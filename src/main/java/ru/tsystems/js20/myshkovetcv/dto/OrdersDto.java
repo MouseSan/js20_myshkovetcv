@@ -3,6 +3,7 @@ package ru.tsystems.js20.myshkovetcv.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.tsystems.js20.myshkovetcv.model.Orders;
+import ru.tsystems.js20.myshkovetcv.model.User;
 import ru.tsystems.js20.myshkovetcv.model.enums.DeliveryMethod;
 import ru.tsystems.js20.myshkovetcv.model.enums.OrdersState;
 import ru.tsystems.js20.myshkovetcv.model.enums.PaymentMethod;
@@ -63,6 +64,11 @@ public class OrdersDto {
     private Date dateOfOrder;
 
     public OrdersDto() {
+    }
+
+    public OrdersDto(User user, Double totalPrice) {
+        this.userDto = new UserDto(user);
+        this.totalPrice = totalPrice;
     }
 
     public OrdersDto(Long id, String deliveryAddress, PaymentMethod paymentMethod, DeliveryMethod deliveryMethod, String newAddressCountry, String newAddressCity, String newAddressStreet, String newAddressApartmentNumber, String newAddressZipCode, UserDto userDto, PaymentState paymentState, OrdersState ordersState, List<ProductDto> productDtoList, Integer totalQuantity, Double totalPrice, Date dateOfOrder) {

@@ -21,4 +21,6 @@ public interface OrdersDao {
     List<Orders> findAllOrdersByState(OrdersState ordersState);
 
     List<Orders> findAllOrdersByUserAndState(User user, OrdersState ordersState);
+
+    List<Orders> getTopBuyers(Integer numberOfTops);
 }

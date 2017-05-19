@@ -30,8 +30,8 @@ public class ProductServiceImpl implements ProductService {
     private BrandService brandService;
     @Autowired
     private CategoryService categoryService;
-    @Autowired
-    private JmsService jmsService;
+//    @Autowired
+//    private JmsService jmsService;
 
     @Override
     public Product findById(Long id) {
@@ -87,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
                 product.setWaterResistant(productDto.getWaterResistant());
                 product.setDescription(productDto.getDescription());
                 productDao.updateProduct(product);
-                jmsService.sendMessage("UPDATE");
+//                jmsService.sendMessage("UPDATE");
                 return true;
             } else {
                 return false;

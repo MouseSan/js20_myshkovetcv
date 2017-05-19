@@ -31,6 +31,11 @@ public class SoldProductInfo implements Serializable {
     public SoldProductInfo() {
     }
 
+    public SoldProductInfo(Product product, Long soldQuantity) {
+        this.product = product;
+        this.soldQuantity = soldQuantity.intValue();
+    }
+
     public SoldProductInfo(Product product, Orders orders, Double soldPrice, Integer soldQuantity) {
         this.product = product;
         this.orders = orders;
