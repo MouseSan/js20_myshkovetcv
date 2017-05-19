@@ -15,7 +15,7 @@ import ru.tsystems.js20.myshkovetcv.converter.BrandConverter;
 import ru.tsystems.js20.myshkovetcv.converter.CategoryConverter;
 
 @Configuration
-@Import(JpaConfiguration.class)
+@Import({JpaConfiguration.class, JmsConfig.class})
 @EnableWebMvc
 @ComponentScan(basePackages = "ru.tsystems.js20.myshkovetcv")
 public class AppConfig extends WebMvcConfigurerAdapter {

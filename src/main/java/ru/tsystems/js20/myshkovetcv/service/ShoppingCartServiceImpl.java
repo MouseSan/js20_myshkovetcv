@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -16,6 +18,8 @@ import java.util.Map;
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
 public class ShoppingCartServiceImpl implements ShoppingCartService {
+
+    Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ProductService productService;
@@ -37,6 +41,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         } else {
             productMap.put(productDto, 1);
         }
+        log.info("Add product to cart");
     }
 
     @Override
@@ -63,6 +68,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (productMap.containsKey(productDto)) {
             productMap.remove(productDto);
         }
+        log.info("Remove product from cart");
     }
 
     @Override
@@ -78,6 +84,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 productMap.remove(productDto);
             }
         }
+        log.info("Remove all products from cart");
     }
 
     @Override
