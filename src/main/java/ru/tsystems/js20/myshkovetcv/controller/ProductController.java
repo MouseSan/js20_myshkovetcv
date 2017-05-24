@@ -6,13 +6,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ru.tsystems.js20.myshkovetcv.dto.ProductDto;
 import ru.tsystems.js20.myshkovetcv.service.ProductService;
+import ru.tsystems.js20.myshkovetcv.service.WebService;
 import ru.tsystems.js20.myshkovetcv.validators.ProductDtoValidator;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -22,6 +22,8 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private ProductDtoValidator productDtoValidator;
+    @Autowired
+    private WebService webService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -66,5 +68,11 @@ public class ProductController {
 
         productService.updateProduct(productDto);
         return "redirect:/admin/products/";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getTopProductsList", method = RequestMethod.GET)
+    public List<ProductDto> getTopSoldProductsList(){
+        return webService.getProducts();
     }
 }

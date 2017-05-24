@@ -27,11 +27,11 @@
                         </c:forEach>
                     </ul>
                 </li>
-                <sec:authorize access="isAuthenticated()" var="isLoggedIn"/>
                 <sec:authorize access="hasRole('ADMIN')">
                     <li class="dropdown ">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADMIN PANEL  <i class="fa fa-angle-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
+                            <li><a href="<c:url value='/admin/storefront/' />">Storefront settings</a></li>
                             <li><a href="<c:url value='/admin/reports/' />">Reports</a></li>
                             <li><a href="<c:url value='/admin/orders/' />">Orders</a></li>
                             <li><a href="<c:url value='/admin/products/' />">Products</a></li>
@@ -46,9 +46,10 @@
                         <span class="cart-count">${quantityInCart}</span>
                     </a>
                 </li>
+                <sec:authorize access="isAuthenticated()" var="isLoggedIn"/>
                 <c:choose>
                     <c:when test="${isLoggedIn}">
-                        <li class="dropdown ">
+                        <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, Username  <i class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="<c:url value='/orders/all' />">Orders</a></li>

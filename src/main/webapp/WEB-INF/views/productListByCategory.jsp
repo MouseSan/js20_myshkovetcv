@@ -220,11 +220,11 @@
                     <!-- PRODUCT GRID -->
                     <section class="product-grid">
                         <div class="row">
+                            <sec:authorize access="hasRole('ADMIN')" var="admin"/>
                             <c:forEach items="${productList}" var="product" varStatus="productListCount">
                                 <div class="col-lg-4 col-sm-6">
                                     <div class="product-item">
                                         <a href="<c:url value='/products/${product.id}' />"><img src="<c:url value='/static/img/products/wfashion1.png' />" class="img-responsive center-block" alt="Product Item"></a>
-                                        <sec:authorize access="hasRole('ADMIN')" var="admin"/>
                                         <c:choose>
                                             <c:when test="${admin}">
                                                 <div class="row">

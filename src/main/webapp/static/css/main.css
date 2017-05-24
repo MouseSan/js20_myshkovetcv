@@ -5646,7 +5646,7 @@ ul.sidebar-nav ul.submenu li:first-child a {
   border-radius: 20px;
   content: '';
   display: block;
-  position: absolute;
+  position: sticky;
   top: 6px;
   right: 0;
   width: 50px;
@@ -5656,6 +5656,7 @@ ul.sidebar-nav ul.submenu li:first-child a {
   border-color: #ccc;
   background: #fff;
   font-style: normal;
+  margin-top: 6px;
 }
 .switch-input i:before {
   -moz-border-radius: 50%;

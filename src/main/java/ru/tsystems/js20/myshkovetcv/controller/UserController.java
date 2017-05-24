@@ -4,9 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.tsystems.js20.myshkovetcv.dto.UserDto;
@@ -23,11 +20,6 @@ public class UserController {
     @Autowired
     private UserDtoValidator userDtoValidator;
 
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(userDtoValidator);
-    }
-
     @RequestMapping(value = "/userSettings/", method = RequestMethod.GET)
     public String getUserSettingsPage(ModelMap model) {
         model.addAllAttributes(userService.getUserSettingsWithAddressesModel());
@@ -41,7 +33,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/userSettings/editGeneral", method = RequestMethod.POST)
-    public String updateUserSettings(@Validated UserDto userDto, BindingResult result, ModelMap model) {
+    public String updateUserSettings(UserDto userDto, BindingResult result, ModelMap model) {
+        userDto.setUserDtoValidationType(UserDtoValidationType.UserGeneralInfo);
+        userDtoValidator.validate(userDto, result);
         if (result.hasErrors()) {
             model.mergeAttributes(userService.getUserSettingsModel(UserDtoValidationType.UserGeneralInfo));
             return "userSettingsGeneral";
@@ -62,7 +56,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/userSettings/changePassword", method = RequestMethod.POST)
-    public String updateUserPass(@Validated UserDto userDto, BindingResult result, ModelMap model) {
+    public String updateUserPass(UserDto userDto, BindingResult result, ModelMap model) {
+        userDto.setUserDtoValidationType(UserDtoValidationType.Password);
+        userDtoValidator.validate(userDto, result);
         if (result.hasErrors()) {
             model.mergeAttributes(userService.getUserSettingsModel(UserDtoValidationType.Password));
             return "userSettingsPassword";

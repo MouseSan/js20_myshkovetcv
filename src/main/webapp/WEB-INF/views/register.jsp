@@ -46,7 +46,6 @@
                     <div class="account-box login-box box-with-help">
                         <h1>Create an account</h1>
                         <form:form method="POST" modelAttribute="userDto" class="form-horizontal" role="form">
-                            <form:input type="hidden" path="userDtoValidationType" id="userDtoValidationType" title="Registration"/>
                             <div class="form-group">
                                 <label for="userName" class="control-label sr-only">User name</label>
                                 <div class="col-sm-12">

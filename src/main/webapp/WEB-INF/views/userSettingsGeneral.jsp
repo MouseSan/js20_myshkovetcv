@@ -57,7 +57,6 @@
     <div class="shop-main">
         <div class="container">
             <form:form method="POST" modelAttribute="userDto" class="form-horizontal" role="form">
-                <form:input type="hidden" path="userDtoValidationType" id="userDtoValidationType"/>
                 <form:input type="hidden" path="id" id="id"/>
                 <div class="form-group form-group-lg">
                     <label for="firstName" class="col-sm-3 control-label">First name</label>

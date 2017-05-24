@@ -149,9 +149,19 @@
                     </div>
                 </div>
                 <div class="form-group form-group-lg">
-                    <label for="backlight" class="col-sm-3 control-label">Backlight</label>
-                    <div class="col-sm-9 custom-checkbox">
-                        <form:checkbox path="backlight" id="backlight"/>
+                    <label class="col-sm-3 control-label">Backlight</label>
+                    <div class="col-sm-9">
+                        <label class="switch-input" for="backlight">
+                            <c:choose>
+                                <c:when test="${productDto.backlight}">
+                                    <input type="checkbox" name="backlight" id="backlight" checked>
+                                </c:when>
+                                <c:otherwise>
+                                    <input type="checkbox" name="backlight" id="backlight">
+                                </c:otherwise>
+                            </c:choose>
+                            <i data-swon-text="YES" data-swoff-text="NO"></i>
+                        </label>
                     </div>
                 </div>
                 <div class="form-group form-group-lg">

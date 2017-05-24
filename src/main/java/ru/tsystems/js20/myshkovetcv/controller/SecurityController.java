@@ -7,9 +7,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.tsystems.js20.myshkovetcv.dto.UserDto;
@@ -28,11 +25,6 @@ public class SecurityController {
     private UserService userService;
     @Autowired
     private UserDtoValidator userDtoValidator;
-
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(userDtoValidator);
-    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
@@ -55,7 +47,9 @@ public class SecurityController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerNewUser(@Validated UserDto userDto, BindingResult result, ModelMap model) {
+    public String registerNewUser(UserDto userDto, BindingResult result, ModelMap model) {
+        userDto.setUserDtoValidationType(UserDtoValidationType.Registration);
+        userDtoValidator.validate(userDto, result);
         if (result.hasErrors()) {
             return "register";
         }
