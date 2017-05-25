@@ -232,6 +232,22 @@ $(document).ready(function() {
 		}
 	}
 
+    if($('#storefront-form').length > 0) {
+        $('#storefront-form').on('change', function() {
+            storefrontTypeSelected();
+        });
+    }
+
+    function storefrontTypeSelected() {
+        if($('#radio-top-ten').is(':checked')) {
+            $('.top-ten-box').slideDown();
+            $('.custom-list-box').slideUp();
+        } else {
+            $('.top-ten-box').slideUp();
+            $('.custom-list-box').slideDown();
+        }
+    }
+
 	/* shop by category navigation toggle */
 	$('.shop-by-category .category-toggle').on('click', function(e) {
 		e.preventDefault();
