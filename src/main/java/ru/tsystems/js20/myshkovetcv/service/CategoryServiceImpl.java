@@ -62,14 +62,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ModelMap getCategoryListModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         return modelMap;
     }
 
     @Override
     public ModelMap getCategoryModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("categoryDto", new CategoryDto());
         return modelMap;
     }
@@ -77,7 +77,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ModelMap getCategoryModelById(Long id) {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("categoryDto", new CategoryDto(findById(id)));
         return modelMap;
     }

@@ -19,6 +19,8 @@ public class BrandServiceImpl implements BrandService {
     private BrandDao brandDao;
     @Autowired
     private NavBarService navBarService;
+    @Autowired
+    private UserService userService;
 
     @Override
     public Brand findById(Long id) {
@@ -73,7 +75,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public ModelMap getBrandListModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("brandList", getAllBrandDto());
         return modelMap;
     }
@@ -81,7 +83,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public ModelMap getBrandModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("brandDto", new BrandDto());
         return modelMap;
     }
@@ -89,7 +91,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public ModelMap getBrandModelById(Long id) {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("brandDto", new BrandDto(findById(id)));
         return modelMap;
     }

@@ -1,7 +1,6 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,16 +26,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private MessageSource messageSource;
-    @Autowired
     private UserAddressService userAddressService;
     @Autowired
-    private CategoryService categoryService;
-    @Autowired
     private NavBarService navBarService;
-    @Autowired
-    private ShoppingCartService shoppingCartService;
-
 
     @Override
     public User findById(Long id) {
@@ -148,7 +140,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ModelMap getUserSettingsWithAddressesModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("userDto", getCurrentUserDto());
         modelMap.addAttribute("addressList", userAddressService.findAllAddressesCurrentUser());
         return modelMap;
@@ -157,7 +149,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ModelMap getUserSettingsModel(UserDtoValidationType validationType) {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         UserDto userDto = getCurrentUserDto();
         userDto.setUserDtoValidationType(validationType);
         modelMap.addAttribute("userDto", userDto);

@@ -5,32 +5,8 @@
 <html lang="en">
 
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Responsive Multipurpose Bootstrap Theme">
-    <meta name="author" content="MyshkovetcVV">
-
-    <title>Shop Shoe - Category management</title>
-
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/bootstrap.css' />" />
-    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/font-awesome.min.css' />" />
-    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/main.css' />" />
-    <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/shop-main.css' />" />
-
-    <!-- GOOGLE FONTS -->
-    <link rel="stylesheet" type="text/css" href="<c:url value='http://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700' />" >
-    <link rel="stylesheet" type="text/css" href="<c:url value='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,300italic,400italic,700,400,300' />" >
-
-    <!-- FAVICONS -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<c:url value='/static/ico/repute144x144.png' />" >
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<c:url value='/static/ico/repute114x114.png' />" >
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<c:url value='/static/ico/repute72x72.png' />" >
-    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="<c:url value='/static/ico/repute57x57.png' />" >
-    <link rel="shortcut icon" href="<c:url value='/static/ico/favicon.png' />">
-
+    <c:import url="common/headTag.jsp"/>
+    <title>Watch shop - ${productDto.name}</title>
 </head>
 
 <body>
@@ -39,10 +15,7 @@
 <div class="wrapper">
 
     <!-- NAVBAR -->
-    <c:import url="common/navBar.jsp">
-        <c:param name="categoryList" value="${categoryList}"/>
-        <c:param name="quantityInCart" value="${quantityInCart}"/>
-    </c:import>
+    <c:import url="common/navBar.jsp"/>
     <!-- END NAVBAR -->
 
     <!-- BREADCRUMBS -->
@@ -64,19 +37,29 @@
                         <div id="product-images" class="carousel slide product-images" data-ride="carousel" data-interval="false">
                             <div class="carousel-inner">
                                 <div class="item active">
-                                    <a href="assets/img/products/single-product/single-product1.png" rel="gallery[pp_gal]"><img src="assets/img/products/single-product/single-product1.png" class="img-responsive" alt="Product Image"></a>
+                                    <a href="<c:url value='/static/img/products/single-product/single-product1.png' />" rel="gallery[pp_gal]">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product1.png' />" class="img-responsive" alt="Product Image">
+                                    </a>
                                 </div>
                                 <div class="item">
-                                    <a href="assets/img/products/single-product/single-product2.png" rel="gallery[pp_gal]"><img src="assets/img/products/single-product/single-product2.png" class="img-responsive" alt="Product Image"></a>
+                                    <a href="<c:url value='/static/img/products/single-product/single-product2.png' />" rel="gallery[pp_gal]">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product2.png' />" class="img-responsive" alt="Product Image">
+                                    </a>
                                 </div>
                                 <div class="item">
-                                    <a href="assets/img/products/single-product/single-product3.png" rel="gallery[pp_gal]"><img src="assets/img/products/single-product/single-product3.png" class="img-responsive" alt="Product Image"></a>
+                                    <a href="<c:url value='/static/img/products/single-product/single-product3.png' />" rel="gallery[pp_gal]">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product3.png' />" class="img-responsive" alt="Product Image">
+                                    </a>
                                 </div>
                                 <div class="item">
-                                    <a href="assets/img/products/single-product/single-product4.png" rel="gallery[pp_gal]"><img src="assets/img/products/single-product/single-product4.png" class="img-responsive" alt="Product Image"></a>
+                                    <a href="<c:url value='/static/img/products/single-product/single-product4.png' />" rel="gallery[pp_gal]">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product4.png' />" class="img-responsive" alt="Product Image">
+                                    </a>
                                 </div>
                                 <div class="item">
-                                    <a href="assets/img/products/single-product/single-product5.png" rel="gallery[pp_gal]"><img src="assets/img/products/single-product/single-product5.png" class="img-responsive" alt="Product Image"></a>
+                                    <a href="<c:url value='/static/img/products/single-product/single-product5.png' />" rel="gallery[pp_gal]">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product5.png' />" class="img-responsive" alt="Product Image">
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -84,16 +67,24 @@
                         <div id="product-image-thumbnails" class="carousel slide product-image-thumbnails" data-interval="false">
                             <div class="carousel-inner">
                                 <div class="item active">
-                                    <div data-target="#product-images" data-slide-to="0" class="thumb"><img src="assets/img/products/single-product/single-product1-thumb.png" alt="Product Image"></div>
-                                    <div data-target="#product-images" data-slide-to="1" class="thumb"><img src="assets/img/products/single-product/single-product2-thumb.png" alt="Product Image"></div>
-                                    <div data-target="#product-images" data-slide-to="2" class="thumb"><img src="assets/img/products/single-product/single-product3-thumb.png" alt="Product Image"></div>
-                                    <div data-target="#product-images" data-slide-to="3" class="thumb"><img src="assets/img/products/single-product/single-product4-thumb.png" alt="Product Image"></div>
+                                    <div data-target="#product-images" data-slide-to="0" class="thumb">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product1-thumb.png' />" alt="Product Image"></div>
+                                    <div data-target="#product-images" data-slide-to="1" class="thumb">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product2-thumb.png' />" alt="Product Image"></div>
+                                    <div data-target="#product-images" data-slide-to="2" class="thumb">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product3-thumb.png' />" alt="Product Image"></div>
+                                    <div data-target="#product-images" data-slide-to="3" class="thumb">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product4-thumb.png' />" alt="Product Image"></div>
                                 </div>
                                 <div class="item">
-                                    <div data-target="#product-images" data-slide-to="4" class="thumb"><img src="assets/img/products/single-product/single-product5-thumb.png" alt="Product Image"></div>
-                                    <div data-target="#product-images" data-slide-to="3" class="thumb"><img src="assets/img/products/single-product/single-product4-thumb.png" alt="Product Image"></div>
-                                    <div data-target="#product-images" data-slide-to="2" class="thumb"><img src="assets/img/products/single-product/single-product3-thumb.png" alt="Product Image"></div>
-                                    <div data-target="#product-images" data-slide-to="1" class="thumb"><img src="assets/img/products/single-product/single-product2-thumb.png" alt="Product Image"></div>
+                                    <div data-target="#product-images" data-slide-to="4" class="thumb">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product5-thumb.png' />" alt="Product Image"></div>
+                                    <div data-target="#product-images" data-slide-to="3" class="thumb">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product4-thumb.png' />" alt="Product Image"></div>
+                                    <div data-target="#product-images" data-slide-to="2" class="thumb">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product3-thumb.png' />" alt="Product Image"></div>
+                                    <div data-target="#product-images" data-slide-to="1" class="thumb">
+                                        <img src="<c:url value='/static/img/products/single-product/single-product2-thumb.png' />" alt="Product Image"></div>
                                 </div>
                             </div>
                             <a href="#product-image-thumbnails" class="left carousel-control" data-role="button" data-slide="prev">
@@ -233,11 +224,7 @@
 </div>
 <!-- END WRAPPER -->
 <!-- JAVASCRIPTS -->
-<script src="<c:url value='/static/js/jquery-2.1.1.min.js' />"></script>
-<script src="<c:url value='/static/js/bootstrap.min.js' />"></script>
-<script src="<c:url value='/static/js/plugins/autohidingnavbar/jquery.bootstrap-autohidingnavbar.min.js' />"></script>
-<script src="<c:url value='/static/js/repute-scripts.js' />"></script>
-<script src="<c:url value='/static/js/repute-shop.js' />"></script>
+<c:import url="common/scriptsTag.jsp" />
 
 </body>
 

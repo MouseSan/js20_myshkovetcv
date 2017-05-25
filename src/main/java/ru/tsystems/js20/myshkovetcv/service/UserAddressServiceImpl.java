@@ -99,7 +99,7 @@ public class UserAddressServiceImpl implements UserAddressService {
     @Override
     public ModelMap getUserAddressModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("userAddressDto", new UserAddressDto());
         return modelMap;
     }
@@ -107,7 +107,7 @@ public class UserAddressServiceImpl implements UserAddressService {
     @Override
     public ModelMap getUserAddressModelById(Long id) {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("userAddressDto", new UserAddressDto(findById(id)));
         return modelMap;
     }

@@ -16,7 +16,7 @@ public class MainController {
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String showHomePage(ModelMap model) {
-        model.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        model.addAllAttributes(navBarService.getNavBarInfo());
         return "indexPage";
     }
 }

@@ -52,7 +52,7 @@ public class SoldProductInfoServiceImpl implements SoldProductInfoService{
     @Override
     public ModelMap getReportsModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("listTopSoldProducts", getTopSoldProducts(10));
         modelMap.addAttribute("listTopBuyers", ordersService.getTopBuyers(10));
         return modelMap;

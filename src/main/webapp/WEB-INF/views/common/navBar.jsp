@@ -50,7 +50,7 @@
                 <c:choose>
                     <c:when test="${isLoggedIn}">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, Username  <i class="fa fa-angle-down"></i></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, ${currentUserName}<i class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="<c:url value='/orders/all' />">Orders</a></li>
                                 <li><a href="<c:url value='/userSettings/' />">Settings</a></li>

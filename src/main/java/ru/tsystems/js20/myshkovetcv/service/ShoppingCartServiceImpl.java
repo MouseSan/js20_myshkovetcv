@@ -26,9 +26,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Autowired
     private OrdersService ordersService;
     @Autowired
-    private CategoryService categoryService;
-    @Autowired
     private SoldProductInfoService soldProductInfoService;
+    @Autowired
+    private NavBarService navBarService;
     private Map<ProductDto, Integer> productMap = new HashMap<>();
 
     @Override
@@ -127,15 +127,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public ModelMap getShoppingCartModel() {
         ModelMap model = new ModelMap();
+        model.addAllAttributes(navBarService.getNavBarInfo());
         if(allProductsAvailable()) {
             model.addAttribute("notEnoughQuantity", false);
         } else {
             model.addAttribute("notEnoughQuantity", true);
         }
-        model.addAttribute("quantityInCart", getProductQuantityInCart());
         model.addAttribute("totalPrice", getProductTotalPrice());
         model.addAttribute("productMap", getProductMap());
-        model.addAttribute("categoryList", categoryService.getAllCategoriesDto());
         return model;
     }
 

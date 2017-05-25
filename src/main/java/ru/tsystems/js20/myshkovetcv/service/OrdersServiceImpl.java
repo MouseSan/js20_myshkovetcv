@@ -145,7 +145,7 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public ModelMap getOrdersModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("ordersDto", new OrdersDto());
         modelMap.addAttribute("totalPrice", shoppingCartService.getProductTotalPrice());
         modelMap.addAttribute("addressList", userAddressService.findAllAddressesCurrentUser());
@@ -155,7 +155,7 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public ModelMap getCurrentUserOrdersListModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("ordersList", findAllOrdersDtoByUserDto(userService.getCurrentUserDto()));
         return modelMap;
     }
@@ -163,7 +163,7 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public ModelMap getCurrentUserOrdersListModel(OrdersState ordersState) {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("ordersList", findAllOrdersDtoByUserDtoAndState(userService.getCurrentUserDto(), ordersState));
         return modelMap;
     }
@@ -171,7 +171,7 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public ModelMap getOrdersModelById(Long ordersId) {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
 
         Orders orders = findById(ordersId);
         List<SoldProductInfoDto> soldProductInfoDtos = new ArrayList<>();
@@ -190,7 +190,7 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public ModelMap getAllOrdersListModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("ordersList", findAllOrdersDto());
         modelMap.addAttribute("adminPanel", true);
         return modelMap;
@@ -199,7 +199,7 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public ModelMap getAllOrdersListModel(OrdersState ordersState) {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("ordersList", findAllOrdersDtoByState(ordersState));
         modelMap.addAttribute("adminPanel", true);
         return modelMap;

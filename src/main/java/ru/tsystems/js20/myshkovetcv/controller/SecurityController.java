@@ -61,5 +61,4 @@ public class SecurityController {
     public String accessDeniedPage(ModelMap model) {
         return "page403AccessDenied";
     }
-
 }

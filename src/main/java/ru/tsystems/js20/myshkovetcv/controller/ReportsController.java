@@ -19,5 +19,4 @@ public class ReportsController {
         model.addAllAttributes(soldProductInfoService.getReportsModel());
         return "reports";
     }
-
 }

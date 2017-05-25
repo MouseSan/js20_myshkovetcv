@@ -110,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ModelMap getProductListModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("productList", getAllProductsDto());
         return modelMap;
     }
@@ -118,7 +118,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ModelMap getProductModel() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("productDto", new ProductDto());
         modelMap.addAttribute("brandList", brandService.getAllBrandDto());
         modelMap.addAttribute("clockFaceList", ClockFaceType.values());
@@ -131,7 +131,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ModelMap getProductModelById(Long id) {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("productDto", new ProductDto(findById(id)));
         modelMap.addAttribute("brandList", brandService.getAllBrandDto());
         modelMap.addAttribute("clockFaceList", ClockFaceType.values());
@@ -228,7 +228,7 @@ public class ProductServiceImpl implements ProductService {
         filterDto.setCategoryDto(categoryService.findDtoById(categoryId));
 
         ModelMap modelMap = new ModelMap();
-        modelMap.addAllAttributes(navBarService.getCategoryListAndQuantityInCart());
+        modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("filterDto", filterDto);
         modelMap.addAttribute("productList", getProductsDtoByFilter(filterDto));
         modelMap.addAttribute("brandList", brandService.getAllBrandDto());
