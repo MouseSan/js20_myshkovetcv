@@ -46,7 +46,40 @@
                                     </label>
                                     <div class="top-ten-box">
                                         <div class="row">
-                                            <h3>Top ten products</h3>
+                                            <table class="table shopping-cart-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Parameters</th>
+                                                    <th>Quantity sold</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${listTopSoldProducts}" var="soldProduct">
+                                                    <tr>
+                                                        <td class="item-image">
+                                                            <div class="media">
+														<span class="media-left">
+															<img src="<c:url value='/static/img/products/furniture1.png' />" class="product-image" alt="Product Image">
+														</span>
+                                                                <div class="media-body">
+                                                                    <a href="#" class="product-title">${soldProduct.productDto.name}</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="item-parameters">
+                                                            <div class="media">
+                                                                <div class="media-body">
+                                                                    <a href="#" class="product-title"></a>
+                                                                    <span class="brief-desc">Brand: ${soldProduct.productDto.brandDto.name}, Backlight: ${soldProduct.productDto.backlight}, Clock face: ${soldProduct.productDto.clockFace}, Glass: ${soldProduct.productDto.glass}, Gender: ${soldProduct.productDto.gender}, Water resistant: ${soldProduct.productDto.waterResistant}.</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="total-price">${soldProduct.soldQuantity}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </c:when>
@@ -57,7 +90,40 @@
                                     </label>
                                     <div class="top-ten-box hide-first">
                                         <div class="row">
-                                            <h3>Top ten products</h3>
+                                            <table class="table shopping-cart-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Parameters</th>
+                                                    <th>Quantity sold</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${listTopSoldProducts}" var="soldProduct">
+                                                    <tr>
+                                                        <td class="item-image">
+                                                            <div class="media">
+														<span class="media-left">
+															<img src="<c:url value='/static/img/products/furniture1.png' />" class="product-image" alt="Product Image">
+														</span>
+                                                                <div class="media-body">
+                                                                    <a href="#" class="product-title">${soldProduct.productDto.name}</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="item-parameters">
+                                                            <div class="media">
+                                                                <div class="media-body">
+                                                                    <a href="#" class="product-title"></a>
+                                                                    <span class="brief-desc">Brand: ${soldProduct.productDto.brandDto.name}, Backlight: ${soldProduct.productDto.backlight}, Clock face: ${soldProduct.productDto.clockFace}, Glass: ${soldProduct.productDto.glass}, Gender: ${soldProduct.productDto.gender}, Water resistant: ${soldProduct.productDto.waterResistant}.</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="total-price">${soldProduct.soldQuantity}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </c:otherwise>
@@ -70,7 +136,45 @@
                                     </label>
                                     <div class="custom-list-box hide-first">
                                         <div class="row">
-                                            <h3>Custom list</h3>
+                                            <table class="table shopping-cart-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Parameters</th>
+                                                    <th width="100"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${storefrontProductsList}" var="product">
+                                                    <tr>
+                                                        <td class="item-image">
+                                                            <div class="media">
+														<span class="media-left">
+															<img src="<c:url value='/static/img/products/furniture1.png' />" class="product-image" alt="Product Image">
+														</span>
+                                                                <div class="media-body">
+                                                                    <a href="#" class="product-title">${product.name}</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="item-parameters">
+                                                            <div class="media">
+                                                                <div class="media-body">
+                                                                    <a href="#" class="product-title"></a>
+                                                                    <span class="brief-desc">Brand: ${product.brandDto.name}, Backlight: ${product.backlight}, Clock face: ${product.clockFace}, Glass: ${product.glass}, Gender: ${product.gender}, Water resistant: ${product.waterResistant}.</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-rounded-2x btn-primary btn-block removeFromCustomStorefrontList"
+                                                                    type="button" name="Button"
+                                                                    value="${product.id}">Remove
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </c:when>
@@ -81,7 +185,45 @@
                                     </label>
                                     <div class="custom-list-box">
                                         <div class="row">
-                                            <h3>Custom list</h3>
+                                            <table class="table shopping-cart-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Parameters</th>
+                                                    <th width="100"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${storefrontProductsList}" var="product">
+                                                    <tr>
+                                                        <td class="item-image">
+                                                            <div class="media">
+														<span class="media-left">
+															<img src="<c:url value='/static/img/products/furniture1.png' />" class="product-image" alt="Product Image">
+														</span>
+                                                                <div class="media-body">
+                                                                    <a href="#" class="product-title">${product.name}</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="item-parameters">
+                                                            <div class="media">
+                                                                <div class="media-body">
+                                                                    <a href="#" class="product-title"></a>
+                                                                    <span class="brief-desc">Brand: ${product.brandDto.name}, Backlight: ${product.backlight}, Clock face: ${product.clockFace}, Glass: ${product.glass}, Gender: ${product.gender}, Water resistant: ${product.waterResistant}.</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-rounded-2x btn-primary btn-block removeFromCustomStorefrontList"
+                                                                    type="button" name="Button"
+                                                                    value="${product.id}">Remove
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </c:otherwise>
@@ -119,6 +261,7 @@
 <script src="<c:url value='/static/js/repute-scripts.js' />"></script>
 <script src="<c:url value='/static/js/repute-shop.js' />"></script>
 <script src="<c:url value='/static/js/cart.js' />"></script>
+<script src="<c:url value='/static/js/removeFromStorefront.js' />"></script>
 
 
 </body>

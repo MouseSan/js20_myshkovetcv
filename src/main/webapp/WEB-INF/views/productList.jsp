@@ -30,22 +30,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-hover product-list-table" id="addressTable">
+
+                    <table class="table shopping-cart-table">
                         <thead>
                         <tr>
-                            <th width="100">ID</th>
-                            <th>Name</th>
-                            <th>Price</th>
+                            <th>ID</th>
                             <th>Category</th>
+                            <th>Name</th>
+                            <th>Parameters</th>
                             <th>Weight</th>
                             <th>Volume</th>
                             <th>Stock</th>
-                            <th>Brand</th>
-                            <th>Backlight</th>
-                            <th>Clock face</th>
-                            <th>Glass</th>
-                            <th>Gender</th>
-                            <th>Water resistant</th>
+                            <th>Price</th>
+                            <th width="100"></th>
                             <th width="100"></th>
                         </tr>
                         </thead>
@@ -53,20 +50,37 @@
                         <c:forEach items="${productList}" var="product">
                             <tr>
                                 <td>${product.id}</td>
-                                <td>${product.name}</td>
-                                <td>${product.price}</td>
                                 <td>${product.categoryDto.name}</td>
-                                <td>${product.weight}</td>
-                                <td>${product.volume}</td>
-                                <td>${product.stock}</td>
-                                <td>${product.brandDto.name}</td>
-                                <td>${product.backlight}</td>
-                                <td>${product.clockFace}</td>
-                                <td>${product.glass}</td>
-                                <td>${product.gender}</td>
-                                <td>${product.waterResistant}</td>
+                                <td class="item-image">
+                                    <div class="media">
+														<span class="media-left">
+															<img src="<c:url value='/static/img/products/furniture1.png' />" class="product-image" alt="Product Image">
+														</span>
+                                        <div class="media-body">
+                                            <a href="#" class="product-title">${product.name}</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="item-parameters">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <a href="#" class="product-title"></a>
+                                            <span class="brief-desc">Brand: ${product.brandDto.name}, Backlight: ${product.backlight}, Clock face: ${product.clockFace}, Glass: ${product.glass}, Gender: ${product.gender}, Water resistant: ${product.waterResistant}.</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="qty">${product.weight}</td>
+                                <td class="qty">${product.volume}</td>
+                                <td class="qty">${product.stock}</td>
+                                <td class="unit-price">${product.price}</td>
                                 <td>
                                     <a href="<c:url value='/admin/products/edit-${product.id}' />" class="btn btn-rounded-2x btn-primary btn-block">Edit</a>
+                                </td>
+                                <td>
+                                    <button class="btn btn-rounded-2x btn-primary btn-block addToCustomStorefrontList"
+                                            type="button" name="Button"
+                                            value="${product.id}">Add to storefront
+                                    </button>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -90,6 +104,7 @@
 <!-- END WRAPPER -->
 <!-- JAVASCRIPTS -->
 <c:import url="common/scriptsTag.jsp" />
+<script src="<c:url value='/static/js/addToStoreFront.js' />"></script>
 
 </body>
 

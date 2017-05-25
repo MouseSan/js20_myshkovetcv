@@ -19,12 +19,18 @@ public class StorefrontSettingsServiceImpl implements StorefrontSettingsService 
     private StorefrontSettingsDao storefrontSettingsDao;
     @Autowired
     private NavBarService navBarService;
+    @Autowired
+    private StorefrontProductsService storefrontProductsService;
+    @Autowired
+    private SoldProductInfoService soldProductInfoService;
 
     @Override
     public ModelMap getStorefrontSettingsModel() {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("storefrontSettingsDto", new StorefrontSettingsDto(getFirstStorefrontSettings()));
+        modelMap.addAttribute("storefrontProductsList", storefrontProductsService.getListOfProductsDto());
+        modelMap.addAttribute("listTopSoldProducts", soldProductInfoService.getTopSoldProducts(10));
         return modelMap;
     }
 

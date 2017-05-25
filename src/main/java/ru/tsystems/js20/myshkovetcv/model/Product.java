@@ -76,10 +76,13 @@ public class Product implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
     private List<SoldProductInfo> soldProductInfoList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<StorefrontProducts> storefrontProductsList = new ArrayList<>();
+
     public Product() {
     }
 
-    public Product(String name, Double price, Category category, Double weight, Double volume, Double stock, Brand brand, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant, String description, List<SoldProductInfo> soldProductInfoList) {
+    public Product(String name, Double price, Category category, Double weight, Double volume, Double stock, Brand brand, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant, String description, List<SoldProductInfo> soldProductInfoList, List<StorefrontProducts> storefrontProductsList) {
         this.name = name;
         this.price = price;
         this.category = category;
@@ -94,6 +97,7 @@ public class Product implements Serializable {
         this.waterResistant = waterResistant;
         this.description = description;
         this.soldProductInfoList = soldProductInfoList;
+        this.storefrontProductsList = storefrontProductsList;
     }
 
     public Long getId() {
@@ -214,6 +218,14 @@ public class Product implements Serializable {
 
     public void setSoldProductInfoList(List<SoldProductInfo> soldProductInfoList) {
         this.soldProductInfoList = soldProductInfoList;
+    }
+
+    public List<StorefrontProducts> getStorefrontProductsList() {
+        return storefrontProductsList;
+    }
+
+    public void setStorefrontProductsList(List<StorefrontProducts> storefrontProductsList) {
+        this.storefrontProductsList = storefrontProductsList;
     }
 
     @Override
