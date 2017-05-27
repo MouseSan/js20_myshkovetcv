@@ -18,8 +18,7 @@
 <link rel="stylesheet" type="text/css" href="<c:url value='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,300italic,400italic,700,400,300' />" >
 
 <!-- FAVICONS -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<c:url value='/static/ico/repute144x144.png' />" >
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<c:url value='/static/ico/repute114x114.png' />" >
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="<c:url value='/static/ico/repute72x72.png' />" >
-<link rel="apple-touch-icon-precomposed" sizes="57x57" href="<c:url value='/static/ico/repute57x57.png' />" >
-<link rel="shortcut icon" href="<c:url value='/static/ico/favicon.png' />">
+<link rel="apple-touch-icon" sizes="152x152" href="<c:url value='/static/img/favicon152.png' />">
+<link rel="icon" type="image/png" href="<c:url value='/static/img/favicon16.png' />" sizes="16x16">
+<link rel="icon" type="image/png" href="<c:url value='/static/img/favicon32.png' />" sizes="32x32">
+<link rel="icon" type="image/png" href="<c:url value='/static/img/favicon96.png' />" sizes="96x96">

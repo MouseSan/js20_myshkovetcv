@@ -30,8 +30,10 @@
     <div class="shop-main">
         <div class="container">
 
-            <form:form method="POST" modelAttribute="productDto" class="form-horizontal" role="form">
+            <form:form method="POST" modelAttribute="productDto" class="form-horizontal" role="form" enctype="multipart/form-data">
                 <form:input type="hidden" path="id" id="id"/>
+                <form:input type="hidden" path="imageId" id="imageId"/>
+                <form:input type="hidden" path="imageURL" id="imageURL"/>
                 <div class="form-group form-group-lg">
                     <label for="name" class="col-sm-3 control-label">Name</label>
                     <div class="col-sm-9">
@@ -213,6 +215,36 @@
                     <div class="col-sm-offset-3 col-sm-9">
                         <div class="has-error">
                             <form:errors path="description" class="help-inline-lg"/>
+                        </div>
+                    </div>
+                </div>
+                <c:choose>
+                    <c:when test="${product.imageId == null || product.imageId.isEmpty()}">
+                    </c:when>
+                    <c:otherwise>
+                        <div class="form-group form-group-lg">
+                            <label for="image-url" class="col-sm-3 control-label">Current image</label>
+                            <div class="col-sm-9">
+                                <img src="<c:url value="http://res.cloudinary.com/mousesan/image/upload/w_300,h_300,c_pad,b_rgb:FFFFFF/${product.imageId}.png"/>" class="img-responsive center-block" alt="Product image" id="image-url">
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+                <div class="form-group form-group-lg">
+                    <c:choose>
+                        <c:when test="${product.imageId == null || product.imageId.isEmpty()}">
+                            <label for="multipartFile" class="col-sm-3 control-label">Image</label>
+                        </c:when>
+                        <c:otherwise>
+                            <label for="multipartFile" class="col-sm-3 control-label">Replacing image</label>
+                        </c:otherwise>
+                    </c:choose>
+                    <div class="col-sm-9">
+                        <input type="file" accept=".png" name="multipartFile" id="multipartFile" class="form-control"/>
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <div class="has-error">
+                            <form:errors path="multipartFile" class="help-inline-lg"/>
                         </div>
                     </div>
                 </div>

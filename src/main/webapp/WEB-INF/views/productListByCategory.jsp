@@ -197,7 +197,16 @@
                             <c:forEach items="${productList}" var="product" varStatus="productListCount">
                                 <div class="col-lg-4 col-sm-6">
                                     <div class="product-item">
-                                        <a href="<c:url value='/products/${product.id}' />"><img src="<c:url value='/static/img/products/wfashion1.png' />" class="img-responsive center-block" alt="Product Item"></a>
+                                        <a href="<c:url value='/products/${product.id}' />">
+                                            <c:choose>
+                                                <c:when test="${product.imageId == null || product.imageId.isEmpty()}">
+                                                    <img src="<c:url value='/static/img/big-product-plug.png' />" class="img-responsive center-block" alt="Product Item">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <img src="<c:url value='http://res.cloudinary.com/mousesan/image/upload/w_300,h_300,c_pad,b_rgb:FFFFFF/${product.imageId}.png' />" class="img-responsive center-block" alt="Product image">
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </a>
                                         <c:choose>
                                             <c:when test="${admin}">
                                                 <div class="row">

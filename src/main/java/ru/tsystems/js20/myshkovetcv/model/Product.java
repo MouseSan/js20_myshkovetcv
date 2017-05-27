@@ -79,10 +79,16 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<StorefrontProducts> storefrontProductsList = new ArrayList<>();
 
+    @Column(name = "imageURL")
+    private String imageURL;
+
+    @Column(name = "imageId")
+    private String imageId;
+
     public Product() {
     }
 
-    public Product(String name, Double price, Category category, Double weight, Double volume, Double stock, Brand brand, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant, String description, List<SoldProductInfo> soldProductInfoList, List<StorefrontProducts> storefrontProductsList) {
+    public Product(String name, Double price, Category category, Double weight, Double volume, Double stock, Brand brand, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant, String description, List<SoldProductInfo> soldProductInfoList, List<StorefrontProducts> storefrontProductsList, String imageURL, String imageId) {
         this.name = name;
         this.price = price;
         this.category = category;
@@ -98,6 +104,8 @@ public class Product implements Serializable {
         this.description = description;
         this.soldProductInfoList = soldProductInfoList;
         this.storefrontProductsList = storefrontProductsList;
+        this.imageURL = imageURL;
+        this.imageId = imageId;
     }
 
     public Long getId() {
@@ -226,6 +234,22 @@ public class Product implements Serializable {
 
     public void setStorefrontProductsList(List<StorefrontProducts> storefrontProductsList) {
         this.storefrontProductsList = storefrontProductsList;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public String getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
     }
 
     @Override

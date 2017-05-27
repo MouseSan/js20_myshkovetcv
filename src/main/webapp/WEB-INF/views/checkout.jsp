@@ -72,9 +72,16 @@
                                         <tr>
                                             <td class="item">
                                                 <div class="media">
-														<span class="media-left">
-															<img src="<c:url value='/static/img/products/furniture1.png' />" class="product-image" alt="Product Image">
-														</span>
+                                                    <span class="media-left">
+                                                        <c:choose>
+                                                            <c:when test="${product.key.imageId == null || product.key.imageId.isEmpty()}">
+                                                                <img src="<c:url value='/static/img/small-product-plug.png' />" class="product-image" alt="Product Image">
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <img src="<c:url value='http://res.cloudinary.com/mousesan/image/upload/w_75,h_75,c_pad,b_rgb:FFFFFF/${product.key.imageId}.png' />" class="product-image" alt="Product Image">
+                                                            </c:otherwise>
+                                                        </c:choose>
+													</span>
                                                     <div class="media-body">
                                                         <a href="#" class="product-title">${product.key.name}</a>
                                                         <span class="brief-desc">Brand: ${product.key.brandDto.name}, Backlight: ${product.key.backlight}, Clock face: ${product.key.clockFace}, Glass: ${product.key.glass}, Gender: ${product.key.gender}, Water resistant: ${product.key.waterResistant}.</span>

@@ -16,6 +16,7 @@ import ru.tsystems.js20.myshkovetcv.model.enums.GenderType;
 import ru.tsystems.js20.myshkovetcv.model.enums.WaterResistantType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service("productService")
@@ -32,6 +33,8 @@ public class ProductServiceImpl implements ProductService {
     private CategoryService categoryService;
     @Autowired
     private JmsService jmsService;
+    @Autowired
+    private ImageService imageService;
 
     @Override
     public Product findById(Long id) {
@@ -45,6 +48,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void saveProduct(ProductDto productDto) {
+        HashMap<String, String> imageProperties = imageService.createImage(productDto);
+        productDto.setImageURL(imageProperties.get("url"));
+        productDto.setImageId(imageProperties.get("public_id"));
+
         Category category = categoryService.findById(productDto.getCategoryDto().getId());
         Brand brand = brandService.findById(productDto.getBrandDto().getId());
         if (category != null && brand != null) {
@@ -62,12 +69,20 @@ public class ProductServiceImpl implements ProductService {
             product.setGender(productDto.getGender());
             product.setWaterResistant(productDto.getWaterResistant());
             product.setDescription(productDto.getDescription());
+            product.setImageId(productDto.getImageId());
+            product.setImageURL(productDto.getImageURL());
             productDao.save(product);
         }
     }
 
     @Override
     public boolean updateProduct(ProductDto productDto) {
+        if (productDto.getMultipartFile() != null && !productDto.getMultipartFile().isEmpty()) {
+            HashMap<String, String> imageProperties = imageService.updateImage(productDto);
+            productDto.setImageURL(imageProperties.get("url"));
+            productDto.setImageId(imageProperties.get("public_id"));
+        }
+
         Category category = categoryService.findById(productDto.getCategoryDto().getId());
         Brand brand = brandService.findById(productDto.getBrandDto().getId());
         if (category != null && brand != null) {
@@ -86,6 +101,8 @@ public class ProductServiceImpl implements ProductService {
                 product.setGender(productDto.getGender());
                 product.setWaterResistant(productDto.getWaterResistant());
                 product.setDescription(productDto.getDescription());
+                product.setImageId(productDto.getImageId());
+                product.setImageURL(productDto.getImageURL());
                 productDao.updateProduct(product);
                 jmsService.sendMessage("UPDATE");
                 return true;

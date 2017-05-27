@@ -1,6 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.web.multipart.MultipartFile;
 import ru.tsystems.js20.myshkovetcv.model.Product;
 import ru.tsystems.js20.myshkovetcv.model.enums.ClockFaceType;
 import ru.tsystems.js20.myshkovetcv.model.enums.ClockGlassType;
@@ -51,6 +52,15 @@ public class ProductDto {
     @JsonProperty("description")
     private String description;
 
+    @JsonProperty("imageURL")
+    private String imageURL;
+
+    @JsonProperty("imageId")
+    private String imageId;
+
+    @JsonProperty("multipartFile")
+    private MultipartFile multipartFile;
+
     public ProductDto() {
     }
 
@@ -69,9 +79,11 @@ public class ProductDto {
         this.gender = product.getGender();
         this.waterResistant = product.getWaterResistant();
         this.description = product.getDescription();
+        this.imageURL = product.getImageURL();
+        this.imageId = product.getImageId();
     }
 
-    public ProductDto(Long id, String name, Double price, CategoryDto categoryDto, Double weight, Double volume, Double stock, BrandDto brandDto, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant, String description) {
+    public ProductDto(Long id, String name, Double price, CategoryDto categoryDto, Double weight, Double volume, Double stock, BrandDto brandDto, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant, String description, String imageURL, String imageId, MultipartFile multipartFile) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -86,6 +98,9 @@ public class ProductDto {
         this.gender = gender;
         this.waterResistant = waterResistant;
         this.description = description;
+        this.imageURL = imageURL;
+        this.imageId = imageId;
+        this.multipartFile = multipartFile;
     }
 
     public Long getId() {
@@ -198,6 +213,30 @@ public class ProductDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public String getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
+    }
+
+    public MultipartFile getMultipartFile() {
+        return multipartFile;
+    }
+
+    public void setMultipartFile(MultipartFile multipartFile) {
+        this.multipartFile = multipartFile;
     }
 
     @Override

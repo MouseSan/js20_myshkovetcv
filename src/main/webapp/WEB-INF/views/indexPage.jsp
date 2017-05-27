@@ -68,15 +68,18 @@
         </div>
     </div>
     <!-- END PAGE CONTENT -->
-
     <!-- FOOTER -->
     <c:import url="common/footer.jsp" />
     <!-- END FOOTER -->
 </div>
 <!-- END WRAPPER -->
 
+
+
 <!-- JAVASCRIPTS -->
 <c:import url="common/scriptsTag.jsp" />
+<script src="<c:url value='/static/js/plugins/slick/slick.min.js' />"></script>
+
 <%--<script src="<c:url value='/static/js/plugins/slick/slick.min.js' />"></script>--%>
 
 </body>

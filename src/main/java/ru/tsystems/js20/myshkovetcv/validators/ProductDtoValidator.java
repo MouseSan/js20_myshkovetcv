@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.web.multipart.MultipartFile;
 import ru.tsystems.js20.myshkovetcv.dto.ProductDto;
 import ru.tsystems.js20.myshkovetcv.service.ProductService;
 
@@ -43,6 +44,10 @@ public class ProductDtoValidator implements Validator {
         Double stock = productDto.getStock();
         if (stock == null || stock < 0) {
             errors.rejectValue("stock", "empty.productDto.stock", "Stock must be above zero or equal.");
+        }
+        MultipartFile file = productDto.getMultipartFile();
+        if (file != null && !file.getContentType().equals("image/png")) {
+            errors.rejectValue("multipartFile", "wrong.encoding", "File must be in PNG format.");
         }
 
         if (name != null && !name.isEmpty() && weight != null && volume != null) {

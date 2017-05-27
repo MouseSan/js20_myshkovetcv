@@ -58,13 +58,13 @@
         </div>
     </div>
     <!-- END MAIN -->
-
     <!-- FOOTER -->
     <c:import url="common/footer.jsp" />
     <!-- END FOOTER -->
-
 </div>
 <!-- END WRAPPER -->
+
+
 
 <c:import url="common/scriptsTag.jsp" />
 

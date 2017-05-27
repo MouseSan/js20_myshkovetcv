@@ -9,8 +9,8 @@
                 <span class="sr-only">Toggle Navigation</span>
                 <i class="fa fa-bars"></i>
             </button>
-            <a href="index.html" class="navbar-brand navbar-logo">
-                <img src="<c:url value='/static/img/logo/repute-logo-nav.png' />" alt="Repute - Responsive Multipurpose Bootstrap Theme">
+            <a href="<c:url value='/' />" class="navbar-brand navbar-logo">
+                <img src="<c:url value='/static/img/watch-shop-logo.png' />" alt="Repute - Responsive Multipurpose Bootstrap Theme">
             </a>
         </div>
         <!-- MAIN NAVIGATION -->
