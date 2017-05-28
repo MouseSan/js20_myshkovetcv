@@ -46,7 +46,7 @@ public class ProductDtoValidator implements Validator {
             errors.rejectValue("stock", "empty.productDto.stock", "Stock must be above zero or equal.");
         }
         MultipartFile file = productDto.getMultipartFile();
-        if (file != null && !file.getContentType().equals("image/png")) {
+        if (file != null && !file.getOriginalFilename().isEmpty() && !file.getContentType().equals("image/png")) {
             errors.rejectValue("multipartFile", "wrong.encoding", "File must be in PNG format.");
         }
 

@@ -223,14 +223,21 @@
                                                     <div class="col-sm-7">
                                                         <div class="info-btn-group">
                                                             <a href="<c:url value='/admin/products/edit-${product.id}' />" class="btn btn-warning"><i class="fa fa-pencil"></i></a>
-                                                            <button class="btn btn-primary addToCart" type="button" name="Button" value="${product.id}">ADD TO <i class="fa fa-shopping-cart"></i></button>
+                                                            <c:choose>
+                                                                <c:when test="${product.stock > 0}">
+                                                                    <button class="btn btn-primary addToCart add-to-cart-product-list" type="button" name="Button" value="${product.id}">ADD TO <i class="fa fa-shopping-cart"></i></button>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <button class="btn btn-default disabled out-of-stock-button" type="button" name="Button" value="${product.id}">OUT OF STOCK</button>
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </c:when>
                                             <c:otherwise>
                                                 <div class="row">
-                                                    <div class="col-sm-7">
+                                                    <div class="col-sm-6">
                                                         <div class="info">
                                                             <h3 class="title">
                                                                 <a>${product.name}</a>
@@ -240,9 +247,16 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-5">
+                                                    <div class="col-sm-6">
                                                         <div class="info-btn-group">
-                                                            <button class="btn btn-primary addToCart" type="button" name="Button" value="${product.id}">ADD TO <i class="fa fa-shopping-cart"></i></button>
+                                                            <c:choose>
+                                                                <c:when test="${product.stock > 0}">
+                                                                    <button class="btn btn-primary addToCart" type="button" name="Button" value="${product.id}">ADD TO <i class="fa fa-shopping-cart"></i></button>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <button class="btn btn-default disabled outOfStockButton" type="button" name="Button" value="${product.id}">OUT OF STOCK</button>
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                         </div>
                                                     </div>
                                                 </div>

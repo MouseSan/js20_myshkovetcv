@@ -70,14 +70,14 @@
                                                                     </c:choose>
 														        </span>
                                                                 <div class="media-body">
-                                                                    <a href="#" class="product-title">${soldProduct.productDto.name}</a>
+                                                                    <a href="<c:url value='/products/${soldProduct.productDto.id}' />" class="product-title">${soldProduct.productDto.name}</a>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td class="item-parameters">
                                                             <div class="media">
                                                                 <div class="media-body">
-                                                                    <a href="#" class="product-title"></a>
+                                                                    <a href="<c:url value='/products/${soldProduct.productDto.id}' />" class="product-title"></a>
                                                                     <span class="brief-desc">Brand: ${soldProduct.productDto.brandDto.name}, Backlight: ${soldProduct.productDto.backlight}, Clock face: ${soldProduct.productDto.clockFace}, Glass: ${soldProduct.productDto.glass}, Gender: ${soldProduct.productDto.gender}, Water resistant: ${soldProduct.productDto.waterResistant}.</span>
                                                                 </div>
                                                             </div>
@@ -121,14 +121,14 @@
                                                                     </c:choose>
 														        </span>
                                                                 <div class="media-body">
-                                                                    <a href="#" class="product-title">${soldProduct.productDto.name}</a>
+                                                                    <a href="<c:url value='/products/${soldProduct.productDto.id}' />" class="product-title">${soldProduct.productDto.name}</a>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td class="item-parameters">
                                                             <div class="media">
                                                                 <div class="media-body">
-                                                                    <a href="#" class="product-title"></a>
+                                                                    <a href="<c:url value='/products/${soldProduct.productDto.id}' />" class="product-title"></a>
                                                                     <span class="brief-desc">Brand: ${soldProduct.productDto.brandDto.name}, Backlight: ${soldProduct.productDto.backlight}, Clock face: ${soldProduct.productDto.clockFace}, Glass: ${soldProduct.productDto.glass}, Gender: ${soldProduct.productDto.gender}, Water resistant: ${soldProduct.productDto.waterResistant}.</span>
                                                                 </div>
                                                             </div>
@@ -174,14 +174,14 @@
                                                                     </c:choose>
                                                                 </span>
                                                                 <div class="media-body">
-                                                                    <a href="#" class="product-title">${product.name}</a>
+                                                                    <a href="<c:url value='/products/${product.id}' />" class="product-title">${product.name}</a>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td class="item-parameters">
                                                             <div class="media">
                                                                 <div class="media-body">
-                                                                    <a href="#" class="product-title"></a>
+                                                                    <a href="<c:url value='/products/${product.id}' />" class="product-title"></a>
                                                                     <span class="brief-desc">Brand: ${product.brandDto.name}, Backlight: ${product.backlight}, Clock face: ${product.clockFace}, Glass: ${product.glass}, Gender: ${product.gender}, Water resistant: ${product.waterResistant}.</span>
                                                                 </div>
                                                             </div>
@@ -230,14 +230,14 @@
                                                                     </c:choose>
                                                                 </span>
                                                                 <div class="media-body">
-                                                                    <a href="#" class="product-title">${product.name}</a>
+                                                                    <a href="<c:url value='/products/${product.id}' />" class="product-title">${product.name}</a>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td class="item-parameters">
                                                             <div class="media">
                                                                 <div class="media-body">
-                                                                    <a href="#" class="product-title"></a>
+                                                                    <a href="<c:url value='/products/${product.id}' />" class="product-title"></a>
                                                                     <span class="brief-desc">Brand: ${product.brandDto.name}, Backlight: ${product.backlight}, Clock face: ${product.clockFace}, Glass: ${product.glass}, Gender: ${product.gender}, Water resistant: ${product.waterResistant}.</span>
                                                                 </div>
                                                             </div>

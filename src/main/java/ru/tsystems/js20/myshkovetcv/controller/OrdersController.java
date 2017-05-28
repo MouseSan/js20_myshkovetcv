@@ -24,6 +24,9 @@ public class OrdersController {
     @RequestMapping(value = "/orders/create", method = RequestMethod.GET)
     public String getCreateOrderPage(ModelMap model) {
         if(!shoppingCartService.allProductsAvailable()) {
+            if (shoppingCartService.getProductQuantityInCart() < 1) {
+                return "redirect:/cart?noProductsInCart=true";
+            }
             return "redirect:/cart?notEnoughQuantity=true";
         }
         model.addAllAttributes(ordersService.getOrdersModel());
@@ -33,6 +36,9 @@ public class OrdersController {
     @RequestMapping(value = "/orders/create", method = RequestMethod.POST)
     public String createOrder(OrdersDto ordersDto, BindingResult result, ModelMap model) {
         if(!shoppingCartService.allProductsAvailable()) {
+            if (shoppingCartService.getProductQuantityInCart() < 1) {
+                return "redirect:/cart?noProductsInCart=true";
+            }
             return "redirect:/cart?notEnoughQuantity=true";
         }
         ordersService.saveOrdersReduceStock(ordersDto);
@@ -74,6 +80,21 @@ public class OrdersController {
         if (ordersService.currentUserHaveAccess(id)) {
             model.addAllAttributes(ordersService.getOrdersModelById(id));
             return "ordersPage";
+        } else {
+            return "page403AccessDenied";
+        }
+    }
+
+    @RequestMapping(value = "/orders/{id}", method = RequestMethod.POST)
+    public String updateOrder(OrdersDto ordersDto, BindingResult result, ModelMap model) {
+        if (ordersService.currentUserHaveAccess(ordersDto.getId())) {
+            if (result.hasErrors()) {
+                model.mergeAttributes(ordersService.getOrdersModelById(ordersDto.getId()));
+                return "ordersPage";
+            }
+
+            ordersService.updateOrders(ordersDto);
+            return "redirect:/admin/orders/";
         } else {
             return "page403AccessDenied";
         }

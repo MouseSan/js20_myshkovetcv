@@ -4640,6 +4640,7 @@ div.mc-image {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
+  margin-top: 7px;
 }
 
 .btn-rounded-3x {

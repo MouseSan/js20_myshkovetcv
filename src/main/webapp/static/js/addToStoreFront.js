@@ -31,7 +31,6 @@ function addProductToStorefront(productId) {
             productId: parseInt(productId)
         },
         success: function (result) {
-            alert("Product successfully added.")
         },
         error: function (a) {
             alert(a);

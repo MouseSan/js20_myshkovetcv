@@ -2441,31 +2441,29 @@ a.pp_previous i {
 .single-product h1 {
   font-size: 20px;
 }
-.single-product .product-price {
-  margin-bottom: 25px;
-}
 .single-product .old-price {
   font-size: 18px;
   color: #7d7d7d;
 }
 .single-product .current-price {
-  margin-left: 15px;
-  font-size: 24px;
+  font-size: 75px;
+  font-weight: 700;
 }
 .single-product .product-brief-description {
-  margin-bottom: 40px;
+  margin: 25px 15px;
+  font-size: 30px;
 }
-.single-product .product-variance,
+.single-product,
 .single-product .product-availability {
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 .single-product .control-label {
   margin-right: 5px;
 }
 .single-product .btn-add-to-cart {
   padding: 18px 40px;
-  font-size: 20px;
-  font-weight: 300;
+  font-size: 25px;
+  font-weight: 700;
   margin-bottom: 10px;
 }
 .single-product .btn-add-to-cart i {
@@ -2517,7 +2515,6 @@ a.pp_previous i {
   color: #FFF;
   position: relative;
   padding-left: 38px;
-  margin-left: 5px;
 }
 .stock-indicator i {
   width: 27px;
@@ -2531,15 +2528,20 @@ a.pp_previous i {
 }
 .stock-indicator.available {
   background-color: #75d217;
+  display: block;
+  text-align: -webkit-center;
+  font-weight: 700;
 }
 .stock-indicator.available i {
   background-color: #5ba412;
 }
 .stock-indicator.unavailable {
-  background-color: #ca453b;
+  background-color: #eea236;
+  display: block;
+  text-align: -webkit-center;
 }
 .stock-indicator.unavailable i {
-  background-color: #a5352d;
+  background-color: #985f0d;
 }
 
 /* product reviews */
@@ -3216,4 +3218,32 @@ input[type=number].input-number_noSpinners::-webkit-outer-spin-button {
 }
 .option-self-pickup {
   margin-top: 12px;
+}
+.product-variance {
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 15px;
+}
+.parameter-name {
+  font-weight: 700;
+}
+.product-price {
+  margin-bottom: 20px;
+}
+.parameter {
+  margin: 10px 0 10px 0;
+  font-size: 25px;
+}
+.parameter-line {
+  border-color: #d6d6d6;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-top: 2px solid #d6d6d6;
+  width: 100%;
+}
+.add-to-cart-product-list {
+  margin-left: 22px;
+}
+.out-of-stock-button {
+  margin-left: -8px;
 }

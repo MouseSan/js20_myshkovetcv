@@ -14,7 +14,7 @@ public interface OrdersService {
 
     void saveOrdersReduceStock(OrdersDto ordersDto);
 
-    void updateOrders(Orders orders);
+    void updateOrders(OrdersDto ordersDto);
 
     List<OrdersDto> findAllOrdersDto();
 

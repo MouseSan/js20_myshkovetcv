@@ -101,11 +101,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public boolean allProductsAvailable() {
         boolean allProductsAvailable = true;
-        for (Map.Entry<ProductDto, Integer> entry : productMap.entrySet()) {
-            ProductDto productDto = new ProductDto(productService.findById(entry.getKey().getId()));
-            if (productDto.getStock() < entry.getValue()) {
-                allProductsAvailable = false;
+        if (!productMap.isEmpty()) {
+            for (Map.Entry<ProductDto, Integer> entry : productMap.entrySet()) {
+                ProductDto productDto = new ProductDto(productService.findById(entry.getKey().getId()));
+                if (productDto.getStock() < entry.getValue()) {
+                    allProductsAvailable = false;
+                }
             }
+        } else {
+            allProductsAvailable = false;
         }
         updateProductsInCart();
         return allProductsAvailable;

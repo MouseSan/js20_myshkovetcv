@@ -42,13 +42,16 @@
                     <div class="step-content">
                         <div class="row" id="errMsg">
                             <div class="col-md-12">
-                                <c:choose>
-                                    <c:when test="${notEnoughQuantity}">
-                                        <div class="alert alert-danger" role="alert">
-                                            <p>Not enough quantity in stock. Subtract items.</p>
-                                        </div>
-                                    </c:when>
-                                </c:choose>
+                                <c:if test="${param.notEnoughQuantity != null}">
+                                    <div class="alert alert-danger" role="alert">
+                                        <p>Not enough quantity in stock. Subtract items.</p>
+                                    </div>
+                                </c:if>
+                                <c:if test="${param.noProductsInCart != null}">
+                                    <div class="alert alert-danger" role="alert">
+                                        <p>No items items in cart, add products please.</p>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                         <!-- SHOPPING CART -->
@@ -83,7 +86,7 @@
                                                         </c:choose>
 													</span>
                                                     <div class="media-body">
-                                                        <a href="#" class="product-title">${product.key.name}</a>
+                                                        <a href="<c:url value='/products/${product.key.id}' />" class="product-title">${product.key.name}</a>
                                                         <span class="brief-desc">Brand: ${product.key.brandDto.name}, Backlight: ${product.key.backlight}, Clock face: ${product.key.clockFace}, Glass: ${product.key.glass}, Gender: ${product.key.gender}, Water resistant: ${product.key.waterResistant}.</span>
                                                     </div>
                                                 </div>

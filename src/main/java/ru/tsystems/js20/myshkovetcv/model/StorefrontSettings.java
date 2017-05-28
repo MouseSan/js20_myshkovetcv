@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "StorefrontSettings ")
+@Table(name = "storefrontSettings")
 public class StorefrontSettings implements Serializable {
 
     private static final long serialVersionUID = 16516512827321654L;

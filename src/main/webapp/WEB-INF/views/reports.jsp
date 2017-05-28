@@ -63,7 +63,7 @@
                                                     </c:choose>
                                                 </span>
                                                 <div class="media-body">
-                                                    <a href="#" class="product-title">${soldProduct.productDto.name}</a>
+                                                    <a href="<c:url value='/products/${soldProduct.productDto.id}' />" class="product-title">${soldProduct.productDto.name}</a>
                                                 </div>
                                             </div>
                                         </td>

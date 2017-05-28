@@ -218,21 +218,17 @@
                         </div>
                     </div>
                 </div>
-                <c:choose>
-                    <c:when test="${product.imageId == null || product.imageId.isEmpty()}">
-                    </c:when>
-                    <c:otherwise>
-                        <div class="form-group form-group-lg">
-                            <label for="image-url" class="col-sm-3 control-label">Current image</label>
-                            <div class="col-sm-9">
-                                <img src="<c:url value="http://res.cloudinary.com/mousesan/image/upload/w_300,h_300,c_pad,b_rgb:FFFFFF/${product.imageId}.png"/>" class="img-responsive center-block" alt="Product image" id="image-url">
-                            </div>
+                <c:if test="${productDto.imageId != null && !productDto.imageId.isEmpty()}">
+                    <div class="form-group form-group-lg">
+                        <label for="image-url" class="col-sm-3 control-label">Current image</label>
+                        <div class="col-sm-9">
+                            <img src="<c:url value="http://res.cloudinary.com/mousesan/image/upload/w_300,h_300,c_pad,b_rgb:FFFFFF/${productDto.imageId}.png"/>" class="img-responsive center-block" alt="Product image" id="image-url">
                         </div>
-                    </c:otherwise>
-                </c:choose>
+                    </div>
+                </c:if>
                 <div class="form-group form-group-lg">
                     <c:choose>
-                        <c:when test="${product.imageId == null || product.imageId.isEmpty()}">
+                        <c:when test="${productDto.imageId == null || productDto.imageId.isEmpty()}">
                             <label for="multipartFile" class="col-sm-3 control-label">Image</label>
                         </c:when>
                         <c:otherwise>
@@ -240,7 +236,15 @@
                         </c:otherwise>
                     </c:choose>
                     <div class="col-sm-9">
-                        <input type="file" accept=".png" name="multipartFile" id="multipartFile" class="form-control"/>
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                                <span class="btn btn-primary btn-lg">
+                                    Browse&hellip;
+                                    <input type="file" style="display: none;" name="multipartFile" id="multipartFile"/>
+                                </span>
+                            </label>
+                            <input type="text" class="form-control" readonly/>
+                        </div>
                     </div>
                     <div class="col-sm-offset-3 col-sm-9">
                         <div class="has-error">
@@ -270,6 +274,7 @@
 <!-- END WRAPPER -->
 <!-- JAVASCRIPTS -->
 <c:import url="common/scriptsTag.jsp" />
+<script src="<c:url value='/static/js/browseButton.js' />"></script>
 
 </body>
 

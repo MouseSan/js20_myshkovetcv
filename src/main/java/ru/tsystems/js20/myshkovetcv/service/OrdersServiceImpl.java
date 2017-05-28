@@ -85,10 +85,12 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public void updateOrders(Orders orders) {
-        Orders entity = ordersDao.findById(orders.getId());
+    public void updateOrders(OrdersDto ordersDto) {
+        Orders entity = ordersDao.findById(ordersDto.getId());
         if (entity != null) {
-            ordersDao.updateOrders(orders);
+            entity.setOrdersState(ordersDto.getOrdersState());
+            entity.setPaymentState(ordersDto.getPaymentState());
+            ordersDao.updateOrders(entity);
         }
     }
 

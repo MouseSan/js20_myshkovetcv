@@ -34,113 +34,103 @@
                 <form:input type="hidden" path="id" id="id"/>
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form-horizontal">
-                            <div class="form-group form-group-lg">
-                                <label class="col-sm-2 control-label">ID</label>
-                                <div class="col-sm-3">
-                                    <p class="form-control-static">${order.id}</p>
-                                </div>
-                                <label class="col-sm-2 control-label">Date of order</label>
-                                <div class="col-sm-5">
-                                    <p class="form-control-static">${order.dateOfOrder}</p>
-                                </div>
+                        <div class="form-group form-group-lg">
+                            <label class="col-sm-2 control-label">ID</label>
+                            <div class="col-sm-3">
+                                <p class="form-control-static">${order.id}</p>
                             </div>
-                        </form>
+                            <label class="col-sm-2 control-label">Date of order</label>
+                            <div class="col-sm-5">
+                                <p class="form-control-static">${order.dateOfOrder}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form-horizontal">
-                            <div class="form-group form-group-lg">
-                                <sec:authorize access="hasRole('ADMIN')" var="isAdmin"/>
-                                <c:choose>
-                                    <c:when test="${isAdmin}">
-                                        <label class="col-sm-2 control-label">Order state</label>
-                                        <div class="col-sm-3">
-                                            <form:select type="text" path="ordersState" id="ordersState" class="form-control">
-                                                <c:forEach var="ordersStateIter" items="${ordersStateList}">
-                                                    <c:choose>
-                                                        <c:when test="${order.ordersState == ordersStateIter}">
-                                                            <form:option value="${ordersStateIter}" label="${ordersStateIter}" selected="true"/>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <form:option value="${ordersStateIter}" label="${ordersStateIter}"/>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
-                                            </form:select>
-                                        </div>
-                                        <label class="col-sm-2 control-label">Payment state</label>
-                                        <div class="col-sm-5">
-                                            <form:select type="text" path="paymentState" id="paymentState" class="form-control">
-                                                <c:forEach var="paymentStateIter" items="${paymentStateList}">
-                                                    <c:choose>
-                                                        <c:when test="${order.paymentState == paymentStateIter}">
-                                                            <form:option value="${paymentStateIter}" label="${paymentStateIter}" selected="true"/>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <form:option value="${paymentStateIter}" label="${paymentStateIter}"/>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
-                                            </form:select>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <label class="col-sm-2 control-label">Order state</label>
-                                        <div class="col-sm-3">
-                                            <p class="form-control-static">${order.ordersState}</p>
-                                        </div>
-                                        <label class="col-sm-2 control-label">Payment state</label>
-                                        <div class="col-sm-5">
-                                            <p class="form-control-static">${order.paymentState}</p>
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                        </form>
+                        <div class="form-group form-group-lg">
+                            <sec:authorize access="hasRole('ADMIN')" var="isAdmin"/>
+                            <c:choose>
+                                <c:when test="${isAdmin}">
+                                    <label class="col-sm-2 control-label">Order state</label>
+                                    <div class="col-sm-3">
+                                        <form:select type="text" path="ordersState" id="ordersState" class="form-control">
+                                            <c:forEach var="ordersStateIter" items="${ordersStateList}">
+                                                <c:choose>
+                                                    <c:when test="${order.ordersState == ordersStateIter}">
+                                                        <form:option value="${ordersStateIter}" label="${ordersStateIter}" selected="true"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <form:option value="${ordersStateIter}" label="${ordersStateIter}"/>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </form:select>
+                                    </div>
+                                    <label class="col-sm-2 control-label">Payment state</label>
+                                    <div class="col-sm-5">
+                                        <form:select type="text" path="paymentState" id="paymentState" class="form-control">
+                                            <c:forEach var="paymentStateIter" items="${paymentStateList}">
+                                                <c:choose>
+                                                    <c:when test="${order.paymentState == paymentStateIter}">
+                                                        <form:option value="${paymentStateIter}" label="${paymentStateIter}" selected="true"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <form:option value="${paymentStateIter}" label="${paymentStateIter}"/>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </form:select>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <label class="col-sm-2 control-label">Order state</label>
+                                    <div class="col-sm-3">
+                                        <p class="form-control-static">${order.ordersState}</p>
+                                    </div>
+                                    <label class="col-sm-2 control-label">Payment state</label>
+                                    <div class="col-sm-5">
+                                        <p class="form-control-static">${order.paymentState}</p>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form-horizontal">
-                            <div class="form-group form-group-lg">
-                                <label class="col-sm-2 control-label">Delivery method</label>
-                                <div class="col-sm-3">
-                                    <p class="form-control-static">${order.deliveryMethod}</p>
-                                </div>
-                                <label class="col-sm-2 control-label">Payment method</label>
-                                <div class="col-sm-5">
-                                    <p class="form-control-static">${order.paymentMethod}</p>
-                                </div>
+                        <div class="form-group form-group-lg">
+                            <label class="col-sm-2 control-label">Delivery method</label>
+                            <div class="col-sm-3">
+                                <p class="form-control-static">${order.deliveryMethod}</p>
                             </div>
-                        </form>
+                            <label class="col-sm-2 control-label">Payment method</label>
+                            <div class="col-sm-5">
+                                <p class="form-control-static">${order.paymentMethod}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form-horizontal">
-                            <div class="form-group form-group-lg">
-                                <label class="col-sm-2 control-label">Delivery address</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static">${order.deliveryAddress}</p>
-                                </div>
+                        <div class="form-group form-group-lg">
+                            <label class="col-sm-2 control-label">Delivery address</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static">${order.deliveryAddress}</p>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <c:choose>
                     <c:when test="${isAdmin}">
                         <div class="row">
                             <div class="col-md-12">
-                                <form class="form-horizontal">
-                                    <div class="form-group form-group-lg">
-                                        <label class="col-sm-2 control-label">Customer</label>
-                                        <div class="col-sm-10">
-                                            <p class="form-control-static">${order.userDto.firstName} ${order.userDto.lastName} (${order.userDto.emailAddress})</p>
-                                        </div>
+                                <div class="form-group form-group-lg">
+                                    <label class="col-sm-2 control-label">Customer</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static">${order.userDto.firstName} ${order.userDto.lastName} (${order.userDto.emailAddress})</p>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </c:when>
@@ -172,13 +162,13 @@
                                             </c:choose>
     									</span>
                                             <div class="media-body">
-                                                <a href="#" class="product-title">${product.productDto.name}</a>
+                                                <a href="<c:url value='/products/${product.productDto.id}' />" class="product-title">${product.productDto.name}</a>
                                                 <span class="brief-desc">Brand: ${product.productDto.brandDto.name}, Backlight: ${product.productDto.backlight}, Clock face: ${product.productDto.clockFace}, Glass: ${product.productDto.glass}, Gender: ${product.productDto.gender}, Water resistant: ${product.productDto.waterResistant}.</span>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="unit-price">${product.soldPrice}</td>
-                                    <td class="qty">${product.soldQuantity}</td>
+                                    <td class="unit-price">${product.soldQuantity}</td>
                                     <td class="total-price">${product.soldPrice * product.soldQuantity}</td>
                                 </tr>
                             </c:forEach>
