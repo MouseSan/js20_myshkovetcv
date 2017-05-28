@@ -42,11 +42,11 @@
                                 <c:when test="${storefrontSettingsDto.storefrontType == 'TopTenProducts'}">
                                     <label class="fancy-radio delivery-option option-express-delivery">
                                         <input type="radio" name="storefrontType" id="radio-top-ten" value="TopTenProducts" checked>
-                                        <span><i></i> <span><i class="fa fa-truck"></i> Top ten products</span></span>
+                                        <span><i></i> <span><i class="fa fa-line-chart"></i> Top ten products</span></span>
                                     </label>
                                     <div class="top-ten-box">
                                         <div class="row">
-                                            <table class="table shopping-cart-table">
+                                            <table class="table shopping-cart-table storefront-table">
                                                 <thead>
                                                 <tr>
                                                     <th>Product</th>
@@ -93,11 +93,11 @@
                                 <c:otherwise>
                                     <label class="fancy-radio delivery-option option-express-delivery">
                                         <input type="radio" name="storefrontType" id="radio-top-ten" value="TopTenProducts">
-                                        <span><i></i> <span><i class="fa fa-truck"></i> Top ten products</span></span>
+                                        <span><i></i> <span><i class="fa fa-line-chart"></i> Top ten products</span></span>
                                     </label>
                                     <div class="top-ten-box hide-first">
                                         <div class="row">
-                                            <table class="table shopping-cart-table">
+                                            <table class="table shopping-cart-table storefront-table">
                                                 <thead>
                                                 <tr>
                                                     <th>Product</th>
@@ -146,11 +146,11 @@
                                 <c:when test="${storefrontSettingsDto.storefrontType == 'TopTenProducts'}">
                                     <label class="fancy-radio delivery-option option-self-pickup">
                                         <input type="radio" name="storefrontType" id="radio-custom-list" value="CustomList">
-                                        <span><i></i> <span><i class="fa fa-child"></i> Custom list</span></span>
+                                        <span><i></i> <span><i class="fa fa-cubes"></i> Custom list</span></span>
                                     </label>
                                     <div class="custom-list-box hide-first">
                                         <div class="row">
-                                            <table class="table shopping-cart-table">
+                                            <table class="table shopping-cart-table storefront-table">
                                                 <thead>
                                                 <tr>
                                                     <th>Product</th>
@@ -202,11 +202,11 @@
                                 <c:otherwise>
                                     <label class="fancy-radio delivery-option option-self-pickup">
                                         <input type="radio" name="storefrontType" id="radio-custom-list" value="CustomList" checked>
-                                        <span><i></i> <span><i class="fa fa-child"></i> Custom list</span></span>
+                                        <span><i></i> <span><i class="fa fa-cubes"></i> Custom list</span></span>
                                     </label>
                                     <div class="custom-list-box">
                                         <div class="row">
-                                            <table class="table shopping-cart-table">
+                                            <table class="table shopping-cart-table storefront-table">
                                                 <thead>
                                                 <tr>
                                                     <th>Product</th>
@@ -276,10 +276,6 @@
 </div>
 <!-- END WRAPPER -->
 
-<%--<c:import url="common/scriptsTag.jsp" />--%>
-<%--<script src="<c:url value='/static/js/plugins/fuelux-wizard/wizard.js' />"></script>--%>
-<%--<script src="<c:url value='/static/js/plugins/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js' />"></script>--%>
-
 <script src="<c:url value='/static/js/jquery-2.1.1.min.js' />"></script>
 <script src="<c:url value='/static/js/bootstrap.min.js' />"></script>
 <script src="<c:url value='/static/js/plugins/autohidingnavbar/jquery.bootstrap-autohidingnavbar.min.js' />"></script>
@@ -290,7 +286,6 @@
 <script src="<c:url value='/static/js/repute-shop.js' />"></script>
 <script src="<c:url value='/static/js/cart.js' />"></script>
 <script src="<c:url value='/static/js/removeFromStorefront.js' />"></script>
-
 
 </body>
 </html>

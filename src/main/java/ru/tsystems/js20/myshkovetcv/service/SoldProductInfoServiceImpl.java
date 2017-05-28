@@ -55,6 +55,9 @@ public class SoldProductInfoServiceImpl implements SoldProductInfoService{
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("listTopSoldProducts", getTopSoldProducts(10));
         modelMap.addAttribute("listTopBuyers", ordersService.getTopBuyers(10));
+        modelMap.addAttribute("earnings", ordersService.getEarningsForLastDays(30));
+        modelMap.addAttribute("totalOrdersLastMonth", ordersService.getTotalOrdersForLastDays(30));
+        modelMap.addAttribute("totalQuantityLastMonth", ordersService.getTotalQuantityOfProductsForLastDays(30));
         return modelMap;
     }
 }

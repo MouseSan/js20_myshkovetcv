@@ -26,6 +26,12 @@ public interface OrdersService {
 
     List<OrdersDto> getTopBuyers(Integer numberOfTops);
 
+    Double getEarningsForLastDays(Integer numberOfDays);
+
+    Integer getTotalOrdersForLastDays(Integer numberOfDays);
+
+    Double getTotalQuantityOfProductsForLastDays(Integer numberOfDays);
+
     ModelMap getOrdersModel();
 
     ModelMap getCurrentUserOrdersListModel();

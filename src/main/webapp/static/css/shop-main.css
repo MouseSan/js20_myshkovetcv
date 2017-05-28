@@ -1680,7 +1680,7 @@ div.ppt {
 
 .services {
   padding-left: 20em;
-  margin: 20px 0;
+  margin: 40px 0;
 }
 @media screen and (max-width: 992px) {
   .services {
@@ -2082,6 +2082,9 @@ div.ppt {
 }
 .hero-unit-slider.shop-hero-unit .right-caption {
   text-align: right;
+}
+.hero-unit-slider.shop-hero-unit .bottom-caption {
+  margin-top: 20px;
 }
 .hero-unit-slider.shop-hero-unit .slick-prev, .hero-unit-slider.shop-hero-unit .slick-next {
   background: rgba(0, 0, 0, 0.5);
@@ -3246,4 +3249,14 @@ input[type=number].input-number_noSpinners::-webkit-outer-spin-button {
 }
 .out-of-stock-button {
   margin-left: -8px;
+}
+.out-of-stock-button-admin {
+  margin-left: -1px;
+}
+.btn-edit-product {
+  margin-left: 29px;
+}
+.orders-box {
+  margin-top: 20px;
+  margin-bottom: 30px;
 }

@@ -23,4 +23,6 @@ public interface OrdersDao {
     List<Orders> findAllOrdersByUserAndState(User user, OrdersState ordersState);
 
     List<Orders> getTopBuyers(Integer numberOfTops);
+
+    List<Orders> findAllOrdersForLastMonth();
 }

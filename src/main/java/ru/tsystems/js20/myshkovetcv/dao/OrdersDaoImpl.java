@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.tsystems.js20.myshkovetcv.model.Orders;
 import ru.tsystems.js20.myshkovetcv.model.User;
 import ru.tsystems.js20.myshkovetcv.model.enums.OrdersState;
+import ru.tsystems.js20.myshkovetcv.service.DateService;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -85,6 +86,28 @@ public class OrdersDaoImpl extends AbstractDao<Long, Orders> implements OrdersDa
 
         try {
             List<Orders> ordersList = super.getEntityManager().createQuery(query).setMaxResults(numberOfTops).getResultList();
+            return ordersList != null ? ordersList : null;
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Orders> findAllOrdersForLastMonth() {
+        CriteriaBuilder builder = super.getCriteriaBuilder();
+        CriteriaQuery<Orders> query = builder.createQuery(Orders.class);
+        Root<Orders> orders = query.from(Orders.class);
+
+        List<Predicate> predList = new LinkedList<>();
+        predList.add(builder.and(builder.notEqual(orders.get("ordersState"), OrdersState.Pending)));
+        predList.add(builder.and(builder.greaterThan(orders.get("dateOfOrder"), DateService.getDateMonthAgo())));
+
+        Predicate[] predArray = new Predicate[predList.size()];
+        predList.toArray(predArray);
+        query.where(predArray);
+
+        try {
+            List<Orders> ordersList = super.find(query);
             return ordersList != null ? ordersList : null;
         } catch (NoResultException e) {
             return null;

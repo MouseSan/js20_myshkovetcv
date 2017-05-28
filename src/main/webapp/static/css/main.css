@@ -7203,3 +7203,7 @@ ul.nav-categories > li > a:hover {
   padding: 15px;
   margin: 0 auto;
 }
+.storefront-table {
+  margin-left: 20px;
+  margin-right: 20px;
+}

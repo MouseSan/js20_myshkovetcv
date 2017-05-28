@@ -145,6 +145,32 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    public Double getEarningsForLastDays(Integer numberOfDays) {
+        List<Orders> ordersList = ordersDao.findAllOrdersForLastMonth();
+        Double totalEarnings = 0.0;
+        for (Orders orders : ordersList) {
+            totalEarnings += orders.getTotalPrice();
+        }
+        return totalEarnings;
+    }
+
+    @Override
+    public Integer getTotalOrdersForLastDays(Integer numberOfDays) {
+        List<Orders> ordersList = ordersDao.findAllOrdersForLastMonth();
+        return ordersList.size();
+    }
+
+    @Override
+    public Double getTotalQuantityOfProductsForLastDays(Integer numberOfDays) {
+        List<Orders> ordersList = ordersDao.findAllOrdersForLastMonth();
+        Double totalQuantity = 0.0;
+        for (Orders orders : ordersList) {
+            totalQuantity += orders.getTotalQuantity();
+        }
+        return totalQuantity;
+    }
+
+    @Override
     public ModelMap getOrdersModel() {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
