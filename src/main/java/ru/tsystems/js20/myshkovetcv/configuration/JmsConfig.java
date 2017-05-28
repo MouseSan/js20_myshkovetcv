@@ -10,8 +10,7 @@ public class JmsConfig {
 
     @Bean
     public ActiveMQConnectionFactory connectionFactory(){
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-        return connectionFactory;
+        return new ActiveMQConnectionFactory();
     }
 
     @Bean
@@ -21,5 +20,4 @@ public class JmsConfig {
         template.setDefaultDestinationName("watchShop");
         return template;
     }
-
 }

@@ -7,6 +7,7 @@ import ru.tsystems.js20.myshkovetcv.dao.StorefrontProductsDao;
 import ru.tsystems.js20.myshkovetcv.dto.ProductDto;
 import ru.tsystems.js20.myshkovetcv.model.Product;
 import ru.tsystems.js20.myshkovetcv.model.StorefrontProducts;
+import ru.tsystems.js20.myshkovetcv.model.enums.StorefrontType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,10 @@ public class StorefrontProductsServiceImpl implements StorefrontProductsService 
     private StorefrontProductsDao storefrontProductsDao;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private StorefrontSettingsService storefrontSettingsService;
+    @Autowired
+    private JmsService jmsService;
 
     @Override
     public List<ProductDto> getListOfProductsDto() {
@@ -40,6 +45,10 @@ public class StorefrontProductsServiceImpl implements StorefrontProductsService 
                 StorefrontProducts storefrontProducts = new StorefrontProducts();
                 storefrontProducts.setProduct(product);
                 storefrontProductsDao.save(storefrontProducts);
+
+                if (storefrontSettingsService.getStorefrontType() == StorefrontType.CustomList) {
+                    jmsService.sendMessage("UPDATE");
+                }
             }
         }
     }
@@ -51,6 +60,10 @@ public class StorefrontProductsServiceImpl implements StorefrontProductsService 
             List<StorefrontProducts> storefrontProductsList = product.getStorefrontProductsList();
             if (storefrontProductsList != null) {
                 storefrontProductsList.clear();
+
+                if (storefrontSettingsService.getStorefrontType() == StorefrontType.CustomList) {
+                    jmsService.sendMessage("UPDATE");
+                }
             }
         }
     }

@@ -23,12 +23,14 @@ public class StorefrontSettingsServiceImpl implements StorefrontSettingsService 
     private StorefrontProductsService storefrontProductsService;
     @Autowired
     private SoldProductInfoService soldProductInfoService;
+    @Autowired
+    private JmsService jmsService;
 
     @Override
     public ModelMap getStorefrontSettingsModel() {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
-        modelMap.addAttribute("storefrontSettingsDto", new StorefrontSettingsDto(getFirstStorefrontSettings()));
+        modelMap.addAttribute("storefrontSettingsDto", getStorefrontSettingsDto());
         modelMap.addAttribute("storefrontProductsList", storefrontProductsService.getListOfProductsDto());
         modelMap.addAttribute("listTopSoldProducts", soldProductInfoService.getTopSoldProducts(10));
         return modelMap;
@@ -40,20 +42,30 @@ public class StorefrontSettingsServiceImpl implements StorefrontSettingsService 
         if (storefrontSettings != null) {
             storefrontSettings.setStorefrontType(storefrontSettingsDto.getStorefrontType());
             storefrontSettingsDao.updateStorefrontSettings(storefrontSettings);
-        } else {
-
+            jmsService.sendMessage("UPDATE");
         }
     }
 
-    private StorefrontSettings getFirstStorefrontSettings() {
+    @Override
+    public StorefrontSettingsDto getStorefrontSettingsDto() {
         List<StorefrontSettings> storefrontSettingsList = storefrontSettingsDao.getStorefrontSettings();
         if (!storefrontSettingsList.isEmpty()) {
-            return storefrontSettingsList.get(0);
+            return new StorefrontSettingsDto(storefrontSettingsList.get(0));
         } else {
             StorefrontSettings storefrontSettings = new StorefrontSettings();
             storefrontSettings.setStorefrontType(StorefrontType.TopTenProducts);
             storefrontSettingsDao.save(storefrontSettings);
-            return storefrontSettings;
+            return new StorefrontSettingsDto(storefrontSettings);
+        }
+    }
+
+    @Override
+    public StorefrontType getStorefrontType() {
+        StorefrontSettingsDto storefrontSettingsDto = getStorefrontSettingsDto();
+        if (storefrontSettingsDto != null) {
+            return storefrontSettingsDto.getStorefrontType();
+        } else {
+            return StorefrontType.TopTenProducts;
         }
     }
 }
