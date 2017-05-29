@@ -24,4 +24,11 @@ public class MainController {
         logger.info("Getting home page");
         return "indexPage";
     }
+
+    @RequestMapping(value = {"/contacts/"}, method = RequestMethod.GET)
+    public String showContactsPage(ModelMap model) {
+        model.addAllAttributes(navBarService.getNavBarInfo());
+        logger.info("Getting contacts page");
+        return "contacts";
+    }
 }

@@ -51,7 +51,6 @@
             <version>${springframework.version}</version>
         </dependency>
 
-
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -95,7 +94,6 @@
             <version>1.1.0.Final</version>
         </dependency>
 
-
         <!-- MySQL -->
         <dependency>
             <groupId>mysql</groupId>
@@ -132,12 +130,12 @@
             <version>2.8.8</version>
         </dependency>
 
+        <!-- Logs -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
         </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -151,19 +149,17 @@
             <version>5.14.4</version>
         </dependency>
 
+        <!-- Cloudinary -->
         <dependency>
             <groupId>com.cloudinary</groupId>
             <artifactId>cloudinary-taglib</artifactId>
             <version>1.12.0</version>
         </dependency>
-
         <dependency>
             <groupId>com.cloudinary</groupId>
             <artifactId>cloudinary-http44</artifactId>
             <version>1.12.0</version>
         </dependency>
-
-
     </dependencies>
 
     <build>

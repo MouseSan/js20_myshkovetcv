@@ -40,11 +40,17 @@
                         </ul>
                     </li>
                 </sec:authorize>
+                <li>
+                    <a href="<c:url value='/storefront/' />">STOREFRONT</a>
+                </li>
                 <li class="shopping-cart">
                     <a href="<c:url value='/cart' />" id="cart">CART
                         <i class="fa fa-shopping-cart"></i>
                         <span class="cart-count">${quantityInCart}</span>
                     </a>
+                </li>
+                <li>
+                    <a href="<c:url value='/contacts/' />">CONTACTS</a>
                 </li>
                 <sec:authorize access="isAuthenticated()" var="isLoggedIn"/>
                 <c:choose>

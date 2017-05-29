@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-    <property name="DEV_HOME" value="C:/dev/logs" />
+    <property name="DEV_HOME" value="C:/dev/logs/main" />
 
     <appender name="STDOUT"
               class="ch.qos.logback.core.ConsoleAppender">
@@ -22,7 +22,7 @@
     </logger>
 
     <root>
-        <level value="DEBUG"/>
+        <level value="INFO"/>
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>
     </root>

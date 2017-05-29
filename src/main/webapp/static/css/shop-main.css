@@ -3260,3 +3260,16 @@ input[type=number].input-number_noSpinners::-webkit-outer-spin-button {
   margin-top: 20px;
   margin-bottom: 30px;
 }
+.custom-bold-text {
+  font-weight: 700;
+}
+.custom-contacts-box {
+  max-width: 950px;
+  padding: 10px;
+  margin: 0 auto;
+  font-size: 30px;
+}
+.custom-map-box {
+  padding: 10px;
+  margin: 0 auto;
+}
