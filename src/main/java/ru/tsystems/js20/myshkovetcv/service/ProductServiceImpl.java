@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,18 +38,23 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ImageService imageService;
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @Override
     public Product findById(Long id) {
+        logger.debug("Trying to find product: {}", id);
         return productDao.findById(id);
     }
 
     @Override
     public Product findByName(String name) {
+        logger.debug("Trying to find product: {}", name);
         return productDao.findByName(name);
     }
 
     @Override
     public void saveProduct(ProductDto productDto) {
+        logger.debug("Start saving product: {}", productDto.getName());
         HashMap<String, String> imageProperties = imageService.createImage(productDto);
         productDto.setImageURL(imageProperties.get("url"));
         productDto.setImageId(imageProperties.get("public_id"));
@@ -72,11 +79,16 @@ public class ProductServiceImpl implements ProductService {
             product.setImageId(productDto.getImageId());
             product.setImageURL(productDto.getImageURL());
             productDao.save(product);
+            logger.debug("Product {} saved", product.getName());
+        } else {
+            logger.warn("Category or brand not found, product {} not saved", productDto.getName());
         }
+
     }
 
     @Override
     public boolean updateProduct(ProductDto productDto) {
+        logger.debug("Start updating product: {}", productDto.getName());
         if (productDto.getMultipartFile() != null && !productDto.getMultipartFile().isEmpty()) {
             HashMap<String, String> imageProperties = imageService.updateImage(productDto);
             productDto.setImageURL(imageProperties.get("url"));
@@ -104,24 +116,17 @@ public class ProductServiceImpl implements ProductService {
                 product.setImageId(productDto.getImageId());
                 product.setImageURL(productDto.getImageURL());
                 productDao.updateProduct(product);
+                logger.debug("Product {} updated", product.getName());
                 jmsService.sendMessage("UPDATE");
                 return true;
             } else {
+                logger.warn("Product ID:{} not found, product {} not updated", productDto.getId(), productDto.getName());
                 return false;
             }
         } else {
+            logger.warn("Category or brand not found, product {} not updated", productDto.getName());
             return false;
         }
-    }
-
-    @Override
-    public List<Product> findAllProducts() {
-        return productDao.findAllProducts();
-    }
-
-    @Override
-    public List<Product> findProductsByCategory(Category category) {
-        return productDao.getProductsByCategory(category);
     }
 
     @Override
@@ -129,6 +134,7 @@ public class ProductServiceImpl implements ProductService {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("productList", getAllProductsDto());
+        logger.debug("Product list model formed");
         return modelMap;
     }
 
@@ -137,11 +143,8 @@ public class ProductServiceImpl implements ProductService {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("productDto", new ProductDto());
-        modelMap.addAttribute("brandList", brandService.getAllBrandDto());
-        modelMap.addAttribute("clockFaceList", ClockFaceType.values());
-        modelMap.addAttribute("glassList", ClockGlassType.values());
-        modelMap.addAttribute("genderList", GenderType.values());
-        modelMap.addAttribute("waterResistantList", WaterResistantType.values());
+        modelMap.mergeAttributes(getOptionsForSelect());
+        logger.debug("New product model formed");
         return modelMap;
     }
 
@@ -150,11 +153,8 @@ public class ProductServiceImpl implements ProductService {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("productDto", new ProductDto(findById(id)));
-        modelMap.addAttribute("brandList", brandService.getAllBrandDto());
-        modelMap.addAttribute("clockFaceList", ClockFaceType.values());
-        modelMap.addAttribute("glassList", ClockGlassType.values());
-        modelMap.addAttribute("genderList", GenderType.values());
-        modelMap.addAttribute("waterResistantList", WaterResistantType.values());
+        modelMap.mergeAttributes(getOptionsForSelect());
+        logger.debug("ProductId: {} model formed", id);
         return modelMap;
     }
 
@@ -165,12 +165,14 @@ public class ProductServiceImpl implements ProductService {
         for (Product product : productList) {
             productDtoList.add(new ProductDto(product));
         }
+        logger.debug("List of all ProductDto formed");
         return productDtoList;
     }
 
     @Override
     public ProductDto findByProductDto(ProductDto productDto) {
         String name = productDto.getName();
+        logger.debug("Begin to search ProductDto");
         Category category = categoryService.findById(productDto.getCategoryDto().getId());
         Double weight = productDto.getWeight();
         Double volume = productDto.getVolume();
@@ -180,18 +182,24 @@ public class ProductServiceImpl implements ProductService {
         ClockGlassType glass = productDto.getGlass();
         GenderType gender = productDto.getGender();
         WaterResistantType waterResistant = productDto.getWaterResistant();
+
         Product existingProduct = productDao.findByParameters(name, category, weight, volume, brand, backlight,
                 clockFace, glass, gender, waterResistant);
 
         if (existingProduct != null) {
+            logger.debug("ProductDto {}:{} found", existingProduct.getName(), existingProduct.getId());
             return new ProductDto(existingProduct);
         } else {
+            logger.debug("ProductDto not found");
             return null;
         }
     }
 
     @Override
     public ModelMap getProductModelByCategoryWithFilter(Long categoryId, String sorting, String brandId, String clockFace, String glass, String gender, String waterResistant, String backlight) {
+        logger.debug("Begin to form FilterDto: " +
+                "categoryId-{}, sorting-{}, brandId-{}, clockFace-{}, glass-{}, gender-{}, waterResistant-{}, backlight-{}",
+                categoryId, sorting, brandId, clockFace, glass, gender, waterResistant, backlight);
         FilterDto filterDto = new FilterDto();
 
         if (sorting == null) {
@@ -248,11 +256,8 @@ public class ProductServiceImpl implements ProductService {
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("filterDto", filterDto);
         modelMap.addAttribute("productList", getProductsDtoByFilter(filterDto));
-        modelMap.addAttribute("brandList", brandService.getAllBrandDto());
-        modelMap.addAttribute("clockFaceList", ClockFaceType.values());
-        modelMap.addAttribute("glassList", ClockGlassType.values());
-        modelMap.addAttribute("genderList", GenderType.values());
-        modelMap.addAttribute("waterResistantList", WaterResistantType.values());
+        modelMap.mergeAttributes(getOptionsForSelect());
+        logger.debug("Filtered list of products for catalog model formed");
         return modelMap;
     }
 
@@ -262,6 +267,18 @@ public class ProductServiceImpl implements ProductService {
         for (Product product : productList) {
             productDtoList.add(new ProductDto(product));
         }
+        logger.debug("Filtered list of ProductDtos formed");
         return productDtoList;
+    }
+
+    private ModelMap getOptionsForSelect() {
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAttribute("brandList", brandService.getAllBrandDto());
+        modelMap.addAttribute("clockFaceList", ClockFaceType.values());
+        modelMap.addAttribute("glassList", ClockGlassType.values());
+        modelMap.addAttribute("genderList", GenderType.values());
+        modelMap.addAttribute("waterResistantList", WaterResistantType.values());
+        logger.debug("List of parameter options model formed");
+        return modelMap;
     }
 }

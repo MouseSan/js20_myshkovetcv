@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.validators;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -14,6 +16,8 @@ public class ProductDtoValidator implements Validator {
 
     @Autowired
     private ProductService productService;
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -77,6 +81,12 @@ public class ProductDtoValidator implements Validator {
                             "Product with such a set of parameters alredy exist. {0}");
                 }
             }
+        }
+
+        if (errors.hasErrors()) {
+            logger.debug("ProductDto has validation errors");
+        } else {
+            logger.debug("ProductDto no validation errors");
         }
     }
 }

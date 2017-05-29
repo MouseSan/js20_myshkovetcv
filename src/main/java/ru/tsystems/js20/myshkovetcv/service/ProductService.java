@@ -2,7 +2,6 @@ package ru.tsystems.js20.myshkovetcv.service;
 
 import org.springframework.ui.ModelMap;
 import ru.tsystems.js20.myshkovetcv.dto.ProductDto;
-import ru.tsystems.js20.myshkovetcv.model.Category;
 import ru.tsystems.js20.myshkovetcv.model.Product;
 
 import java.util.List;
@@ -16,10 +15,6 @@ public interface ProductService {
     void saveProduct(ProductDto productDto);
 
     boolean updateProduct(ProductDto productDto);
-
-    List<Product> findAllProducts();
-
-    List<Product> findProductsByCategory(Category category);
 
     ModelMap getProductListModel();
 

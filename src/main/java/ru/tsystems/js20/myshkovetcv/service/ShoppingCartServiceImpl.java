@@ -19,7 +19,7 @@ import java.util.Map;
 @Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
-    Logger log = LoggerFactory.getLogger(getClass());
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ProductService productService;
@@ -41,7 +41,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         } else {
             productMap.put(productDto, 1);
         }
-        log.info("Add product to cart");
+        logger.debug("Product ID: {}, added to cart", productId);
     }
 
     @Override
@@ -51,12 +51,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         for (int value : productMap.values()) {
             quantityInCart += value;
         }
+        logger.debug("Getting quantity in cart: {}", quantityInCart);
         return quantityInCart;
     }
 
     @Override
     @Transactional
     public Map<ProductDto, Integer> getProductMap() {
+        logger.debug("Getting product map");
         return productMap;
     }
 
@@ -68,7 +70,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (productMap.containsKey(productDto)) {
             productMap.remove(productDto);
         }
-        log.info("Remove product from cart");
+        logger.debug("Product ID: {}, removed from cart", productId);
     }
 
     @Override
@@ -84,7 +86,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 productMap.remove(productDto);
             }
         }
-        log.info("Remove all products from cart");
+        logger.debug("Product ID: {}, one quantity removed from cart", productId);
     }
 
     @Override
@@ -94,6 +96,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         for (Map.Entry<ProductDto, Integer> entry : productMap.entrySet()) {
             totalPrice += (double) entry.getValue() * entry.getKey().getPrice();
         }
+        logger.debug("Getting total price");
         return (double) Math.round(totalPrice * 100.0) / 100.0;
     }
 
@@ -111,6 +114,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         } else {
             allProductsAvailable = false;
         }
+        logger.debug("Checks all products on availability, result: {}", allProductsAvailable);
         updateProductsInCart();
         return allProductsAvailable;
     }
@@ -125,6 +129,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         productMap.clear();
         productMap = tempMap;
+        logger.debug("All products updated in cart");
     }
 
     @Override
@@ -139,6 +144,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         model.addAttribute("totalPrice", getProductTotalPrice());
         model.addAttribute("productMap", getProductMap());
+        logger.debug("Shopping cart model formed");
         return model;
     }
 
@@ -158,11 +164,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 productMap.put(productDto, soldQuantity);
             }
         }
+        logger.debug("Products copied from order #{}", orderId);
     }
 
     @Override
     @Transactional
     public void removeAllProductFromCart() {
         productMap.clear();
+        logger.debug("All products removed");
     }
 }

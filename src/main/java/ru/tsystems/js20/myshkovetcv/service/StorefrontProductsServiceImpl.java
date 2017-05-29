@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,8 @@ public class StorefrontProductsServiceImpl implements StorefrontProductsService 
     @Autowired
     private JmsService jmsService;
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @Override
     public List<ProductDto> getListOfProductsDto() {
         List<StorefrontProducts> allStorefrontProducts = storefrontProductsDao.getAllStorefrontProducts();
@@ -32,6 +36,7 @@ public class StorefrontProductsServiceImpl implements StorefrontProductsService 
         for (StorefrontProducts storefrontProducts : allStorefrontProducts) {
             productDtoList.add(new ProductDto(storefrontProducts.getProduct()));
         }
+        logger.debug("Getting custom list of products for storefront");
         return productDtoList;
     }
 
@@ -45,7 +50,7 @@ public class StorefrontProductsServiceImpl implements StorefrontProductsService 
                 StorefrontProducts storefrontProducts = new StorefrontProducts();
                 storefrontProducts.setProduct(product);
                 storefrontProductsDao.save(storefrontProducts);
-
+                logger.debug("Product with ID: {}, added to storefront custom list", productId);
                 if (storefrontSettingsService.getStorefrontType() == StorefrontType.CustomList) {
                     jmsService.sendMessage("UPDATE");
                 }
@@ -60,7 +65,7 @@ public class StorefrontProductsServiceImpl implements StorefrontProductsService 
             List<StorefrontProducts> storefrontProductsList = product.getStorefrontProductsList();
             if (storefrontProductsList != null) {
                 storefrontProductsList.clear();
-
+                logger.debug("Product with ID: {}, removed from storefront custom list", productId);
                 if (storefrontSettingsService.getStorefrontType() == StorefrontType.CustomList) {
                     jmsService.sendMessage("UPDATE");
                 }

@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.validators;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -16,6 +18,8 @@ public class UserDtoValidator implements Validator {
 
     @Autowired
     private UserService userService;
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -85,6 +89,12 @@ public class UserDtoValidator implements Validator {
             } else if (password != null && !password.equals(passwordRepeat)) {
                 errors.rejectValue("passwordRepeat", "not.match.password", "Passwords do not match.");
             }
+        }
+
+        if (errors.hasErrors()) {
+            logger.debug("UserDto has validation errors");
+        } else {
+            logger.debug("UserDto no validation errors");
         }
     }
 }

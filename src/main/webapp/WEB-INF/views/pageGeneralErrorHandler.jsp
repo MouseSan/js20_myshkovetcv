@@ -5,7 +5,7 @@
 
 <head>
     <c:import url="common/headTag.jsp"/>
-    <title>400 Error</title>
+    <title>Watch shop - Trouble page</title>
 </head>
 
 <body>
@@ -15,8 +15,8 @@
     <div class="shop-main login">
         <div class="container">
             <div class="error-container">
-                <h1>400</h1>
-                <h2>OOPS! Something went wrong, try from home page</h2>
+                <h1>OOPS!</h1>
+                <h2>Something went wrong, try from home page</h2>
                 <hr />
                 <a class="btn btn-rounded-2x btn-primary btn-block btn-lg" href="<c:url value='/' />" >Home page</a>
             </div>

@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.tsystems.js20.myshkovetcv.model.Orders;
 import ru.tsystems.js20.myshkovetcv.model.User;
@@ -11,25 +13,31 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 @Repository("ordersDao")
 public class OrdersDaoImpl extends AbstractDao<Long, Orders> implements OrdersDao {
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @Override
     public Orders findById(Long id) {
+        logger.debug("Getting order by id: {}", id);
         return getByKey(id);
     }
 
     @Override
     public void save(Orders orders) {
         persist(orders);
+        logger.debug("Order saved: {}", orders.getId());
     }
 
     @Override
     public void updateOrders(Orders orders) {
         update(orders);
+        logger.debug("Order updated: {}", orders.getId());
     }
 
     @Override
@@ -37,6 +45,7 @@ public class OrdersDaoImpl extends AbstractDao<Long, Orders> implements OrdersDa
         List<Orders> ordersList = getEntityManager()
                 .createQuery("SELECT o FROM Orders o ORDER BY o.id ASC")
                 .getResultList();
+        logger.debug("Get list of all orders");
         return ordersList;
     }
 
@@ -46,6 +55,7 @@ public class OrdersDaoImpl extends AbstractDao<Long, Orders> implements OrdersDa
                 .createQuery("SELECT o FROM Orders o WHERE o.user = :user")
                 .setParameter("user", user)
                 .getResultList();
+        logger.debug("Get list of all orders by user: {}", user.getUserName());
         return ordersList;
     }
 
@@ -55,6 +65,7 @@ public class OrdersDaoImpl extends AbstractDao<Long, Orders> implements OrdersDa
                 .createQuery("SELECT o FROM Orders o WHERE o.ordersState = :ordersState")
                 .setParameter("ordersState", ordersState)
                 .getResultList();
+        logger.debug("Get list of all orders by order state: {}", ordersState);
         return ordersList;
     }
 
@@ -65,6 +76,7 @@ public class OrdersDaoImpl extends AbstractDao<Long, Orders> implements OrdersDa
                 .setParameter("user", user)
                 .setParameter("ordersState", ordersState)
                 .getResultList();
+        logger.debug("Get list of all orders by order state: {} and user: {}", ordersState, user.getUserName());
         return ordersList;
     }
 
@@ -86,9 +98,17 @@ public class OrdersDaoImpl extends AbstractDao<Long, Orders> implements OrdersDa
 
         try {
             List<Orders> ordersList = super.getEntityManager().createQuery(query).setMaxResults(numberOfTops).getResultList();
-            return ordersList != null ? ordersList : null;
+
+            if (ordersList != null) {
+                logger.debug("List of top {} buyers found", numberOfTops);
+                return ordersList;
+            } else {
+                logger.warn("List of top {} buyers not found", numberOfTops);
+                return new ArrayList<>();
+            }
         } catch (NoResultException e) {
-            return null;
+            logger.warn("List of top {} buyers not found", numberOfTops);
+            return new ArrayList<>();
         }
     }
 
@@ -108,9 +128,17 @@ public class OrdersDaoImpl extends AbstractDao<Long, Orders> implements OrdersDa
 
         try {
             List<Orders> ordersList = super.find(query);
-            return ordersList != null ? ordersList : null;
+
+            if (ordersList != null) {
+                logger.debug("List of all orders for last month found");
+                return ordersList;
+            } else {
+                logger.warn("List of all orders for last month not found");
+                return new ArrayList<>();
+            }
         } catch (NoResultException e) {
-            return null;
+            logger.warn("List of all orders for last month not found");
+            return new ArrayList<>();
         }
     }
 }

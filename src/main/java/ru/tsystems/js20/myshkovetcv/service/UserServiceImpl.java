@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +17,6 @@ import ru.tsystems.js20.myshkovetcv.model.User;
 import ru.tsystems.js20.myshkovetcv.model.enums.UserRoles;
 
 import java.util.Collection;
-import java.util.List;
 
 @Service("userService")
 @Transactional
@@ -30,30 +31,18 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private NavBarService navBarService;
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @Override
     public User findById(Long id) {
+        logger.debug("Trying to find user: {}", id);
         return userDao.findById(id);
     }
 
     @Override
-    public User findByFirstName(String name) {
-        return userDao.findByFirstName(name);
-    }
-
-    @Override
-    public User getUserByEmail(String emailAddress) {
-        return userDao.findByEmail(emailAddress);
-    }
-
-    @Override
     public User getUserByUserName(String userName) {
+        logger.debug("Getting user by userName: {}", userName);
         return userDao.findByUserName(userName);
-    }
-
-    @Override
-    public UserDto getUserDtoByEmail(String emailAddress) {
-        User user = userDao.findByEmail(emailAddress);
-        return new UserDto(user);
     }
 
     @Override
@@ -67,6 +56,7 @@ public class UserServiceImpl implements UserService {
         user.setEmailAddress(userDto.getEmailAddress());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userDao.save(user);
+        logger.debug("Saved new user: {}", user.getUserName());
     }
 
     @Override
@@ -78,8 +68,10 @@ public class UserServiceImpl implements UserService {
             userToBeMerged.setDateOfBirth(userDto.getDateOfBirth());
             userToBeMerged.setEmailAddress(userDto.getEmailAddress());
             userDao.updateUser(userToBeMerged);
+            logger.debug("User updated: {}", userToBeMerged.getUserName());
             return true;
         } else {
+            logger.warn("User {} not updated, because user ID {} not found", userDto.getUserName(), userDto.getId());
             return false;
         }
     }
@@ -90,31 +82,32 @@ public class UserServiceImpl implements UserService {
         if (userToBeMerged != null) {
             userToBeMerged.setPassword(passwordEncoder.encode(userDto.getPassword()));
             userDao.updateUser(userToBeMerged);
+            logger.debug("Password for user {} updated", userToBeMerged.getUserName());
             return true;
         } else {
+            logger.warn("Password for user {} not updated, because user ID {} not found", userDto.getUserName(), userDto.getId());
             return false;
         }
     }
 
     @Override
-    public List<User> findAllUsers() {
-        return userDao.findAllUsers();
-    }
-
-    @Override
     public boolean emailAddressNotUnique(String email) {
         User user = userDao.findByEmail(email);
-        return user != null;
+        boolean unique = user != null;
+        logger.debug("Email {} unique: {}", email, unique);
+        return unique;
     }
 
     @Override
     public boolean userNameNotUnique(String userName) {
         User user = userDao.findByUserName(userName);
-        return user != null;
+        boolean unique = user != null;
+        logger.debug("UserName {} unique: {}", userName, unique);
+        return unique;
     }
 
     @Override
-    public String getPrincipal() {
+    public User getCurrentUser() {
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -123,17 +116,14 @@ public class UserServiceImpl implements UserService {
         } else {
             userName = principal.toString();
         }
-        return userName;
-    }
-
-    @Override
-    public User getCurrentUser() {
-        return userDao.findByUserName(getPrincipal());
+        logger.debug("Getting current user: {}", userName);
+        return userDao.findByUserName(userName);
     }
 
     @Override
     public UserDto getCurrentUserDto() {
         User user = getCurrentUser();
+        logger.debug("Getting current userDto");
         return user != null ? new UserDto(user) : null;
     }
 
@@ -143,6 +133,7 @@ public class UserServiceImpl implements UserService {
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("userDto", getCurrentUserDto());
         modelMap.addAttribute("addressList", userAddressService.findAllAddressesCurrentUser());
+        logger.debug("User settings with addresses model formed");
         return modelMap;
     }
 
@@ -153,6 +144,7 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = getCurrentUserDto();
         userDto.setUserDtoValidationType(validationType);
         modelMap.addAttribute("userDto", userDto);
+        logger.debug("User settings model formed");
         return modelMap;
     }
 
@@ -167,6 +159,7 @@ public class UserServiceImpl implements UserService {
                 break;
             }
         }
+        logger.debug("Has role: {}", hasRole);
         return hasRole;
     }
 }

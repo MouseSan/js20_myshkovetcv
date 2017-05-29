@@ -23,8 +23,6 @@ public interface ProductDao {
 
     List<Product> findAllProducts();
 
-    List<Product> getProductsByCategory(Category category);
-
     Product findByParameters(String name, Category category, Double weight, Double volume,
                              Brand brand, boolean backlight, ClockFaceType clockFace,
                              ClockGlassType glass, GenderType gender,

@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,9 +23,12 @@ public class StorefrontController {
     @Autowired
     private StorefrontProductsService storefrontProductsService;
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @RequestMapping(value = {"/admin/storefront/"}, method = RequestMethod.GET)
     public String getStorefrontSettings(ModelMap model) {
         model.addAllAttributes(storefrontSettingsService.getStorefrontSettingsModel());
+        logger.info("Getting storefront settings page");
         return "storeFrontSettings";
     }
 
@@ -32,23 +37,26 @@ public class StorefrontController {
                                          ModelMap model) {
         if (result.hasErrors()) {
             model.mergeAttributes(storefrontSettingsService.getStorefrontSettingsModel());
+            logger.info("Storefront settings page - has errors");
             return "storeFrontSettings";
         }
 
         storefrontSettingsService.updateStorefrontSettings(storefrontSettingsDto);
+        logger.info("Storefront settings page - settings updated");
         return "redirect:/admin/storefront/?saved";
     }
 
     @RequestMapping(value = {"/admin/addToCustomList"}, method = RequestMethod.GET)
     public @ResponseBody String addProductToCustomList(@RequestParam Long productId) {
         storefrontProductsService.addProductToList(productId);
+        logger.info("Add to custom product list ProductID: {}", productId);
         return "";
     }
 
     @RequestMapping(value = {"/admin/removeFromCustomList"}, method = RequestMethod.GET)
     public @ResponseBody String removeProductFromCustomList(@RequestParam Long productId) {
         storefrontProductsService.removeProductFromList(productId);
+        logger.info("Remove from custom product list ProductID: {}", productId);
         return "";
     }
-
 }

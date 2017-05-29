@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,8 @@ public class CatalogController {
     @Autowired
     private ProductService productService;
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @RequestMapping(value = "/category/{categoryId}", method = RequestMethod.GET)
     public Object listProductsByFilter(
             @PathVariable Long categoryId,
@@ -29,12 +33,14 @@ public class CatalogController {
             @RequestParam(value = "backlight", required = false) String backlight,
             ModelMap model) throws NotFoundException {
         model.addAllAttributes(productService.getProductModelByCategoryWithFilter(categoryId, sorting, brandDto, clockFace, glass, gender, waterResistant, backlight));
+        logger.info("Getting catalog page with filters");
         return "productListByCategory";
     }
 
     @RequestMapping(value = "/products/{productId}", method = RequestMethod.GET)
     public Object getProductPage(@PathVariable Long productId, ModelMap model) {
         model.addAllAttributes(productService.getProductModelById(productId));
+        logger.info("Getting single product page");
         return "productPage";
     }
 }

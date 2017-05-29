@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.tsystems.js20.myshkovetcv.model.Orders;
 import ru.tsystems.js20.myshkovetcv.model.SoldProductInfo;
@@ -7,20 +9,19 @@ import ru.tsystems.js20.myshkovetcv.model.enums.OrdersState;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 @Repository("soldProductInfoDao")
 public class SoldProductInfoDaoImpl extends AbstractDao<Long, SoldProductInfo> implements SoldProductInfoDao {
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @Override
     public void save(SoldProductInfo soldProductInfo) {
         persist(soldProductInfo);
-    }
-
-    @Override
-    public void updateSoldProductInfo(SoldProductInfo soldProductInfo) {
-        update(soldProductInfo);
+        logger.debug("Sold product info saved: {}", soldProductInfo.getId());
     }
 
     @Override
@@ -29,7 +30,7 @@ public class SoldProductInfoDaoImpl extends AbstractDao<Long, SoldProductInfo> i
                 .createQuery("SELECT s FROM SoldProductInfo s WHERE s.orders = :orders")
                 .setParameter("orders", orders)
                 .getResultList();
-
+        logger.debug("Get list of sold product info by order ID: {}", orders.getId());
         return soldProductInfoList;
     }
 
@@ -53,9 +54,16 @@ public class SoldProductInfoDaoImpl extends AbstractDao<Long, SoldProductInfo> i
 
         try {
             List<SoldProductInfo> soldProductInfos = super.getEntityManager().createQuery(query).setMaxResults(numberOfTops).getResultList();
-            return soldProductInfos != null ? soldProductInfos : null;
+            if (soldProductInfos != null) {
+                logger.debug("List of top {} sold product found", numberOfTops);
+                return soldProductInfos;
+            } else {
+                logger.debug("List of top {} sold product not found", numberOfTops);
+                return new ArrayList<>();
+            }
         } catch (NoResultException e) {
-            return null;
+            logger.warn("List of top {} sold product not found", numberOfTops);
+            return new ArrayList<>();
         }
     }
 }

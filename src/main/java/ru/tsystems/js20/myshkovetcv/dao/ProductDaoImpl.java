@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.tsystems.js20.myshkovetcv.dto.FilterDto;
 import ru.tsystems.js20.myshkovetcv.model.Brand;
@@ -12,14 +14,18 @@ import ru.tsystems.js20.myshkovetcv.model.enums.WaterResistantType;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 @Repository("productDao")
 public class ProductDaoImpl extends AbstractDao<Long, Product> implements ProductDao {
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @Override
     public Product findById(Long id) {
+        logger.debug("Getting product by id: {}", id);
         return getByKey(id);
     }
 
@@ -30,9 +36,10 @@ public class ProductDaoImpl extends AbstractDao<Long, Product> implements Produc
                     .createQuery("SELECT p FROM Product p WHERE p.name LIKE :name")
                     .setParameter("name", name)
                     .getSingleResult();
-
+            logger.debug("Product found by name: {}", name);
             return product;
         } catch (NoResultException ex) {
+            logger.warn("Product not found by name: {}", name);
             return null;
         }
     }
@@ -40,10 +47,12 @@ public class ProductDaoImpl extends AbstractDao<Long, Product> implements Produc
     @Override
     public void save(Product product) {
         persist(product);
+        logger.debug("Product saved: {}", product.getName());
     }
 
     public void updateProduct(Product product) {
         update(product);
+        logger.debug("Product updated: {}", product.getName());
     }
 
     @Override
@@ -51,16 +60,7 @@ public class ProductDaoImpl extends AbstractDao<Long, Product> implements Produc
         List<Product> productList = getEntityManager()
                 .createQuery("SELECT p FROM Product p ORDER BY p.name ASC")
                 .getResultList();
-        return productList;
-    }
-
-    @Override
-    public List<Product> getProductsByCategory(Category category) {
-        List<Product> productList = getEntityManager()
-                .createQuery("SELECT p FROM Product p WHERE p.category = :category")
-                .setParameter("category", category)
-                .getResultList();
-
+        logger.debug("Get list of all products");
         return productList;
     }
 
@@ -94,8 +94,16 @@ public class ProductDaoImpl extends AbstractDao<Long, Product> implements Produc
 
         try {
             Product existingProduct = super.findOne(query);
-            return existingProduct != null ? existingProduct : null;
+
+            if (existingProduct != null) {
+                logger.debug("Product found by parameters");
+                return existingProduct;
+            } else {
+                logger.debug("Product not found by parameters");
+                return null;
+            }
         } catch (NoResultException e) {
+            logger.warn("Product not found by parameters");
             return null;
         }
     }
@@ -151,9 +159,16 @@ public class ProductDaoImpl extends AbstractDao<Long, Product> implements Produc
 
         try {
             List<Product> productList = super.find(query);
-            return productList != null ? productList : null;
+            if (productList != null) {
+                logger.debug("List of products by filter found");
+                return productList;
+            } else {
+                logger.debug("List of products by filter not found");
+                return new ArrayList<>();
+            }
         } catch (NoResultException e) {
-            return null;
+            logger.warn("List of products by filter not found");
+            return new ArrayList<>();
         }
     }
 }

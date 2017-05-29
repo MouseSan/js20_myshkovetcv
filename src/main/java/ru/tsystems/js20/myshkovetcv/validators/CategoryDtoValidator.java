@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.validators;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -12,6 +14,8 @@ public class CategoryDtoValidator implements Validator {
 
     @Autowired
     private CategoryService categoryService;
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -32,6 +36,12 @@ public class CategoryDtoValidator implements Validator {
             } else if (categoryId == null) {
                 errors.rejectValue("name", "non.unique.categoryDto.name", new Object[]{categoryName}, "{0} category name isn't unique.");
             }
+        }
+
+        if (errors.hasErrors()) {
+            logger.debug("CategoryDto has validation errors");
+        } else {
+            logger.debug("CategoryDto no validation errors");
         }
     }
 }

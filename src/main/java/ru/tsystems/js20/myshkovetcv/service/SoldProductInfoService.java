@@ -11,8 +11,6 @@ public interface SoldProductInfoService {
 
     void saveSoldProductInfo(SoldProductInfo soldProductInfo);
 
-    void updateSoldProductInfo(SoldProductInfo soldProductInfo);
-
     List<SoldProductInfo> getListOfSoldProductsByOrderId(Orders orders);
 
     List<SoldProductInfoDto> getTopSoldProducts(Integer numberOfTops);

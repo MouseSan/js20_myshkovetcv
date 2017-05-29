@@ -5,19 +5,11 @@ import ru.tsystems.js20.myshkovetcv.dto.UserDto;
 import ru.tsystems.js20.myshkovetcv.dto.enums.UserDtoValidationType;
 import ru.tsystems.js20.myshkovetcv.model.User;
 
-import java.util.List;
-
 public interface UserService {
 
     User findById(Long id);
 
-    User findByFirstName(String name);
-
-    User getUserByEmail(String emailAddress);
-
     User getUserByUserName(String userName);
-
-    UserDto getUserDtoByEmail(String emailAddress);
 
     void saveUser(UserDto userDto);
 
@@ -25,13 +17,9 @@ public interface UserService {
 
     boolean updatePassword(UserDto userDto);
 
-    List<User> findAllUsers();
-
     boolean emailAddressNotUnique(String email);
 
     boolean userNameNotUnique(String userName);
-
-    String getPrincipal();
 
     UserDto getCurrentUserDto();
 

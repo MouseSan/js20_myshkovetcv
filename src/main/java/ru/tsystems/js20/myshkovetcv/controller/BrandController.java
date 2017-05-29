@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,6 +25,8 @@ public class BrandController {
     @Autowired
     private BrandDtoValidator brandDtoValidator;
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(brandDtoValidator);
@@ -31,12 +35,14 @@ public class BrandController {
     @RequestMapping(value = {"/brands/"}, method = RequestMethod.GET)
     public String listBrands(ModelMap model) {
         model.addAllAttributes(brandService.getBrandListModel());
+        logger.info("Getting brand list page");
         return "brandList";
     }
 
     @RequestMapping(value = {"/brands/create"}, method = RequestMethod.GET)
     public String newBrand(ModelMap model) {
         model.addAllAttributes(brandService.getBrandModel());
+        logger.info("Getting brand creating page");
         return "brandEdit";
     }
 
@@ -44,16 +50,19 @@ public class BrandController {
     public String saveBrand(@Validated BrandDto brandDto, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             model.mergeAttributes(brandService.getBrandModel());
+            logger.info("Brand creating page has errors");
             return "brandEdit";
         }
 
         brandService.saveBrand(brandDto);
+        logger.info("Brand creating page - brand {} created", brandDto.getName());
         return "redirect:/admin/brands/";
     }
 
     @RequestMapping(value = "/brands/edit-{id}", method = RequestMethod.GET)
     public String editBrand(@PathVariable Long id, ModelMap model) {
         model.addAllAttributes(brandService.getBrandModelById(id));
+        logger.info("Getting brand ID:{} editing page", id);
         return "brandEdit";
     }
 
@@ -61,11 +70,12 @@ public class BrandController {
     public String updateBrand(@Validated BrandDto brandDto, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             model.mergeAttributes(brandService.getBrandModel());
+            logger.info("Brand editing page has errors");
             return "brandEdit";
         }
 
         brandService.updateBrand(brandDto);
+        logger.info("Brand editing page - brand {} updated", brandDto.getName());
         return "redirect:/admin/brands/";
     }
-
 }

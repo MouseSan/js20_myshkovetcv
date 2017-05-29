@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,16 +21,18 @@ public class BrandServiceImpl implements BrandService {
     private BrandDao brandDao;
     @Autowired
     private NavBarService navBarService;
-    @Autowired
-    private UserService userService;
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public Brand findById(Long id) {
+        logger.debug("Trying to find brand: {}", id);
         return brandDao.findById(id);
     }
 
     @Override
     public Brand findByName(String name) {
+        logger.debug("Trying to find brand: {}", name);
         return brandDao.findByName(name);
     }
 
@@ -37,6 +41,7 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = new Brand();
         brand.setName(brandDto.getName());
         brandDao.save(brand);
+        logger.debug("New brand saved: {}", brand.getName());
     }
 
     @Override
@@ -45,8 +50,10 @@ public class BrandServiceImpl implements BrandService {
         if (brand != null) {
             brand.setName(brandDto.getName());
             brandDao.updateBrand(brand);
+            logger.debug("Brand updated: {}", brand.getId());
             return true;
         } else {
+            logger.warn("Brand id not found: {}", brandDto.getId());
             return false;
         }
     }
@@ -58,17 +65,21 @@ public class BrandServiceImpl implements BrandService {
         for (Brand brand : brandList) {
             brandDtoList.add(new BrandDto(brand));
         }
+        logger.debug("List of all BrandDtos selected");
         return brandDtoList;
     }
 
     @Override
     public boolean brandNotUnique(String brandName) {
         Brand brand = findByName(brandName);
-        return brand != null;
+        boolean unique = brand != null;
+        logger.debug("Brand name {} is unique: {}", brandName, unique);
+        return unique;
     }
 
     @Override
     public BrandDto findDtoById(Long brandId) {
+        logger.debug("Trying to find brandDto: {}", brandId);
         return new BrandDto(findById(brandId));
     }
 
@@ -77,6 +88,7 @@ public class BrandServiceImpl implements BrandService {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("brandList", getAllBrandDto());
+        logger.debug("All brands list model formed");
         return modelMap;
     }
 
@@ -85,6 +97,7 @@ public class BrandServiceImpl implements BrandService {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("brandDto", new BrandDto());
+        logger.debug("New brand model formed");
         return modelMap;
     }
 
@@ -93,6 +106,7 @@ public class BrandServiceImpl implements BrandService {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("brandDto", new BrandDto(findById(id)));
+        logger.debug("Brand ID:{} model formed", id);
         return modelMap;
     }
 }

@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +25,12 @@ public class UserAddressServiceImpl implements UserAddressService {
     @Autowired
     private NavBarService navBarService;
 
-    @Override
-    public UserAddress findById(Long id) {
-        return userAddressDao.findById(id);
-    }
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public UserAddress findByZipCode(Integer zipCode) {
-        return userAddressDao.findByZipCode(zipCode);
+    public UserAddress findById(Long id) {
+        logger.debug("Trying to find user address: {}", id);
+        return userAddressDao.findById(id);
     }
 
     @Override
@@ -43,6 +43,7 @@ public class UserAddressServiceImpl implements UserAddressService {
         userAddress.setApartmentNumber(userAddressDto.getApartmentNumber());
         userAddress.setUser(userService.getCurrentUser());
         userAddressDao.save(userAddress);
+        logger.debug("New user address saved");
     }
 
     @Override
@@ -55,15 +56,12 @@ public class UserAddressServiceImpl implements UserAddressService {
             userAddressToBeMerged.setZipCode(userAddressDto.getZipCode());
             userAddressToBeMerged.setApartmentNumber(userAddressDto.getApartmentNumber());
             userAddressDao.updateUserAddress(userAddressToBeMerged);
+            logger.debug("User address updated");
             return true;
         } else {
+            logger.warn("User address not updated");
             return false;
         }
-    }
-
-    @Override
-    public List<UserAddress> findAllUserAddresses() {
-        return userAddressDao.findAllUserAddresses();
     }
 
     @Override
@@ -75,25 +73,27 @@ public class UserAddressServiceImpl implements UserAddressService {
                 List<UserAddress> userAddressList = user.getUserAddressList();
                 if (userAddressList != null && userAddressList.contains(userAddress)) {
                     userAddressList.remove(userAddress);
+                    logger.debug("User address removed");
+                } else {
+                    logger.warn("User address not removed, because user address list not found");
                 }
+            } else {
+                logger.warn("User address not removed, because user not found");
             }
-
+        } else {
+            logger.warn("User address not removed, because not valid ID");
         }
-    }
-
-    @Override
-    public List<UserAddressDto> findUserAddressDto(User user) {
-        List<UserAddress> userAddressList = userAddressDao.findUserAddresses(user);
-        List<UserAddressDto> userAddressDto = new ArrayList<>();
-        for (UserAddress userAddress : userAddressList) {
-            userAddressDto.add(new UserAddressDto(userAddress));
-        }
-        return userAddressDto;
     }
 
     @Override
     public List<UserAddressDto> findAllAddressesCurrentUser() {
-        return findUserAddressDto(userService.getCurrentUser());
+        List<UserAddress> userAddressList = userAddressDao.findUserAddresses(userService.getCurrentUser());
+        List<UserAddressDto> userAddressDtoList = new ArrayList<>();
+        for (UserAddress userAddress : userAddressList) {
+            userAddressDtoList.add(new UserAddressDto(userAddress));
+        }
+        logger.debug("Getting list of addresses for current user");
+        return userAddressDtoList;
     }
 
     @Override
@@ -101,6 +101,7 @@ public class UserAddressServiceImpl implements UserAddressService {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("userAddressDto", new UserAddressDto());
+        logger.debug("New user address model formed");
         return modelMap;
     }
 
@@ -109,6 +110,7 @@ public class UserAddressServiceImpl implements UserAddressService {
         ModelMap modelMap = new ModelMap();
         modelMap.addAllAttributes(navBarService.getNavBarInfo());
         modelMap.addAttribute("userAddressDto", new UserAddressDto(findById(id)));
+        logger.debug("User address model formed");
         return modelMap;
     }
 
@@ -119,7 +121,9 @@ public class UserAddressServiceImpl implements UserAddressService {
             return true;
         } else {
             User addressOwner = userAddressDao.findById(id).getUser();
-            return currentUser.equals(addressOwner);
+            boolean haveAccess = currentUser.equals(addressOwner);
+            logger.debug("User {} have access to address ID{}: {}", currentUser.getUserName(), id, haveAccess);
+            return haveAccess;
         }
     }
 }

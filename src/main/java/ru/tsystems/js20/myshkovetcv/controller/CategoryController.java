@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,6 +25,8 @@ public class CategoryController {
     @Autowired
     private CategoryDtoValidator categoryDtoValidator;
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(categoryDtoValidator);
@@ -31,12 +35,14 @@ public class CategoryController {
     @RequestMapping(value = {"/categories/"}, method = RequestMethod.GET)
     public String listCategories(ModelMap model) {
         model.addAllAttributes(categoryService.getCategoryListModel());
+        logger.info("Getting category list page");
         return "categoryList";
     }
 
     @RequestMapping(value = {"/categories/create"}, method = RequestMethod.GET)
     public String newCategory(ModelMap model) {
         model.addAllAttributes(categoryService.getCategoryModel());
+        logger.info("Getting category creating page");
         return "categoryEdit";
     }
 
@@ -44,16 +50,19 @@ public class CategoryController {
     public String saveCategory(@Validated CategoryDto categoryDto, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             model.mergeAttributes(categoryService.getCategoryModel());
+            logger.info("Category creating page - has errors");
             return "categoryEdit";
         }
 
         categoryService.saveCategory(categoryDto);
+        logger.info("Category creating page - category {} created", categoryDto.getName());
         return "redirect:/admin/categories/";
     }
 
     @RequestMapping(value = "/categories/edit-{id}", method = RequestMethod.GET)
     public String editCategory(@PathVariable Long id, ModelMap model) {
         model.addAllAttributes(categoryService.getCategoryModelById(id));
+        logger.info("Getting category ID:{} editing page", id);
         return "categoryEdit";
     }
 
@@ -61,10 +70,12 @@ public class CategoryController {
     public String updateCategory(@Validated CategoryDto categoryDto, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             model.mergeAttributes(categoryService.getCategoryModel());
+            logger.info("Category editing page - has errors");
             return "categoryEdit";
         }
 
         categoryService.updateCategory(categoryDto);
+        logger.info("Category editing page - category {} updated", categoryDto.getName());
         return "redirect:/admin/categories/";
     }
 }

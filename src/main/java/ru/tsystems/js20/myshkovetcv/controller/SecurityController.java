@@ -1,5 +1,7 @@
 package ru.tsystems.js20.myshkovetcv.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,8 +28,11 @@ public class SecurityController {
     @Autowired
     private UserDtoValidator userDtoValidator;
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
+        logger.info("Getting login page");
         return "login";
     }
 
@@ -37,12 +42,14 @@ public class SecurityController {
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
+        logger.info("Getting logout page");
         return "redirect:/login?logout";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getRegistrationPage(ModelMap model) {
         model.addAttribute("userDto", new UserDto(UserDtoValidationType.Registration));
+        logger.info("Getting new user page");
         return "register";
     }
 
@@ -51,14 +58,17 @@ public class SecurityController {
         userDto.setUserDtoValidationType(UserDtoValidationType.Registration);
         userDtoValidator.validate(userDto, result);
         if (result.hasErrors()) {
+            logger.info("New user page - has errors");
             return "register";
         }
         userService.saveUser(userDto);
+        logger.info("New user page - user {} saved", userDto.getUserName());
         return "redirect:/login?registersuccess";
     }
 
     @RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
     public String accessDeniedPage(ModelMap model) {
+        logger.info("Getting access denied page");
         return "page403AccessDenied";
     }
 }
