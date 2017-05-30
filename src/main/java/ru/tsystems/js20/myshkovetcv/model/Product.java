@@ -70,7 +70,7 @@ public class Product implements Serializable {
     @Enumerated(EnumType.STRING)
     private WaterResistantType waterResistant;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "text")
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")

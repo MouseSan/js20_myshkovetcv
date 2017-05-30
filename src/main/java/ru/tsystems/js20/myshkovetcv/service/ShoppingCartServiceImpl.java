@@ -137,7 +137,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ModelMap getShoppingCartModel() {
         ModelMap model = new ModelMap();
         model.addAllAttributes(navBarService.getNavBarInfo());
-        if(allProductsAvailable()) {
+        if (allProductsAvailable()) {
             model.addAttribute("notEnoughQuantity", false);
         } else {
             model.addAttribute("notEnoughQuantity", true);

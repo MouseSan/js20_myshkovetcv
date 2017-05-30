@@ -42,7 +42,7 @@
                     <div class="step-content">
                         <div class="row" id="errMsg">
                             <div class="col-md-12">
-                                <c:if test="${param.notEnoughQuantity != null}">
+                                <c:if test="${param.notEnoughQuantity != null or notEnoughQuantity == true}">
                                     <div class="alert alert-danger" role="alert">
                                         <p>Not enough quantity in stock. Subtract items.</p>
                                     </div>

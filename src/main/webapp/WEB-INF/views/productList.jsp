@@ -28,6 +28,9 @@
     <!-- MAIN -->
     <div class="shop-main">
         <div class="container">
+            <div class="custom-button-box">
+                <a href="<c:url value='/admin/products/create' />" class="btn btn-rounded-2x btn-outline btn-primary btn-block btn-lg">Create</a>
+            </div>
             <div class="row">
                 <div class="col-md-12">
 
@@ -94,9 +97,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class="custom-button-box">
-                <a href="<c:url value='/admin/products/create' />" class="btn btn-rounded-2x btn-outline btn-primary btn-block btn-lg">Create</a>
             </div>
             <!-- END CUSTOM TABS TOP -->
         </div>
