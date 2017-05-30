@@ -50,6 +50,16 @@ public class UserAddress implements Serializable {
         this.user = user;
     }
 
+    public UserAddress(Long id, String country, String city, Integer zipCode, String street, String apartmentNumber, User user) {
+        this.id = id;
+        this.country = country;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.street = street;
+        this.apartmentNumber = apartmentNumber;
+        this.user = user;
+    }
+
     public UserAddress() {
     }
 

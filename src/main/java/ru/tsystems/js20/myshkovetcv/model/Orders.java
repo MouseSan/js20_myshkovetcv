@@ -85,6 +85,19 @@ public class Orders implements Serializable {
         this.dateOfOrder = dateOfOrder;
     }
 
+    public Orders(Long id, User user, String deliveryAddress, PaymentMethod paymentMethod, DeliveryMethod deliveryMethod, PaymentState paymentState, OrdersState ordersState, Integer totalQuantity, Double totalPrice, Date dateOfOrder) {
+        this.id = id;
+        this.user = user;
+        this.deliveryAddress = deliveryAddress;
+        this.paymentMethod = paymentMethod;
+        this.deliveryMethod = deliveryMethod;
+        this.paymentState = paymentState;
+        this.ordersState = ordersState;
+        this.totalQuantity = totalQuantity;
+        this.totalPrice = totalPrice;
+        this.dateOfOrder = dateOfOrder;
+    }
+
     public Orders() {
     }
 

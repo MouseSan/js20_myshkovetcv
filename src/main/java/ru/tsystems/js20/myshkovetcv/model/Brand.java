@@ -28,6 +28,11 @@ public class Brand implements Serializable {
     public Brand() {
     }
 
+    public Brand(Long id, String name) {
+        this.id = id;
+        this.productList = productList;
+    }
+
     public Brand(String name, List<Product> productList) {
         this.name = name;
         this.productList = productList;

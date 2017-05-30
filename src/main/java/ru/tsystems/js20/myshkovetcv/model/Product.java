@@ -88,6 +88,25 @@ public class Product implements Serializable {
     public Product() {
     }
 
+    public Product(Long id, String name, Double price, Category category, Double weight, Double volume, Double stock, Brand brand, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant, String description, String imageURL, String imageId) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.category = category;
+        this.weight = weight;
+        this.volume = volume;
+        this.stock = stock;
+        this.brand = brand;
+        this.backlight = backlight;
+        this.clockFace = clockFace;
+        this.glass = glass;
+        this.gender = gender;
+        this.waterResistant = waterResistant;
+        this.description = description;
+        this.imageURL = imageURL;
+        this.imageId = imageId;
+    }
+
     public Product(String name, Double price, Category category, Double weight, Double volume, Double stock, Brand brand, boolean backlight, ClockFaceType clockFace, ClockGlassType glass, GenderType gender, WaterResistantType waterResistant, String description, List<SoldProductInfo> soldProductInfoList, List<StorefrontProducts> storefrontProductsList, String imageURL, String imageId) {
         this.name = name;
         this.price = price;
